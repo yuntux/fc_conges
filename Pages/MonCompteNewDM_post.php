@@ -18,7 +18,7 @@ if(isset($_POST['Chercher']))
 	include("Functions/connection.php");
 	try
 	{  
-		$reponse1 = $bdd->query('SELECT * FROM consultant WHERE CONCAT(NOM_CONSULTANT, " ", PRENOM_CONSULTANT) = "'.$thelistDM.'"');  
+		$reponse1 = $bdd->query('SELECT * FROM consultant WHERE ID_CONSULTANT = "'.$thelistDM.'"');  
 		while ($donnees1 = $reponse1->fetch())
 		{
 			$id = $donnees1['ID_CONSULTANT']; 
@@ -116,19 +116,3 @@ if(isset($_POST['Enregistrer']))
 		exit();
 	}
 }
-if(isset($_POST['reinitialiser']))
-{
-	include("Functions/connection.php");
-	try
-	{
- 		$record_maj = $bdd->exec('UPDATE `authen` SET `PASSWORD_AUTHEN` = "Fontaine123" WHERE `ID_AUTHEN` = "'.$COid.'"');
-		$_SESSION['erreur'] = 80;
-		header("Location: MonCompte.php?search=$COid");
-		exit();
-	}
-	catch(Exception $e)
-	{
-		die('Erreur : '.$e->POSTMessage());
-	}
-
-}			

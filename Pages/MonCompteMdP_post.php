@@ -11,7 +11,7 @@ if(isset($_POST['Enregistrer']))
 	if($nouveauMdP==$confirmationMdP && $long >7){
 		try
 		{
-	 		$record_maj = $bdd->exec('UPDATE `authen` SET `PASSWORD_AUTHEN`= "'.$nouveauMdP.'" WHERE `ID_AUTHEN` = "'.$consultant.'"');
+	 		$record_maj = $bdd->exec('UPDATE `authen` SET `PASSWORD_AUTHEN`= "'.hash('sha512', $GUERANDE.$nouveauMdP).'" WHERE `ID_AUTHEN` = "'.$consultant.'"');
 			$_SESSION['erreur'] = 90;
 			header("Location: MonCompte.php");
 			exit();

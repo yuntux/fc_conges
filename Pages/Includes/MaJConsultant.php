@@ -28,10 +28,18 @@
 		$option ='<option selected="selected">CONSULTANT</option><option >DM</option><option>DIRECTEUR</option>';
 	}
 ?>
+        <form action="MonCompteNewDM_post.php" method="post">
 <input type="hidden" class="input-field" name="COid" value="<?php echo $_GET['search'];?>" />
 <label for="field1"><span>Nom <span class="required">*</span></span><input type="text" class="input-field" name="CONom" value="<?php echo $NOM_CONSULTANT;?>" /></label>
 <label for="field2"><span>Prénom <span class="required">*</span></span><input type="text" class="input-field" name="COprenom" value="<?php echo $PRENOM_CONSULTANT;?>" /></label>
 <label for="field1"><span>Email <span class="required">*</span></span><input type="Email" class="input-field" name="COmail" value="<?php echo $EMAIL_CONSULTANT;?>" /></label>
 <label for="field1"><span>Trigramme <span class="required">*</span></span><input type="text" class="input-field" name="COTri" value="<?php echo $TRIGRAMME_CONSULTANT;?>" /></label>
 <label for="field1"><span>Profil <span class="required">*</span></span><select name="COprofil"><?php echo $option;?></select></label>
-<input type="submit" value="Réintialiser Mot de passe" name="reinitialiser" style="float:right;"/>
+
+ <label><input type="submit" value="Enregistrer" name="Enregistrer" style="float:right;"/></label>
+        </form>
+
+        <form action="password_generation.php" method="post">
+		<input type="hidden" class="input-field" name="COid" value="<?php echo $_GET['search'];?>" />
+                <input type="submit" value="Réintialiser Mot de passe" name="reinitialiser" style="floatleftt;"/>
+        </form>

@@ -1,4 +1,5 @@
 <?php
+include("connection.php");
   $errorMessage = '';
   if(!empty($_POST)) 
   {
@@ -7,9 +8,7 @@
 	try
 	{	
 		
-		$pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-		$bdd = new PDO('mysql:host=localhost;dbname=FC_CONGES', 'root', 'root', $pdo_options);
-		$reponse = $bdd->query('SELECT * FROM authen where LOGIN_AUTHEN = \''.$_POST['login'].'\' AND PASSWORD_AUTHEN =\''.$_POST['password'].'\'');  
+		$reponse = $bdd->query('SELECT * FROM authen where LOGIN_AUTHEN = \''.$_POST['login'].'\'');  
 		while ($donnees = $reponse->fetch())
 		{
 			$id = $donnees['ID_AUTHEN'];
@@ -24,20 +23,15 @@
 	{
 			die('Erreur : ' . $e->getMessage());
 	}
-      if($_POST['login'] !== $login) 
-      {
-        $errorMessage = 'Mauvais login !';
-      }
-        elseif($_POST['password'] !== $password) 
-      {  
+        if(hash('sha512', $GUERANDE.$_POST['password']) !== $password) 
+      	{  
         $errorMessage = 'Mauvais password !';
-      }
+      	}
         else
-      {
+      	{
         session_start();
         $_SESSION['id'] = $id;
         $_SESSION['role'] = $role;
-	include("Functions/connection.php");
 	try
 	{	
 		$reponse = $bdd->query('SELECT DATE_ACQUIS FROM acquis where CONSULTANT_ACQUIS = '.$id);  

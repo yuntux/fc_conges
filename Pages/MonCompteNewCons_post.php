@@ -52,15 +52,23 @@ if(isset($_POST['Enregistrer']))
 		{
 			die('Erreur : '.$e->getMessage());
 		}
+/*
 		try
 		{
-	 		$req = $bdd->prepare('INSERT INTO `authen`(`ID_AUTHEN`, `LOGIN_AUTHEN`, `PASSWORD_AUTHEN`, `ROLE_AUTHEN`) VALUES  (?,?,?,?)');
-		   	$req->execute(array($max_ID,$COmail,"Fontaine123","CONSULTANT"));
+			$COid = $max_ID;
+	 		$req = $bdd->prepare('INSERT INTO `authen`(`ID_AUTHEN`, `LOGIN_AUTHEN`, `ROLE_AUTHEN`) VALUES  (?,?,?,?)');
+		   	$req->execute(array($COid,$COmail,"CONSULTANT"));
 		}
 		catch(Exception $e)
-		{
+		{	
 			die('Erreur : '.$e->POSTMessage());
 		}
+*/
+			$COid = $max_ID;
+	 		$req = $bdd->prepare('INSERT INTO `authen`(`ID_AUTHEN`, `LOGIN_AUTHEN`, `ROLE_AUTHEN`) VALUES  (?,?,?)');
+		   	$req->execute(array($COid,$COmail,"CONSULTANT"));
+        		include("password_generation.php");
+        		generate_password($COid);
 		try
 		{
 	 		$req = $bdd->prepare('INSERT INTO `consultant`(`ID_CONSULTANT`, `NOM_CONSULTANT`, `PRENOM_CONSULTANT`, `EMAIL_CONSULTANT`, `PROFIL_CONSULTANT`, `TRIGRAMME_CONSULTANT`, `STATUT_CONSULTANT`) VALUES (?,?,?,?,?,?,?)');

@@ -35,7 +35,7 @@
 				$reponse1 = $bdd->query('SELECT * FROM consultant order by NOM_CONSULTANT');  
 				while ($donnees1 = $reponse1->fetch())
 				{
-					echo "<option>".$donnees1['NOM_CONSULTANT']." ".$donnees1['PRENOM_CONSULTANT']."</option>";
+					echo "<option value='".$donnees1['ID_CONSULTANT']."'>".$donnees1['NOM_CONSULTANT']." ".$donnees1['PRENOM_CONSULTANT']."</option>";
 				}
 				$reponse1->closeCursor();
 			}
@@ -44,9 +44,11 @@
 				die('Erreur : '.$e->getMessage());
 			}
 		?>
-		</select><input type="submit" value="Chercher" name="Chercher" style="margin-left:50px;"/></p>
-		<?php if($_GET['search'] != ""){
-			include("Includes/MaJConsultant.php");}?>
-		<label><input type="submit" value="Enregistrer" name="Enregistrer" style="float:right;"/></label>
+		</select>
+		
+		<input type="submit" value="Chercher" name="Chercher" style="margin-left:50px;"/></p>
 	</form>
+	<?php if($_GET['search'] != ""){
+			include("Includes/MaJConsultant.php");
+		}?>
 </div>

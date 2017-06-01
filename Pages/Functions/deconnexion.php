@@ -7,6 +7,6 @@
 
   unset($_SESSION);
 
-  header('Location: /FCC/index.php');
+  header('Location: /index.php');
   exit();
 ?>
