@@ -97,12 +97,12 @@ if ($thelistMS == 'Midi') {
 
 if ($dateFromDu > $dateFromAu) {
 	$_SESSION['erreur'] = 2;
-	header("Location: DemandeConges.php?");
+	header("Location: ?action=DemandeConges?");
 	exit();
 		}
 else if ($nbjrsSaisi != $nb_jours_ouvres) {
 	$_SESSION['erreur'] = 1;
-	header("Location: DemandeConges.php?");
+	header("Location: ?action=DemandeConges?");
 	exit();
 		}
 else{
@@ -121,7 +121,6 @@ else{
 			$nbjrsRTT=$_POST['nbjrsRTT'];
 			$nbjrsCP=$_POST['nbjrsCP'];
 			$consultant=$_SESSION['id'];
-			include("Functions/connection.php");
 			try
 			{  
 				$reponse1 = $bdd->query('SELECT * FROM solde WHERE ID_Solde = (SELECT MAX(ID_Solde) id FROM solde WHERE CONSULTANT_SOLDE ='.$consultant.') AND CONSULTANT_SOLDE ='.$consultant);  
@@ -190,7 +189,7 @@ else{
 				die('Erreur : '.$e->POSTMessage());
 			}
 			$test = $_POST['thelistDM'];
-			header("Location: Home.php?$consultant");
+			header("Location: ?action=home");
 			exit();
 	
 		}		
@@ -210,7 +209,6 @@ else{
 			$nbjrsRTT=$_POST['nbjrsRTT'];
 			$nbjrsCP=$_POST['nbjrsCP'];
 			$consultant=$_SESSION['id'];
-			include("Functions/connection.php");
 			try
 			{  
 				$reponse1 = $bdd->query('SELECT * FROM solde WHERE ID_Solde = (SELECT MAX(ID_Solde) id FROM solde WHERE CONSULTANT_SOLDE ='.$consultant.') AND CONSULTANT_SOLDE ='.$consultant);  
@@ -307,7 +305,7 @@ else{
 			}
 			include("Functions/sendmail.php");
 			mailtoDMfromCO($mail_valideur, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $_POST['dateFromDu'], $_POST['thelistMM'], $_POST['dateFromAu'], $_POST['thelistMS']);
-			header("Location: Home.php");
+			header("Location: ?action=home");
 			exit();
 	
 		}		
