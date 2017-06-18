@@ -4,6 +4,9 @@
                 <title>Fontaine Consultants</title>
 		<meta charset="utf-8">
                 <link rel="stylesheet" media="screen" type="text/css" href="view/Style.css?v=5" />
+
+		<link href="view/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" />
+
         </head>
         <body>
                 <div id="main_wrapper">

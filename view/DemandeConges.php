@@ -10,12 +10,12 @@
 				<form action="?action=DemandeConges" id="DemandeConges_post" method="post">
 				<div id="bloc_donnees1" style="padding-right:50px;">
 					<h2>Nouvelle demande</h2>
-					<p style="width:90%;margin-bottom:20px;"><label for="du">Du : </label><input type="date" name="dateFromDu" id ="dateFromDu" onchange="ok()" value="<?php echo date('Y-m-d'); ?>" />
+					<p style="width:90%;margin-bottom:20px;"><label for="du">Du : </label><input type="text" class="widget_calendar" name="dateFromDu" id ="dateFromDu" onchange="ok()" value="<?php echo date('Y-m-d'); ?>" />
 					<select name="thelistMM" id ="thelistMM" onchange="ok()">
 						<option>Matin</option>
 						<option>Midi</option>
 					</select></p>
-					<p style="margin-bottom:20px;"><label for="du">Au :  </label><input type="date" name="dateFromAu" id ="dateFromAu" onchange="ok()" value="<?php echo date('Y-m-d'); ?>" />
+					<p style="margin-bottom:20px;"><label for="du">Au :  </label><input type="text" class="widget_calendar" name="dateFromAu" id ="dateFromAu" onchange="ok()" value="<?php echo date('Y-m-d'); ?>" />
 					<select name="thelistMS" id ="thelistMS" onchange="ok()">
 						<option>Soir</option>						  
 						<option>Midi</option>						  
