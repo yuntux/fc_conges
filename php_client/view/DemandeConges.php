@@ -28,7 +28,7 @@ function return_isset($post_name){
 						<option<?php if (return_isset('thelistMS')=='Soir') echo 'selected';?>>Soir</option>						  
 						<option<?php if (return_isset('thelistMS')=='Midi') echo 'selected';?>>Midi</option>						  
 					</select></p>
-					Attention : contrairement a l'ancien syst�me, indiquer ici le dernier jour de cong�s et non pas le jour de la reprise.
+					Attention : contrairement à l'ancien système, indiquer ici le dernier jour de congès et non pas le jour de la reprise.
 					<p id="nbJrs"></p><input type="hidden" name="nbJrs_hidden" id="nbJrs_hidden" value="<?php return_isset('nbJrs_hidden');?>"/>
 					<p style="width:90%;margin-bottom:20px;"><label for="au" style="margin-right:38px";>Directeur de mission : </label>
 					<select name="thelistDM">
@@ -51,10 +51,10 @@ function return_isset($post_name){
 					</select></p>
 					<table class="reinitialise" style="text-align:center;width:80%;font-size: 10px;">
 						<tr style="text-align:center;width:80%;">
-							<td style="width:20%;">Jours de Congés Payés</td>
+							<td style="width:20%;">Jours de Congès Payés</td>
 							<td style="width:20%;">Jours de Repos (RTT)</td>
 							<td style="width:20%;">Jours conventionnels</td>
-							<td style="width:20%;">Jours de Congés sans solde</td>
+							<td style="width:20%;">Jours de Congès sans solde</td>
 							<td style="width:20%;">Jours Autres</td>
 						</tr>
 						<tr>
@@ -78,10 +78,10 @@ function return_isset($post_name){
 						<thead>
 							<tr>
 								<th>Date de la demande</th>
-								<th>Début</th>
+								<th>DÃ©but</th>
 								<th>Fin</th>
 								<th>Nombre de jour</th>
-								<th>Jours posés</th>
+								<th>Jours posÃ©s</th>
 								<th>Statut</th>
 							</tr>
 						</thead>
@@ -206,7 +206,7 @@ function ok(){
 		diffj = diffj - demif; 
 	}
 
-	document.getElementById('nbJrs').innerHTML = 'Nombre de jours de repos à répartir : '+diffj+' jours.';
+	document.getElementById('nbJrs').innerHTML = 'Nombre de jours de repos Ã  rÃ©partir : '+diffj+' jours.';
 	document.getElementById('nbJrs_hidden').value = diffj;
 }
 function jrspose(){
