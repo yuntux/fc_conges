@@ -163,11 +163,11 @@ if(isset($_POST['update_consultant']) && $_SESSION['role'] == "DIRECTEUR")
                 {
                         die('Erreur : '.$e->POSTMessage());
                 }
-                $message_erreur = 81;
+                $message_erreur = "L'adresse mail saisie existe dÃja" ;
         }elseif($CONom =="" || $COprenom =="" || $COmail =="" || $COTri ==""){
-                $message_erreur = 82;
+                $message_erreur = "Veuillez remplir tous les champs";
         }else{
-                $message_erreur = 83;
+		$message_erreur = "Le trigramme saisi existe dÃ©a";
         }
 }
 
@@ -256,11 +256,11 @@ if(isset($_POST['add_consultant']) && $_SESSION['role'] == "DIRECTEUR")
 			die('Erreur : '.$e->POSTMessage());
 		}
 	}elseif($mail_exist > 0){
-		$message_erreur = 81;
+                $message_erreur = "L'adresse mail saisie existe dÃja" ;
 	}elseif($CONom =="" || $COprenom =="" || $COmail =="" || $COTri ==""){
-		$message_erreur = 82;
+                $message_erreur = "Veuillez remplir tous les champs";
 	}else{
-		$message_erreur = 83;
+		$message_erreur = "Le trigramme saisi existe dÃ©a";
 	}
 }
 

@@ -2,14 +2,6 @@
 
 	<div id="bloc_donnees1">
 	<h2>Consultants</h2>
-	<?php if($_SESSION['erreur'] == 80 && isset($_GET['search'])){
-		include("Includes/OK80.php");}?>
-	<?php if($_SESSION['erreur'] == 81 && isset($_GET['search'])){
-		include("Includes/Erreur81.php");}?>
-	<?php if($_SESSION['erreur'] == 82 && isset($_GET['search'])){
-		include("Includes/Erreur82.php");}?>
-	<?php if($_SESSION['erreur'] == 83 && isset($_GET['search'])){
-		include("Includes/Erreur83.php");}?>
 	<form action="?action=administration" method="post">
 		<select name="select_consultant">
 			<option>Sélectionner consultant</option>

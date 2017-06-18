@@ -17,6 +17,4 @@
                 */
                 </script>
         </body>
-<?php $_SESSION['erreur'] = 0;?>
-<?php $indice = 0 ;?>
 </html>

@@ -76,7 +76,7 @@ if(!empty($_POST['login']) && !empty($_POST['password']))
 				die('Erreur : '.$e->POSTMessage());
 			}
 		}
-	echo "reussi";
+	$message_succes = "Réussi";
         header("Location: index.php?action=home");
       }
 }

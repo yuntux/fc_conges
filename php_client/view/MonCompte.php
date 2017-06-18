@@ -6,12 +6,6 @@
 					<h2>Paramètres du compte</h2>
 					<div class="form-style-3" style="border-bottom:1px solid #000;">
 						<h3>Changer le Mot de passe</h2>
-						<?php if($_SESSION['erreur'] == 90){
-							include("Includes/OK90.php");}?>
-						<?php if($_SESSION['erreur'] == 92){
-							include("Includes/Erreur92.php");}?>
-						<?php if($_SESSION['erreur'] == 91){
-							include("Includes/Erreur91.php");}?>
 						<form action="?action=MonCompte" method="post">
 							<label for="field1"><span>Nouveau <span class="required">*</span></span><input type="password" class="input-field" name="nouveauMdP" value="" /></label>
 							<label for="field2"><span>Confirmer <span class="required">*</span></span><input type="password" class="input-field" name="confirmationMdP" value="" /></label>
@@ -55,5 +49,3 @@
 					</form>
 				</div>
 			</div>
-<?php $_SESSION['erreur'] = 0;?>
-<?php $indice = 0 ;?>

@@ -1,11 +1,6 @@
 			<div id="bloc_donnees">
 				<div id="entete_bloc_donnees">
 					<h2>Demande de congés</h2>
-					<?php if($_SESSION['erreur'] == 2){
-						include("Includes/Erreur2.php");}?>
-					<?php if($_SESSION['erreur'] == 1){
-						include("Includes/Erreur1.php");}?>
-					<?php $_SESSION['erreur'] = 0;?>
 				</div>
 				<form action="?action=DemandeConges" id="DemandeConges_post" method="post">
 				<div id="bloc_donnees1" style="padding-right:50px;">

@@ -18,14 +18,10 @@ if (isset($_POST['bouton_nouveauMdP']))
                         die('Erreur : '.$e->POSTMessage());
                 }
         }elseif($long <8){
-                $_SESSION['erreur'] = 92;
-                header("Location: MonCompte.php?$long");
-                exit();
+                $message_erreur = "Mot de passe trop court (saisir un mot de passe de 8 caractères minimu.";
         }
         else{
-                $_SESSION['erreur'] = 91;
-                header("Location: MonCompte.php?$long");
-                exit();
+                $message_erreur = "Les deux mots de passe saisis ne sont pas identiques.";
         }
 }
 
