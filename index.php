@@ -1,5 +1,4 @@
 <?php 
-
 session_start();
 include("controller/connection.php");
 
@@ -21,8 +20,12 @@ else
         	$action="home";
 }
 
-include("view/head.php");
 include_once("controller/".$action.".php");
+
+
+header('Content-Type: text/html; charset=utf-8');
+include("view/head.php");
+include("view/".$view_to_display);
 include("view/foot.php");
 
 ?>

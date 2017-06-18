@@ -27,7 +27,7 @@ if(!empty($_POST['login']) && !empty($_POST['password']))
         if(hash('sha512', $GUERANDE.$_POST['password']) !== $password)
         {
 	        echo 'Mauvais password !';
-		include('view/login.php');
+		$view_to_display='login.php';
         }
         else
         {
@@ -83,7 +83,7 @@ if(!empty($_POST['login']) && !empty($_POST['password']))
 }
 else
 {
-	include('view/login.php');
+	$view_to_display='login.php';
 }
 
 ?>

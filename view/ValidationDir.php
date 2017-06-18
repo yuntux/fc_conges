@@ -14,10 +14,8 @@
 	</thead>
 	<tbody>
 		<?php 
-				while ($donnees1 = $reponse2->fetch())
+				while ($donnees1 = $conges_validation_direction->fetch())
 				{
-				?>
-				<?php
 					$cp = $donnees1['CP_CONGES'];
 					$rtt = $donnees1['RTT_CONGES'];
 					$ss = $donnees1['SS_CONGES'];
@@ -40,37 +38,36 @@
 						$type = $type. $autres. " Autres";
 					}
 				?>
-					<tr>
-						<td><?php echo $donnees1['DATEDEM_CONGES']; ?></td>
-						<td><?php echo $donnees1['NOM_CONSULTANT']; ?> <?php echo $donnees1['PRENOM_CONSULTANT']; ?></td>
-						<td><?php echo $donnees1['DEBUT_CONGES']; ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
-						<td><?php echo $donnees1['FIN_CONGES']; ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
-						<td><?php echo $type; ?></td>
-						<td><?php echo $donnees1['COMMENTAIRE']; ?></td>
-						<td>
-						<form action="?action=Validation" method="post">
-							<?php 
-								if($donnees1['STATUT_CONGES'] == "En cours de validation Direction"){
-									echo '<input type="submit" value="Valider" name="accept" />' ;
-									echo '<input type="hidden" name="id_conges" value="'.$donnees1['ID_CONGES'].'" />' ;
-								}
-							 ?>
-						</form>
-						</td>
-						<td>
-						<form action="?action=Validation" method="post">
-							<?php if($donnees1['STATUT_CONGES'] == "En cours de validation Direction"){
-									echo '<input type="submit" value="Refuser" name="reject" />' ;
-									echo '<input type="hidden" name="id_conges" value="'.$donnees1['ID_CONGES'].'" />' ;
-							}
-							 ?>
-						</form>
-						</td>
-					</tr>
+                                        <tr>
+                                                <td><?php echo $donnees1['DATEDEM_CONGES']; ?></td>
+                                                <td><?php echo $donnees1['NOM_CONSULTANT']; ?> <?php echo $donnees1['PRENOM_CONSULTANT']; ?></td>
+                                                <td><?php echo $donnees1['DEBUT_CONGES']; ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
+                                                <td><?php echo $donnees1['FIN_CONGES']; ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
+                                                <td><?php echo $type; ?></td>
+                                                <td><?php echo $donnees1['COMMENTAIRE']; ?></td>
+                                                <td>
+                                                        <?php if($donnees1['STATUT_CONGES'] == "En cours de validation Direction" && $_SESSION['role'] == "DIRECTEUR"){
+                                                                        echo '<form action="?action=Validation" method="post">';
+                                                                        echo '<input type="submit" value="Valider"/>';
+                                                                        echo '<input type="hidden" name="validation_direction" value="'.$donnees1['ID_CONGES'].'"/>';
+                                                                        echo '</form>';
+                                                                } else {
+                                                                        echo "" ;}
+                                                         ?>
+                                                </td>
+                                                <td>
+                                                        <?php if($donnees1['STATUT_CONGES'] == "En cours de validation Direction" && $_SESSION['role'] == "DIRECTEUR"){
+                                                                        echo '<form action="?action=Validation" method="post">';
+                                                                        echo '<input type="submit" value="Refuser"/>';
+                                                                        echo '<input type="hidden" name="refus_direction" value="'.$donnees1['ID_CONGES'].'"/>';
+                                                                        echo '</form>';
+                                                                } else {
+                                                                        echo "" ;}
+                                                         ?>
+                                                </td>
+                                        </tr>
 				<?php
 				}
 		?>
-	</tbody>
-	<tfoot>
 	</tbody>
 </table>

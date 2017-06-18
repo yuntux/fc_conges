@@ -3,7 +3,7 @@
 	$reponse2 = $bdd->query('SELECT * FROM conges WHERE (CONSULTANT_CONGES = '.$_SESSION['id'].') AND `STATUT_CONGES` = "Attente envoie" OR `STATUT_CONGES` = "En cours de validation DM" OR `STATUT_CONGES` = "En cours de validation Direction" OR (CONSULTANT_CONGES = '.$_SESSION['id'].') AND `STATUT_CONGES` = "Validée" AND `DEBUT_CONGES` >= CURRENT_DATE'); 
 
 	if(isset($_POST['Enregistrer']) || isset($_POST['Envoyer']))
-		include('controller/DemandeConges_post.php');
+		$view_to_display='DemandeConges_post.php';
 	else
-		include('view/DemandeConges.php');
+		$view_to_display='DemandeConges.php';
 ?>

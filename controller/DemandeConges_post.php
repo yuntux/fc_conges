@@ -1,6 +1,5 @@
 <?php
 
-include("Functions/sessioncheck.php");
 $_SESSION['erreur'] = 0;
 $dateFromDu=$_POST['dateFromDu'];
 $dateFromAu=$_POST['dateFromAu'];
@@ -121,7 +120,6 @@ else{
 			$nbjrsRTT=$_POST['nbjrsRTT'];
 			$nbjrsCP=$_POST['nbjrsCP'];
 			$consultant=$_SESSION['id'];
-			include("Functions/connection.php");
 			try
 			{  
 				$reponse1 = $bdd->query('SELECT * FROM solde WHERE ID_Solde = (SELECT MAX(ID_Solde) id FROM solde WHERE CONSULTANT_SOLDE ='.$consultant.') AND CONSULTANT_SOLDE ='.$consultant);  
@@ -210,7 +208,6 @@ else{
 			$nbjrsRTT=$_POST['nbjrsRTT'];
 			$nbjrsCP=$_POST['nbjrsCP'];
 			$consultant=$_SESSION['id'];
-			include("Functions/connection.php");
 			try
 			{  
 				$reponse1 = $bdd->query('SELECT * FROM solde WHERE ID_Solde = (SELECT MAX(ID_Solde) id FROM solde WHERE CONSULTANT_SOLDE ='.$consultant.') AND CONSULTANT_SOLDE ='.$consultant);  
@@ -305,7 +302,7 @@ else{
 			{
 				die('Erreur : '.$e->POSTMessage());
 			}
-			include("Functions/sendmail.php");
+			include("controller/sendmail.php");
 			mailtoDMfromCO($mail_valideur, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $_POST['dateFromDu'], $_POST['thelistMM'], $_POST['dateFromAu'], $_POST['thelistMS']);
 			header("Location: ?action=home");
 			exit();

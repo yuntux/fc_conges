@@ -13,12 +13,9 @@
 		</tr>
 	</thead>
 	<tbody>
-		<form action="?action=Validation" method="post">
 		<?php 
-				while ($donnees1 = $reponse1->fetch())
+				while ($donnees1 = $conges_validation_DM->fetch())
 				{
-				?>
-				<?php
 					$cp = $donnees1['CP_CONGES'];
 					$rtt = $donnees1['RTT_CONGES'];
 					$ss = $donnees1['SS_CONGES'];
@@ -49,23 +46,28 @@
 						<td><?php echo $type; ?></td>
 						<td><?php echo $donnees1['COMMENTAIRE']; ?></td>
 						<td>
-							<?php if($donnees1['STATUT_CONGES'] == "En cours de validation DM"){
-									echo '<input type="submit" value="Valider" name="E'.$donnees1['ID_CONGES'].'" />' ;}
-								else {
+							<?php if($donnees1['STATUT_CONGES'] == "En cours de validation DM" && $_SESSION['role'] == "DM"){
+									echo '<form action="?action=Validation" method="post">';
+									echo '<input type="submit" value="Valider"/>';
+									echo '<input type="hidden" name="validation_DM" value="'.$donnees1['ID_CONGES'].'"/>';
+									echo '</form>';
+								} else {
 									echo "" ;}	
-							 ?></td>
+							 ?>
+						</td>
 						<td>
-							<?php if($donnees1['STATUT_CONGES'] == "En cours de validation DM" || $donnees1['STATUT_CONGES'] == "En cours de validation Direction"){
-									echo '<input type="submit" value="Refuser" name="A'.$donnees1['ID_CONGES'].'" />' ;}
-								else {
+							<?php if(($donnees1['STATUT_CONGES'] == "En cours de validation DM" || $donnees1['STATUT_CONGES'] == "En cours de validation Direction") && $_SESSION['role'] == "DM"){
+									echo '<form action="?action=Validation" method="post">';
+									echo '<input type="submit" value="Refuser"/>';
+									echo '<input type="hidden" name="refus_DM" value="'.$donnees1['ID_CONGES'].'"/>';
+									echo '</form>';
+								} else {
 									echo "" ;}	
-							 ?></td>
+							 ?>
+						</td>
 					</tr>
 				<?php
 				}
 		?>
-		</form>
-	</tbody>
-	<tfoot>
 	</tbody>
 </table>

@@ -109,7 +109,7 @@ catch(Exception $e)
 	die('Erreur : '.$e->getMessage());
 }
 
-include("view/MonCompte.php");
+$view_to_display='MonCompte.php';
 
 ?>
 

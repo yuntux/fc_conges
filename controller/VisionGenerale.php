@@ -8,5 +8,5 @@
 	{
 		die('Erreur : '.$e->getMessage());
 	}
-	include('view/VisionGenerale.php');
+	$view_to_display='VisionGenerale.php';
 ?>

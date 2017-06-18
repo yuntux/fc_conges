@@ -36,3 +36,9 @@ echo'                                           <div class="links secondary-link
 
 				?>
                         </div>
+<?php
+if (isset($message_erreur))
+        echo '<p style="background-color: #F5A9A9;">'.$message_erreur.'</p>';
+if (isset($message_succes))
+        echo '<p style="background-color: #81F157;">'.$message_succes.'</p>';
+?>

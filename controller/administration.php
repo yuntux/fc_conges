@@ -15,30 +15,20 @@ function get_random_string_alpha($size)
 
 $liste_consultants = $bdd->query('SELECT * FROM consultant order by NOM_CONSULTANT');  
 
-if($_POST['search'] != "")
-{
-	$CONom=$_POST['CONom'];
-	$COprenom=$_POST['COprenom'];
-	$COmail=$_POST['COmail'];
-	$COTri=$_POST['COTri'];
-	$COprofil=$_POST['COprofil'];
-	$thelistDM=$_POST['thelistDM'];
-	$COid=$_POST['COid'];
 
-	$consultant = $_SESSION['id'];
-	$mail_exist = 0;
-	$tri_exist = 0;
-	$indice=0;
+if(isset($_POST['search']))
+{
+	$COid = $_POST['select_consultant'];
 	try
 	{
-		$target = $bdd->query('SELECT * FROM consultant WHERE ID_CONSULTANT = "'.$_GET['search'].'"');
+		$target = $bdd->query('SELECT * FROM consultant WHERE ID_CONSULTANT = "'.$COid.'"');
 		while ($donnees1 = $target->fetch())
 		{
-			$NOM_CONSULTANT = $donnees1['NOM_CONSULTANT'];
-			$PRENOM_CONSULTANT = $donnees1['PRENOM_CONSULTANT'];
-			$EMAIL_CONSULTANT = $donnees1['EMAIL_CONSULTANT'];
-			$TRIGRAMME_CONSULTANT = $donnees1['TRIGRAMME_CONSULTANT'];
-			$PROFIL_CONSULTANT = $donnees1['PROFIL_CONSULTANT'];
+			$CONom=$donnees1['NOM_CONSULTANT'];
+			$COprenom= $donnees1['PRENOM_CONSULTANT'];
+			$COmail= $donnees1['EMAIL_CONSULTANT'];
+			$COTri= $donnees1['TRIGRAMME_CONSULTANT'];
+			$COprofil=$donnees1['PROFIL_CONSULTANT'];
 		}
 		$target->closeCursor();
 	}
@@ -130,7 +120,6 @@ if(isset($_POST['update_consultant']))
 	$COmail=$_POST['COmail'];
 	$COTri=$_POST['COTri'];
 	$COprofil=$_POST['COprofil'];
-	$thelistDM=$_POST['thelistDM'];
 	$COid=$_POST['COid'];
         try
         {
@@ -190,8 +179,8 @@ if(isset($_POST['update_consultant']))
                 try
                 {
                         $record_maj = $bdd->exec('UPDATE `authen` SET `ROLE_AUTHEN`= "'.$COprofil.'" WHERE `ID_AUTHEN` = "'.$COid.'"');
-                        $_SESSION['erreur'] = 80;
-                        header("Location: MonCompte.php?search=$COid");
+                        $message_succes = 80;
+                        header("Location: ?action=home");
                         exit();
                 }
                 catch(Exception $e)
@@ -199,29 +188,22 @@ if(isset($_POST['update_consultant']))
                         die('Erreur : '.$e->POSTMessage());
                 }
         }elseif($mail_exist > 0){
-                $_SESSION['erreur'] = 81;
-                header("Location: MonCompte.php?search=$COid");
-                exit();
+                $message_erreur = 81;
         }elseif($CONom =="" || $COprenom =="" || $COmail =="" || $COTri ==""){
-                $_SESSION['erreur'] = 82;
-                header("Location: MonCompte.php?search=$COid");
-                exit();
+                $message_erreur = 82;
         }else{
-                $_SESSION['erreur'] = 83;
-                header("Location: MonCompte.php?search=$COid");
-                exit();
+                $message_erreur = 83;
         }
 }
 
 
-if($_POST['add_consultant'] != "") 
+if(isset($_POST['add_consultant'])) 
 {
 	$CONom=$_POST['CONom'];
 	$COprenom=$_POST['COprenom'];
 	$COmail=$_POST['COmail'];
 	$COTri=$_POST['COTri'];
 	$COprofil=$_POST['COprofil'];
-	$consultant = $_SESSION['id'];
 	$mail_exist = 0;
 	$tri_exist = 0;
 	$test=0;
@@ -292,8 +274,8 @@ if($_POST['add_consultant'] != "")
 		{
 			$req = $bdd->prepare('INSERT INTO `solde`(`ID_Solde`, `CPn_SOLDE`, `CPn1_SOLDE`, `RTTn_SOLDE`, `RTTn1_SOLDE`, `CONSULTANT_SOLDE`, `DATE_SOLDE`) VALUES (DEFAULT,?,?,?,?,?,CURRENT_DATE)');
 			$req->execute(array(0,0,0,0,$max_ID));
-			$_SESSION['erreur'] = 80;
-			header("Location: MonCompte.php?$COTri");
+			$message_succes = 80;
+			header("Location: ?action=home");
 			exit();
 		}
 		catch(Exception $e)
@@ -301,17 +283,11 @@ if($_POST['add_consultant'] != "")
 			die('Erreur : '.$e->POSTMessage());
 		}
 	}elseif($mail_exist > 0){
-		$_SESSION['erreur'] = 81;
-		header("Location: MonCompte.php?$test");
-		exit();
+		$message_erreur = 81;
 	}elseif($CONom =="" || $COprenom =="" || $COmail =="" || $COTri ==""){
-		$_SESSION['erreur'] = 82;
-		header("Location: MonCompte.php?$test");
-		exit();
+		$message_erreur = 82;
 	}else{
-		$_SESSION['erreur'] = 83;
-		header("Location: MonCompte.php?$test");
-		exit();
+		$message_erreur = 83;
 	}
 }
 
@@ -319,9 +295,8 @@ if($_POST['add_consultant'] != "")
 
 if(isset($_POST['reinitialiser']))
 {
-        include("Functions/connection.php");
-        include("Functions/sendmail.php");
-	$id_cons=$_POST['COid'];
+        include("controller/sendmail.php");
+	$COid=$_POST['COid'];
 
         $reponse = $bdd->query('SELECT * FROM consultant where ID_CONSULTANT = \''.$COid.'\'');
         while ($donnees = $reponse->fetch())
@@ -336,11 +311,13 @@ if(isset($_POST['reinitialiser']))
                 $record_maj = $bdd->exec('UPDATE `authen` SET `PASSWORD_AUTHEN` = "'.hash('sha512', $GUERANDE.$password).'" WHERE `ID_AUTHEN` = "'.$COid.'"');
                 new_password($COmail, $password);
                 new_password("aurelien.dumaine@fontaine-consultants.fr", $password);
-                echo "Mote de passe réinitialisé etmail envé";
+                echo "Mote de passe réinitialis Vous allez le recevoir par email.";
         }
         catch(Exception $e)
         {
                 die('Erreur : '.$e->POSTMessage());
         }
 }
+
+$view_to_display="administration.php";
 ?>

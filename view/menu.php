@@ -1,7 +1,7 @@
 <div id="nav" style="background-color: #E6B473;text-align:justify;">
 	<ul class="links primary-links">
 		<li class="menu-1-1"><a href="?action=home" class="menu-1-1"<?php if ($action=="home") echo ' style="background-color:#FFF;"';?>>Dashboard</a></li>
-		<li class="menu-1-2"><a href="?action=DemandeConges" class="menu-1-2"<?php if ($action=="DemandeConges") echo ' style="background-color:#FFF;"';?>>Saisie</a></span></li>
+		<li class="menu-1-2"><a href="?action=DemandeConges" class="menu-1-2"<?php if ($action=="DemandeConges") echo ' style="background-color:#FFF;"';?>>Saisie</a></li>
 		<li class="menu-1-3"><a href="?action=Historiques" class="menu-1-3"<?php if ($action=="Historiques") echo ' style="background-color:#FFF;"';?>>Historiques</a></li>
 		<?php 
 			if($_SESSION['role'] == "DIRECTEUR"  || $_SESSION['role'] == "DM" ){
@@ -12,7 +12,7 @@
 				echo '<li class="menu-1-5"><a href="?action=VisionGenerale" class="menu-1-5"';
 					if ($action=="VisionGenerale")
 						echo ' style="background-color:#FFF;"';
-					echo '>Vision g&#233;n&#233;rale</a></li>';
+					echo '>Vision générale</a></li>';
 			}
 		?>
 	</ul>

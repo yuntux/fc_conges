@@ -44,5 +44,5 @@ if(isset($_POST["cancel"]))
                 } 
         }
 
-include('view/Historiques.php');
+$view_to_display='Historiques.php';
 ?>
