@@ -58,8 +58,6 @@ if(isset($_POST["cancel"]))
         }
 
 $q = 'SELECT * FROM conges WHERE CONSULTANT_CONGES = '.$_SESSION['id'].' AND ((`STATUT_CONGES` = "Annulée" OR `STATUT_CONGES` = "Annulée Direction" OR `STATUT_CONGES` = "Annulée") OR (`STATUT_CONGES` = "Validée" AND `DEBUT_CONGES` < CURRENT_DATE))';
-
-echo $q;
 $reponse1 = $bdd->query($q);
 
 
