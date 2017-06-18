@@ -7,7 +7,7 @@
                 <script>
                    (function() {
                         $(".widget_calendar").datepicker({
-                                        dateFormat: "yyyy-mm-dd"
+                                        dateFormat: "yy-mm-dd"
                                 }); 
                    })();
                 /*

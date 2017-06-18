@@ -10,17 +10,26 @@
 				<form action="?action=DemandeConges" id="DemandeConges_post" method="post">
 				<div id="bloc_donnees1" style="padding-right:50px;">
 					<h2>Nouvelle demande</h2>
-					<p style="width:90%;margin-bottom:20px;"><label for="du">Du : </label><input type="text" class="widget_calendar" name="dateFromDu" id ="dateFromDu" onchange="ok()" value="<?php echo date('Y-m-d'); ?>" />
+<?php
+function return_isset($post_name){
+	if (isset($_POST[$post_name]))
+		return $_POST[$post_name];
+	else 
+		return "";
+}
+?>
+					<p style="width:90%;margin-bottom:20px;"><label for="du">Du : </label><input type="text" class="widget_calendar" name="dateFromDu" id ="dateFromDu" onchange="ok()" value="<?php return_isset('dateFromDu') ?>" />
 					<select name="thelistMM" id ="thelistMM" onchange="ok()">
-						<option>Matin</option>
-						<option>Midi</option>
+						<option<?php if (return_isset('thelistMM')=='Matin') echo 'selected';?>>Matin</option>
+						<option<?php if (return_isset('thelistMM')=='Midi') echo 'selected';?>>Midi</option>
 					</select></p>
-					<p style="margin-bottom:20px;"><label for="du">Au :  </label><input type="text" class="widget_calendar" name="dateFromAu" id ="dateFromAu" onchange="ok()" value="<?php echo date('Y-m-d'); ?>" />
+					<p style="margin-bottom:20px;"><label for="du">Au :  </label><input type="text" class="widget_calendar" name="dateFromAu" id ="dateFromAu" onchange="ok()" value="<?php return_isset('dateFromAu') ?>" />
 					<select name="thelistMS" id ="thelistMS" onchange="ok()">
-						<option>Soir</option>						  
-						<option>Midi</option>						  
+						<option<?php if (return_isset('thelistMS')=='Soir') echo 'selected';?>>Soir</option>						  
+						<option<?php if (return_isset('thelistMS')=='Midi') echo 'selected';?>>Midi</option>						  
 					</select></p>
-					<p id="nbJrs"></p><input type="hidden" name="nbJrs_hidden" id="nbJrs_hidden" value="1"/>
+					Attention : contrairement a l'ancien syst√me, indiquer ici le dernier jour de cong√s et non pas le jour de la reprise.
+					<p id="nbJrs"></p><input type="hidden" name="nbJrs_hidden" id="nbJrs_hidden" value="<?php return_isset('nbJrs_hidden');?>"/>
 					<p style="width:90%;margin-bottom:20px;"><label for="au" style="margin-right:38px";>Directeur de mission : </label>
 					<select name="thelistDM">
 						<?php 
@@ -28,7 +37,10 @@
 						{  
 							while ($donnees1 = $reponse1->fetch())
 							{
-								echo "<option>".$donnees1['TRIGRAMME_CONSULTANT']."</option>";
+								echo "<option";
+								if (return_isset('thelistDM') == $donnees1['TRIGRAMME_CONSULTANT'])
+									echo " selected";
+								echo">".$donnees1['TRIGRAMME_CONSULTANT']."</option>";
 							}
 						}
 						catch(Exception $e)
@@ -46,15 +58,15 @@
 							<td style="width:20%;">Jours Autres</td>
 						</tr>
 						<tr>
-							<td><input type="text" name="nbjrsCP" id="nbjrsCP" style="width:50%;"/></td>
-							<td><input type="text" name="nbjrsRTT" id="nbjrsRTT" style="width:50%;"/></td>
-							<td><input type="text" name="nbjrsConv" id="nbjrsConv" style="width:50%;"/></td>
-							<td><input type="text" name="nbjrsSS" id="nbjrsSS" style="width:50%;"/></td>
-							<td><input type="text" name="nbjrsAutres"  id="nbjrsAutres" style="width:50%;"/></td>
+							<td><input type="text" name="nbjrsCP" id="nbjrsCP" style="width:50%;" value="<?php return_isset('nbjrsCP');?>"/></td>
+							<td><input type="text" name="nbjrsRTT" id="nbjrsRTT" style="width:50%;" value="<?php return_isset('nbjrsRTT');?>"/></td>
+							<td><input type="text" name="nbjrsConv" id="nbjrsConv" style="width:50%;" value="<?php return_isset('nbjrsConv');?>"/></td>
+							<td><input type="text" name="nbjrsSS" id="nbjrsSS" style="width:50%;" value="<?php return_isset('nbjrsSS');?>"/></td>
+							<td><input type="text" name="nbjrsAutres"  id="nbjrsAutres" style="width:50%;" value="<?php return_isset('nbjrsAutres');?>"/></td>
 						</tr>
 					</table>
 					<p style="margin-top: 50px;">Commentaire</p>
-					<p><textarea name="commentaire" id="commentaire" style="width: 100%;height:50px;"></textarea>
+					<p><textarea name="commentaire" id="commentaire" style="width: 100%;height:50px;"><?php return_isset('commentaire');?></textarea>
 					<p style="float:right">
 						<input type="submit" value="Enregistrer" name="Enregistrer" style=""/>
 						<input type="submit" value="Enregistrer et envoyer" name="Envoyer" style=""/>

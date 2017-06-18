@@ -4,7 +4,7 @@ function verif_valideur_conges($id_valideur, $id_conges){
 	{
 		$req = $bdd->prepare('SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.TRIGRAMME_CONSULTANT = a.VALIDEUR_CONGES and a.ID_CONGES=\''.$id_conges.'\' and dm.ID_CONSULTANT = \''.$id_valideur.'\'');
 		$req->execute();
-		$count = req->rowCount();
+		$count = $req->rowCount();
 echo $count;
 		return $count;
 	}

@@ -1,6 +1,5 @@
 <?php
 
-$_SESSION['erreur'] = 0;
 $dateFromDu=$_POST['dateFromDu'];
 $dateFromAu=$_POST['dateFromAu'];
 $thelistMM=$_POST['thelistMM'];
@@ -95,14 +94,10 @@ if ($thelistMS == 'Midi') {
 		}
 
 if ($dateFromDu > $dateFromAu) {
-	$_SESSION['erreur'] = 2;
-	header("Location: DemandeConges.php?");
-	exit();
+	$message_erreur = "La date de fin ne doit pas etre anterieure √† la date de d√©bt";
 		}
 else if ($nbjrsSaisi != $nb_jours_ouvres) {
-	$_SESSION['erreur'] = 1;
-	header("Location: DemandeConges.php?");
-	exit();
+	$message_erreur = "Le nombre de jours ventil√ n'est pas √gal au nombre de jours ouvr√s.";
 		}
 else{
 	if(isset($_POST['Enregistrer']))

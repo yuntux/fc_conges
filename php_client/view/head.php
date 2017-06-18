@@ -3,6 +3,7 @@
         <head>
 		<meta charset="utf-8">
                 <title>FC congès</title>
+		<link rel="icon" type="image/ico" href="view/favicon.ico"/>
                 <link rel="stylesheet" media="screen" type="text/css" href="view/Style.css?v=5" />
 		<link href="view/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" />
         </head>
