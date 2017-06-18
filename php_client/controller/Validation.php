@@ -1,5 +1,6 @@
 <?php
 function verif_valideur_conges($id_valideur, $id_conges){
+	global $bdd;
 	try
 	{
 		$req = $bdd->prepare('SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.TRIGRAMME_CONSULTANT = a.VALIDEUR_CONGES and a.ID_CONGES=\''.$id_conges.'\' and dm.ID_CONSULTANT = \''.$id_valideur.'\'');
@@ -46,7 +47,7 @@ if(isset($_POST["validation_DM"]))
                         include("controller/sendmail.php");
                         mailtoCOfromDM_ok($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
                         mailtoDirfromDM($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $TRI_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-                        header("Location: Validation.php?$TRI_CONSULTANT");
+                        header("Location: ?action=Validation");
                         exit();
                 }
                 catch(Exception $e)
@@ -97,7 +98,7 @@ if(isset($_POST["refus_DM"]))
                         $reponse1->closeCursor();
                         include("controller/sendmail.php");
                         mailtoCOfromDM_ko($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-                        header("Location: Validation.php");
+                        header("Location: ?action=Validation");
                         exit();
                 }
                 catch(Exception $e)
@@ -133,7 +134,7 @@ if(isset($_POST["validation_direction"]) && $_SESSION['role'] == "DIRECTEUR")
                         $reponse1->closeCursor();
                         include("controller/sendmail.php");
                         mailtoCOfromDir_ok($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-                        header("Location: Validation.php?$id_conges");
+                        header("Location: ?action=Validation");
                         exit();
                 }
                 catch(Exception $e)
@@ -177,7 +178,7 @@ if(isset($_POST["refus_direction"]) && $_SESSION['role'] == "DIRECTEUR")
                         $reponse1->closeCursor();
                         include("controller/sendmail.php");
                         mailtoCOfromDir_ko($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-                        header("Location: Validation.php");
+                        header("Location: ?action=Validation");
                         exit();
                 }
                 catch(Exception $e)
@@ -197,7 +198,7 @@ try{
 
 	if ($_SESSION['role'] == "DIRECTEUR"){
 		$historique = $bdd->query('SELECT * FROM conges a, consultant c WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and (a.STATUT_CONGES = "Validée" or a.STATUT_CONGES = "Annul� Direction" or a.STATUT_CONGES = "Annulée DM")');
-		$conges_validation_DM = $bdd->query('SELECT * FROM conges a, consultant b, consultant c WHERE a.VALIDEUR_CONGES = b.TRIGRAMME_CONSULTANT and b.ID_CONSULTANT = \''.$_SESSION['id'].'\' and c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation DM"');
+		$conges_validation_DM = $bdd->query('SELECT * FROM conges AS a, consultant AS b, consultant AS c WHERE a.VALIDEUR_CONGES = b.TRIGRAMME_CONSULTANT and c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation DM"');
 		$conges_validation_direction = $bdd->query('SELECT * FROM conges a, consultant c WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation Direction"');
 	}
 }
