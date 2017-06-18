@@ -46,7 +46,7 @@
 						<td><?php echo $type; ?></td>
 						<td><?php echo $donnees1['COMMENTAIRE']; ?></td>
 						<td>
-							<?php if($donnees1['STATUT_CONGES'] == "En cours de validation DM" && $_SESSION['role'] == "DM"){
+							<?php if($donnees1['STATUT_CONGES'] == "En cours de validation DM" && $donnees1['VALIDEUR_CONGES'] == $_SESSION['trigramme']){
 									echo '<form action="?action=Validation" method="post">';
 									echo '<input type="submit" value="Valider"/>';
 									echo '<input type="hidden" name="validation_DM" value="'.$donnees1['ID_CONGES'].'"/>';
@@ -56,7 +56,7 @@
 							 ?>
 						</td>
 						<td>
-							<?php if(($donnees1['STATUT_CONGES'] == "En cours de validation DM" || $donnees1['STATUT_CONGES'] == "En cours de validation Direction") && $_SESSION['role'] == "DM"){
+						<?php if(($donnees1['STATUT_CONGES'] == "En cours de validation DM" || $donnees1['STATUT_CONGES'] == "En cours de validation Direction") && $donnees1['VALIDEUR_CONGES'] == $_SESSION['trigramme']){
 									echo '<form action="?action=Validation" method="post">';
 									echo '<input type="submit" value="Refuser"/>';
 									echo '<input type="hidden" name="refus_DM" value="'.$donnees1['ID_CONGES'].'"/>';

@@ -8,14 +8,13 @@ if(!empty($_POST['login']) && !empty($_POST['password']))
         try
         {
 
-                $reponse = $bdd->query('SELECT * FROM authen where LOGIN_AUTHEN = \''.$_POST['login'].'\'');
+                $reponse = $bdd->query('SELECT * FROM consultant where EMAIL_CONSULTANT = \''.$_POST['login'].'\'');
                 while ($donnees = $reponse->fetch())
                 {
-                        $id = $donnees['ID_AUTHEN'];
-                        $login = $donnees['LOGIN_AUTHEN'];
+                        $id = $donnees['ID_CONSULTANT'];
+                        $login = $donnees['EMAIL_CONSULTANT'];
                         $password = $donnees['PASSWORD_AUTHEN'];
-                        $role = $donnees['ROLE_AUTHEN'];
-                        $etat = $donnees['ETAT_AUTHEN'];
+                        $role = $donnees['PROFIL_CONSULTANT'];
                 }
                 $reponse->closeCursor();
         }
@@ -24,9 +23,9 @@ if(!empty($_POST['login']) && !empty($_POST['password']))
                         die('Erreur : ' . $e->getMessage());
         }
 
-        if(hash('sha512', $GUERANDE.$_POST['password']) !== $password)
+        if(hash('sha512', $GUERANDE.$_POST['password']) != $password)
         {
-	        echo 'Mauvais password !';
+	        $message_erreur = 'Mauvais mot de passe !';
 		$view_to_display='login.php';
         }
         else

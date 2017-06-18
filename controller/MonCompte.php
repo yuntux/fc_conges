@@ -10,9 +10,8 @@ if (isset($_POST['bouton_nouveauMdP']))
         if($nouveauMdP==$confirmationMdP && $long >7){
                 try
                 {
-                        $record_maj = $bdd->exec('UPDATE `authen` SET `PASSWORD_AUTHEN`= "'.hash('sha512', $GUERANDE.$nouveauMdP).'" WHERE `ID_AUTHEN` = "'.$consultant.'"');
-			echo "Mot de passe changé avec succ�s.";
-                        $_SESSION['erreur'] = 90;
+                        $record_maj = $bdd->exec('UPDATE `consultant` SET `PASSWORD_AUTHEN`= "'.hash('sha512', $GUERANDE.$nouveauMdP).'" WHERE `ID_CONSULTANT` = "'.$consultant.'"');
+			$message_succes = "Mot de passe changé avec sucès";
                 }
                 catch(Exception $e)
                 {

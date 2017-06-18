@@ -13,6 +13,10 @@
 					if ($action=="VisionGenerale")
 						echo ' style="background-color:#FFF;"';
 					echo '>Vision générale</a></li>';
+				echo '<li class="menu-1-5"><a href="?action=editions" class="menu-1-5"';
+					if ($action=="editions")
+						echo ' style="background-color:#FFF;"';
+					echo '>Editions</a></li>';
 			}
 		?>
 	</ul>

@@ -16,7 +16,7 @@ function get_random_string_alpha($size)
 $liste_consultants = $bdd->query('SELECT * FROM consultant order by NOM_CONSULTANT');  
 
 
-if(isset($_POST['search']))
+if(isset($_POST['search']) && $_SESSION['role'] == "DIRECTEUR")
 {
 	$COid = $_POST['select_consultant'];
 	try
@@ -39,7 +39,7 @@ if(isset($_POST['search']))
 }
 
 
-if(isset($_POST['delete_consultant']))
+if(isset($_POST['delete_consultant']) && $_SESSION['role'] == "DIRECTEUR")
 {
 	$COid=$_POST['COid'];
 	$COmail=$_POST['COmail'];
@@ -72,19 +72,6 @@ if(isset($_POST['delete_consultant']))
 
         try
         {
-                $reponse1 = $bdd->query('DELETE * from authen where `LOGIN_AUTHEN` = "'.$COmail.'"');;
-                while ($donnees1 = $reponse1->fetch())
-                {
-                        $mail_exist = $donnees1['mail_exist'];
-                }
-                $reponse1->closeCursor();
-        }
-        catch(Exception $e)
-        {
-                die('Erreur : '.$e->getMessage());
-        }
-        try
-        {
                 $reponse1 = $bdd->query('DELETE * from conges where `CONSULTANT_CONGES` = "'.$COid.'"');;
                 while ($donnees1 = $reponse1->fetch())
                 {
@@ -113,7 +100,7 @@ if(isset($_POST['delete_consultant']))
 
 
 
-if(isset($_POST['update_consultant']))
+if(isset($_POST['update_consultant']) && $_SESSION['role'] == "DIRECTEUR")
 {
 	$CONom=$_POST['CONom'];
 	$COprenom=$_POST['COprenom'];
@@ -176,18 +163,6 @@ if(isset($_POST['update_consultant']))
                 {
                         die('Erreur : '.$e->POSTMessage());
                 }
-                try
-                {
-                        $record_maj = $bdd->exec('UPDATE `authen` SET `ROLE_AUTHEN`= "'.$COprofil.'" WHERE `ID_AUTHEN` = "'.$COid.'"');
-                        $message_succes = 80;
-                        header("Location: ?action=home");
-                        exit();
-                }
-                catch(Exception $e)
-                {
-                        die('Erreur : '.$e->POSTMessage());
-                }
-        }elseif($mail_exist > 0){
                 $message_erreur = 81;
         }elseif($CONom =="" || $COprenom =="" || $COmail =="" || $COTri ==""){
                 $message_erreur = 82;
@@ -197,7 +172,7 @@ if(isset($_POST['update_consultant']))
 }
 
 
-if(isset($_POST['add_consultant'])) 
+if(isset($_POST['add_consultant']) && $_SESSION['role'] == "DIRECTEUR") 
 {
 	$CONom=$_POST['CONom'];
 	$COprenom=$_POST['COprenom'];
@@ -236,7 +211,7 @@ if(isset($_POST['add_consultant']))
 	if($tri_exist == 0 && $mail_exist == 0 && $CONom != "" && $COprenom !="" && $COmail !="" && $COTri !=""){
 		try
 		{
-			$reponse1 = $bdd->query('SELECT max(ID_AUTHEN) max_ID FROM authen');
+			$reponse1 = $bdd->query('SELECT max(CONSULTANT_ID) max_ID FROM consultant');
 			while ($donnees1 = $reponse1->fetch())
 			{
 				$max_ID = $donnees1['max_ID']+1;
@@ -247,11 +222,9 @@ if(isset($_POST['add_consultant']))
 		{
 			die('Erreur : '.$e->getMessage());
 		}
-			$COid = $max_ID;
-			$req = $bdd->prepare('INSERT INTO `authen`(`ID_AUTHEN`, `LOGIN_AUTHEN`, `ROLE_AUTHEN`) VALUES  (?,?,?)');
-			$req->execute(array($COid,$COmail,"CONSULTANT"));
-			include("password_generation.php");
-			generate_password($COid);
+		$COid = $max_ID;
+		include("password_generation.php");
+		generate_password($COid);
 		try
 		{
 			$req = $bdd->prepare('INSERT INTO `consultant`(`ID_CONSULTANT`, `NOM_CONSULTANT`, `PRENOM_CONSULTANT`, `EMAIL_CONSULTANT`, `PROFIL_CONSULTANT`, `TRIGRAMME_CONSULTANT`, `STATUT_CONSULTANT`) VALUES (?,?,?,?,?,?,?)');
@@ -293,7 +266,7 @@ if(isset($_POST['add_consultant']))
 
 
 
-if(isset($_POST['reinitialiser']))
+if(isset($_POST['reinitialiser']) && $_SESSION['role'] == "DIRECTEUR")
 {
         include("controller/sendmail.php");
 	$COid=$_POST['COid'];
@@ -308,7 +281,7 @@ if(isset($_POST['reinitialiser']))
         try
         {
                 $password = get_random_string_alpha(10);
-                $record_maj = $bdd->exec('UPDATE `authen` SET `PASSWORD_AUTHEN` = "'.hash('sha512', $GUERANDE.$password).'" WHERE `ID_AUTHEN` = "'.$COid.'"');
+                $record_maj = $bdd->exec('UPDATE `consultant` SET `PASSWORD_AUTHEN` = "'.hash('sha512', $GUERANDE.$password).'" WHERE `CONSULTANT_ID` = "'.$COid.'"');
                 new_password($COmail, $password);
                 new_password("aurelien.dumaine@fontaine-consultants.fr", $password);
                 echo "Mote de passe réinitialis Vous allez le recevoir par email.";

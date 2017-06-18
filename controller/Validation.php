@@ -1,8 +1,25 @@
 <?php
+function verif_valideur_conges($id_valideur, $id_conges){
+	try
+	{
+		$req = $bdd->prepare('SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.TRIGRAMME_CONSULTANT = a.VALIDEUR_CONGES and a.ID_CONGES=\''.$id_conges.'\' and dm.ID_CONSULTANT = \''.$id_valideur.'\'');
+		$req->execute();
+		$count = req->rowCount();
+echo $count;
+		return $count;
+	}
+	catch(Exception $e)
+	{
+		die('Erreur : '.$e->POSTMessage());
+	}
+}
 
-if(isset($_POST["validation_DM"]) && $_SESSION['role'] == "DM")
+
+if(isset($_POST["validation_DM"]))
         {
 	$id_conges = $_POST['validation_DM'];
+		if(!verif_valideur_conges($_SESSION['id'], $id_conges))
+			return False;
                 try
                 {
                         $record_maj = $bdd->exec('UPDATE `conges` SET `STATUT_CONGES`=\'En cours de validation Direction\' WHERE `ID_CONGES`=\''.$id_conges.'\'');
@@ -38,9 +55,16 @@ if(isset($_POST["validation_DM"]) && $_SESSION['role'] == "DM")
                 }
         }
 
-if(isset($_POST["refus_DM"]) && $_SESSION['role'] == "DM")
+
+
+
+if(isset($_POST["refus_DM"]))
         {
 	$id_conges = $_POST['refus_DM'];
+
+		if(!verif_valideur_conges($_SESSION['id'], $id_conges))
+			return False;
+
                 try
                 {
                         $record_maj = $bdd->exec('UPDATE `conges` SET `STATUT_CONGES`=\'Annulée DM\' WHERE `ID_CONGES`=\''.$id_conges.'\'');
@@ -165,10 +189,17 @@ if(isset($_POST["refus_direction"]) && $_SESSION['role'] == "DIRECTEUR")
 
 
 try{
-	$historique = $bdd->query('SELECT * FROM conges a, consultant c WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and (a.STATUT_CONGES = "Validée" or a.STATUT_CONGES = "Annulée DD
-irection" or a.STATUT_CONGES = "Annulée DM")');
-        $conges_validation_DM = $bdd->query('SELECT * FROM conges a, consultant b, consultant c WHERE a.VALIDEUR_CONGES = b.TRIGRAMME_CONSULTANT and b.ID_CONSULTANT = \''.$_SESSION['id'].'\' and c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation DM"');
-	$conges_validation_direction = $bdd->query('SELECT * FROM conges a, consultant c WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation Direction"');
+	if ($_SESSION['role'] == "DM"){
+		$historique = $bdd->query('SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.TRIGRAMME_CONSULTANT = a.VALIDEUR_CONGES and (a.STATUT_CONGES = "Validée" or a.STATUT_CONGES = "Annule Direction" or a.STATUT_CONGES = "Annulée MD" a dm.ID_CONSULTANT = \''.$_SESSION['id'].'\' ');
+
+		$conges_validation_DM = $bdd->query('SELECT * FROM conges a, consultant b, consultant c, consultant dm  WHERE a.VALIDEUR_CONGES = b.TRIGRAMME_CONSULTANT and b.ID_CONSULTANT = \''.$_SESSION['id'].'\' and c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation DM"');
+	}
+
+	if ($_SESSION['role'] == "DIRECTEUR"){
+		$historique = $bdd->query('SELECT * FROM conges a, consultant c WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and (a.STATUT_CONGES = "Validée" or a.STATUT_CONGES = "Annul� Direction" or a.STATUT_CONGES = "Annulée DM")');
+		$conges_validation_DM = $bdd->query('SELECT * FROM conges a, consultant b, consultant c WHERE a.VALIDEUR_CONGES = b.TRIGRAMME_CONSULTANT and b.ID_CONSULTANT = \''.$_SESSION['id'].'\' and c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation DM"');
+		$conges_validation_direction = $bdd->query('SELECT * FROM conges a, consultant c WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation Direction"');
+	}
 }
 catch(Exception $e)
 {
