@@ -1,6 +1,11 @@
 <?php 
 session_start();
 include("controller/connection.php");
+include("model/consultant.php");
+include("model/demande.php");
+
+$CONSULTANT = new Consultant($bdd); 
+$DEMANDE = new Demande($bdd); 
 
 function get_action(){
 	$action = null;
@@ -28,4 +33,7 @@ include("view/head.php");
 include("view/".$view_to_display);
 include("view/foot.php");
 
+/*TODO 
+- annulation automatique des demandes nont traitée le jour du démarrage du congés ?
+*/	
 ?>

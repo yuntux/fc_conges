@@ -20,7 +20,7 @@
 						</thead>
 						<tbody>
 			<?php 
-					while ($donnees1 = $reponse1->fetch())
+					foreach ($reponse1 as $donnees1)
 					{
 					?>
 						<tr>
@@ -95,7 +95,7 @@
 						</thead>
 						<tbody>
 										<?php 
-					while ($donnees1 = $reponse2->fetch())
+					foreach ($reponse2 as $donnees1)
 					{
 					?>
 						<tr>

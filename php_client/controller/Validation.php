@@ -191,13 +191,13 @@ if(isset($_POST["refus_direction"]) && $_SESSION['role'] == "DIRECTEUR")
 
 try{
 	if ($_SESSION['role'] == "DM"){
-		$historique = $bdd->query('SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.TRIGRAMME_CONSULTANT = a.VALIDEUR_CONGES and (a.STATUT_CONGES = "Validée" or a.STATUT_CONGES = "Annule Direction" or a.STATUT_CONGES = "Annulée MD" a dm.ID_CONSULTANT = \''.$_SESSION['id'].'\' ');
+		$historique = $bdd->query('SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.TRIGRAMME_CONSULTANT = a.VALIDEUR_CONGES and (a.STATUT_CONGES = "ValidÃ©e" or a.STATUT_CONGES = "Annule Direction" or a.STATUT_CONGES = "AnnulÃ©e MD" a dm.ID_CONSULTANT = \''.$_SESSION['id'].'\' ');
 
 		$conges_validation_DM = $bdd->query('SELECT * FROM conges a, consultant b, consultant c, consultant dm  WHERE a.VALIDEUR_CONGES = b.TRIGRAMME_CONSULTANT and b.ID_CONSULTANT = \''.$_SESSION['id'].'\' and c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation DM"');
 	}
 
 	if ($_SESSION['role'] == "DIRECTEUR"){
-		$historique = $bdd->query('SELECT * FROM conges a, consultant c WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and (a.STATUT_CONGES = "Validée" or a.STATUT_CONGES = "Annul� Direction" or a.STATUT_CONGES = "Annulée DM")');
+		$historique = $bdd->query('SELECT * FROM conges a, consultant c WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and (a.STATUT_CONGES = "ValidÃ©e" or a.STATUT_CONGES = "AnnulÃ Direction" or a.STATUT_CONGES = "AnnulÃ©e DM")');
 		$conges_validation_DM = $bdd->query('SELECT * FROM conges AS a, consultant AS b, consultant AS c WHERE a.VALIDEUR_CONGES = b.TRIGRAMME_CONSULTANT and c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation DM"');
 		$conges_validation_direction = $bdd->query('SELECT * FROM conges a, consultant c WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation Direction"');
 	}

@@ -97,7 +97,7 @@ if ($dateFromDu > $dateFromAu) {
 	$message_erreur = "La date de fin ne doit pas etre anterieure Ã  la date de dÃ©bt";
 		}
 else if ($nbjrsSaisi != $nb_jours_ouvres) {
-	$message_erreur = "Le nombre de jours ventilÃ n'est pas Ãgal au nombre de jours ouvrÃs.";
+	$message_erreur = "Le nombre de jours ventilÃ© n'est pas Ã©gal au nombre de jours ouvrÃ©s.";
 		}
 else{
 	if(isset($_POST['Enregistrer']))

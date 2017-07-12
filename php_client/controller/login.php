@@ -30,7 +30,6 @@ if(!empty($_POST['login']) && !empty($_POST['password']))
         }
         else
         {
-        	session_start();
 		$_SESSION['id'] = $id;
 		$_SESSION['role'] = $role;
 		try

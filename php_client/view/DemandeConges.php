@@ -46,10 +46,10 @@ function return_isset($post_name){
 					</select></p>
 					<table class="reinitialise" style="text-align:center;width:80%;font-size: 10px;">
 						<tr style="text-align:center;width:80%;">
-							<td style="width:20%;">Jours de Congès Payés</td>
+							<td style="width:20%;">Jours de Congés Py�s</td>
 							<td style="width:20%;">Jours de Repos (RTT)</td>
 							<td style="width:20%;">Jours conventionnels</td>
-							<td style="width:20%;">Jours de Congès sans solde</td>
+							<td style="width:20%;">Jours de Congés sans solde</td>
 							<td style="width:20%;">Jours Autres</td>
 						</tr>
 						<tr>
@@ -73,10 +73,10 @@ function return_isset($post_name){
 						<thead>
 							<tr>
 								<th>Date de la demande</th>
-								<th>DÃ©but</th>
+								<th>D�but</th>
 								<th>Fin</th>
 								<th>Nombre de jour</th>
-								<th>Jours posÃ©s</th>
+								<th>Jours posés</th>
 								<th>Statut</th>
 							</tr>
 						</thead>
@@ -201,7 +201,7 @@ function ok(){
 		diffj = diffj - demif; 
 	}
 
-	document.getElementById('nbJrs').innerHTML = 'Nombre de jours de repos Ã  rÃ©partir : '+diffj+' jours.';
+	document.getElementById('nbJrs').innerHTML = 'Nombre de jours de repos ÃÂ  rÃÂ©partir : '+diffj+' jours.';
 	document.getElementById('nbJrs_hidden').value = diffj;
 }
 function jrspose(){
