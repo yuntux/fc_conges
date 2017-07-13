@@ -12,6 +12,9 @@ if(!empty($_POST['login']) && !empty($_POST['password']))
                 while ($donnees = $reponse->fetch())
                 {
                         $id = $donnees['ID_CONSULTANT'];
+			$nom = $donnees['NOM_CONSULTANT'];
+			$prenom = $donnees['PRENOM_CONSULTANT'];
+			$trigramme = $donnees['TRIGRAMME_CONSULTANT'];
                         $login = $donnees['EMAIL_CONSULTANT'];
                         $password = $donnees['PASSWORD_AUTHEN'];
                         $role = $donnees['PROFIL_CONSULTANT'];
@@ -32,6 +35,10 @@ if(!empty($_POST['login']) && !empty($_POST['password']))
         {
 		$_SESSION['id'] = $id;
 		$_SESSION['role'] = $role;
+		$_SESSION['nom'] = $nom;
+		$_SESSION['prenom'] = $prenom;
+		$_SESSION['trigramme'] = $trigramme;
+		$_SESSION['login'] = $login;
 		try
 		{
 			$reponse = $bdd->query('SELECT DATE_ACQUIS FROM acquis where CONSULTANT_ACQUIS = '.$id);

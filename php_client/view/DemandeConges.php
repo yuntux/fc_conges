@@ -23,7 +23,7 @@ function return_isset($post_name){
 						<option<?php if (return_isset('thelistMS')=='Soir') echo 'selected';?>>Soir</option>						  
 						<option<?php if (return_isset('thelistMS')=='Midi') echo 'selected';?>>Midi</option>						  
 					</select></p>
-					Attention : contrairement à l'ancien système, indiquer ici le dernier jour de congès et non pas le jour de la reprise.
+					<b>Attention : contrairement à  l'ancien système, indiquer ici le dernier jour de congès et non pas le jour de la reprise.</b>
 					<p id="nbJrs"></p><input type="hidden" name="nbJrs_hidden" id="nbJrs_hidden" value="<?php return_isset('nbJrs_hidden');?>"/>
 					<p style="width:90%;margin-bottom:20px;"><label for="au" style="margin-right:38px";>Directeur de mission : </label>
 					<select name="thelistDM">
@@ -46,7 +46,7 @@ function return_isset($post_name){
 					</select></p>
 					<table class="reinitialise" style="text-align:center;width:80%;font-size: 10px;">
 						<tr style="text-align:center;width:80%;">
-							<td style="width:20%;">Jours de Congés Py�s</td>
+							<td style="width:20%;">Jours de Congés Payés</td>
 							<td style="width:20%;">Jours de Repos (RTT)</td>
 							<td style="width:20%;">Jours conventionnels</td>
 							<td style="width:20%;">Jours de Congés sans solde</td>
@@ -63,75 +63,10 @@ function return_isset($post_name){
 					<p style="margin-top: 50px;">Commentaire</p>
 					<p><textarea name="commentaire" id="commentaire" style="width: 100%;height:50px;"><?php return_isset('commentaire');?></textarea>
 					<p style="float:right">
-						<input type="submit" value="Enregistrer" name="Enregistrer" style=""/>
+						<!--<input type="submit" value="Enregistrer" name="Enregistrer" style=""/>-->
 						<input type="submit" value="Enregistrer et envoyer" name="Envoyer" style=""/>
 					</p>	
 				</div>
-				<div id="bloc_donnees2">
-					<h2>Demandes en cours</h2>
-					<table id="background-image" class="styletab">
-						<thead>
-							<tr>
-								<th>Date de la demande</th>
-								<th>D�but</th>
-								<th>Fin</th>
-								<th>Nombre de jour</th>
-								<th>Jours posés</th>
-								<th>Statut</th>
-							</tr>
-						</thead>
-						<tbody>
-			<?php 
-				try
-				{  
-					while ($donnees1 = $reponse2->fetch())
-					{
-					?>
-						<tr>
-							<td><?php echo $donnees1['DATEDEM_CONGES']; ?></td>
-							<td><?php echo $donnees1['DEBUT_CONGES']; ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
-							<td><?php echo $donnees1['FIN_CONGES']; ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
-							<td><?php echo $donnees1['NBJRS_CONGES']." jour(s)"; ?></td>
-							<?php
-								$cp = $donnees1['CP_CONGES'];
-								$rtt = $donnees1['RTT_CONGES'];
-								$ss = $donnees1['SS_CONGES'];
-								$conv = $donnees1['CONV_CONGES'];
-								$autres = $donnees1['AUTRE_CONGES'];
-								$type  = "";
-								if($cp != 0){
-									$type = $type. $cp. " CP ";
-								}
-								if($rtt != 0){
-									$type = $type. $rtt. " RTT ";
-								}
-								if($ss != 0){
-									$type = $type. $ss. " Sans Solde ";
-								}
-								if($conv != 0){
-									$type = $type. $conv. " Conventionnels ";
-								}
-								if($autres != 0){
-									$type = $type. $autres. " Autres";
-								}
-							?>
-							<td><?php echo $type; ?></td>
-							<td><?php echo $donnees1['STATUT_CONGES']; ?></td>
-						</tr>
-					<?php
-					}
-				}
-				catch(Exception $e)
-				{
-					die('Erreur : '.$e->getMessage());
-				}
-				?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div id="pied_page">
-			</div>
 		</div>
 	<script >
 function ok(){
@@ -201,7 +136,7 @@ function ok(){
 		diffj = diffj - demif; 
 	}
 
-	document.getElementById('nbJrs').innerHTML = 'Nombre de jours de repos ÃÂ  rÃÂ©partir : '+diffj+' jours.';
+	document.getElementById('nbJrs').innerHTML = 'Nombre de jours de repos ÃÂÃÂ  rÃÂÃÂ©partir : '+diffj+' jours.';
 	document.getElementById('nbJrs_hidden').value = diffj;
 }
 function jrspose(){

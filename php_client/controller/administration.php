@@ -268,7 +268,7 @@ if(isset($_POST['add_consultant']) && $_SESSION['role'] == "DIRECTEUR")
 
 if(isset($_POST['reinitialiser']) && $_SESSION['role'] == "DIRECTEUR")
 {
-        include("controller/sendmail.php");
+        include_once("controller/sendmail.php");
 	$COid=$_POST['COid'];
 
         $reponse = $bdd->query('SELECT * FROM consultant where ID_CONSULTANT = \''.$COid.'\'');

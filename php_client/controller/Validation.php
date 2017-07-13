@@ -1,210 +1,43 @@
 <?php
-function verif_valideur_conges($id_valideur, $id_conges){
-	global $bdd;
-	try
-	{
-		$req = $bdd->prepare('SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.TRIGRAMME_CONSULTANT = a.VALIDEUR_CONGES and a.ID_CONGES=\''.$id_conges.'\' and dm.ID_CONSULTANT = \''.$id_valideur.'\'');
-		$req->execute();
-		$count = $req->rowCount();
-echo $count;
-		return $count;
-	}
-	catch(Exception $e)
-	{
-		die('Erreur : '.$e->POSTMessage());
-	}
-}
 
-
-if(isset($_POST["validation_DM"]))
+if(isset($_POST["validation"]))
         {
-	$id_conges = $_POST['validation_DM'];
-		if(!verif_valideur_conges($_SESSION['id'], $id_conges))
-			return False;
+		$id_conges = $_POST['validation'];
                 try
                 {
-                        $record_maj = $bdd->exec('UPDATE `conges` SET `STATUT_CONGES`=\'En cours de validation Direction\' WHERE `ID_CONGES`=\''.$id_conges.'\'');
+                        $DEMANDE->valider($id_conges);
                 }
                 catch(Exception $e)
                 {
-                        die('Erreur : '.$e->POSTMessage());
-                }
-                try
-                {
-                        $reponse1 = $bdd->query('SELECT b.NOM_CONSULTANT, b.PRENOM_CONSULTANT, b.EMAIL_CONSULTANT, a.DEBUT_CONGES, a.VALIDEUR_CONGES, a.FIN_CONGES, a.DEBUTMM_CONGES, a.FINMS_CONGES  FROM conges a, consultant b WHERE a.CONSULTANT_CONGES = b.ID_CONSULTANT and a.ID_CONGES = '.$id_conges);
-                        while ($donnees1 = $reponse1->fetch())
-                        {
-                                $NOM_CONSULTANT = $donnees1['NOM_CONSULTANT'];
-                                $PRENOM_CONSULTANT = $donnees1['PRENOM_CONSULTANT'];
-                                $EMAIL_CONSULTANT = $donnees1['EMAIL_CONSULTANT'];
-                                $FIN_CONGES = $donnees1['FIN_CONGES'];
-                                $DEBUT_CONGES = $donnees1['DEBUT_CONGES'];
-                                $FINMS_CONGES = $donnees1['FINMS_CONGES'];
-                                $DEBUTMM_CONGES = $donnees1['DEBUTMM_CONGES'];
-                                $TRI_CONSULTANT = $donnees1['VALIDEUR_CONGES'];
-                        }
-                        $reponse1->closeCursor();
-                        include("controller/sendmail.php");
-                        mailtoCOfromDM_ok($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-                        mailtoDirfromDM($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $TRI_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-                        header("Location: ?action=Validation");
-                        exit();
-                }
-                catch(Exception $e)
-                {
-                        die('Erreur : '.$e->getMessage());
+                        $message_erreur = $e->POSTMessage();
                 }
         }
 
 
 
 
-if(isset($_POST["refus_DM"]))
+if(isset($_POST["refus"]))
         {
-	$id_conges = $_POST['refus_DM'];
-
-		if(!verif_valideur_conges($_SESSION['id'], $id_conges))
-			return False;
+		$id_conges = $_POST['refus'];
 
                 try
                 {
-                        $record_maj = $bdd->exec('UPDATE `conges` SET `STATUT_CONGES`=\'Annulée DM\' WHERE `ID_CONGES`=\''.$id_conges.'\'');
+                        $DEMANDE->cloturer($id_conges);
                 }
                 catch(Exception $e)
                 {
-                        die('Erreur : '.$e->POSTMessage());
-                }
-                try
-                {
-                        $record_maj = $bdd->exec('DELETE FROM `solde` WHERE ID_Solde = (SELECT SOLDE_CONGES FROM conges WHERE `ID_CONGES` = '.$id_conges.')');
-                }
-                catch(Exception $e)
-                {
-                        die('Erreur : '.$e->POSTMessage());
-                }
-                try
-                {
-                        $reponse1 = $bdd->query('SELECT b.NOM_CONSULTANT, b.PRENOM_CONSULTANT, b.EMAIL_CONSULTANT, a.DEBUT_CONGES, a.FIN_CONGES, a.DEBUTMM_CONGES, a.FINMS_CONGES  FROM conges a, consultant b WHERE a.CONSULTANT_CONGES = b.ID_CONSULTANT and a.ID_CONGES = '.$id_conges);
-                        while ($donnees1 = $reponse1->fetch())
-                        {
-                                $NOM_CONSULTANT = $donnees1['NOM_CONSULTANT'];
-                                $PRENOM_CONSULTANT = $donnees1['PRENOM_CONSULTANT'];
-                                $EMAIL_CONSULTANT = $donnees1['EMAIL_CONSULTANT'];
-                                $FIN_CONGES = $donnees1['FIN_CONGES'];
-                                $DEBUT_CONGES = $donnees1['DEBUT_CONGES'];
-                                $FINMS_CONGES = $donnees1['FINMS_CONGES'];
-                                $DEBUTMM_CONGES = $donnees1['DEBUTMM_CONGES'];
-                        }
-                        $reponse1->closeCursor();
-                        include("controller/sendmail.php");
-                        mailtoCOfromDM_ko($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-                        header("Location: ?action=Validation");
-                        exit();
-                }
-                catch(Exception $e)
-                {
-                        die('Erreur : '.$e->getMessage());
+                        $message_erreur = $e->POSTMessage();
                 }
         }
 
-if(isset($_POST["validation_direction"]) && $_SESSION['role'] == "DIRECTEUR")
-        {
-	$id_conges = $_POST['validation_direction'];
-                try
-                {
-                        $record_maj = $bdd->exec('UPDATE `conges` SET `STATUT_CONGES`= "Validée" WHERE `ID_CONGES`=\''.$id_conges.'\'');
-                }
-                catch(Exception $e)
-                {
-                        die('Erreur : '.$e->POSTMessage());
-                }
-                try
-                {
-                        $reponse1 = $bdd->query('SELECT b.NOM_CONSULTANT, b.PRENOM_CONSULTANT, b.EMAIL_CONSULTANT, a.DEBUT_CONGES, a.FIN_CONGES, a.DEBUTMM_CONGES, a.FINMS_CONGES  FROM conges a, consultant b WHERE a.CONSULTANT_CONGES = b.ID_CONSULTANT and a.ID_CONGES = '.$id_conges);
-                        while ($donnees1 = $reponse1->fetch())
-                        {
-                                $NOM_CONSULTANT = $donnees1['NOM_CONSULTANT'];
-                                $PRENOM_CONSULTANT = $donnees1['PRENOM_CONSULTANT'];
-                                $EMAIL_CONSULTANT = $donnees1['EMAIL_CONSULTANT'];
-                                $FIN_CONGES = $donnees1['FIN_CONGES'];
-                                $DEBUT_CONGES = $donnees1['DEBUT_CONGES'];
-                                $FINMS_CONGES = $donnees1['FINMS_CONGES'];
-                                $DEBUTMM_CONGES = $donnees1['DEBUTMM_CONGES'];
-                        }
-                        $reponse1->closeCursor();
-                        include("controller/sendmail.php");
-                        mailtoCOfromDir_ok($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-                        header("Location: ?action=Validation");
-                        exit();
-                }
-                catch(Exception $e)
-                {
-                        die('Erreur : '.$e->getMessage());
-                }
-        }
-
-if(isset($_POST["refus_direction"]) && $_SESSION['role'] == "DIRECTEUR")
-        {
-	$id_conges = $_POST['refus_direction'];
-                try
-                {
-                        $record_maj = $bdd->exec('UPDATE `conges` SET `STATUT_CONGES`= "Annulée Direction" WHERE `ID_CONGES`=\''.$id_conges.'\'');
-                }
-                catch(Exception $e)
-                {
-                        die('Erreur : '.$e->POSTMessage());
-                }
-                try
-                {
-                        $record_maj = $bdd->exec('DELETE FROM `solde` WHERE ID_Solde = (SELECT SOLDE_CONGES FROM conges WHERE `ID_CONGES` = '.$id_conges.')');
-                }
-                catch(Exception $e)
-                {
-                        die('Erreur : '.$e->POSTMessage());
-                }
-                try
-                {
-                        $reponse1 = $bdd->query('SELECT b.NOM_CONSULTANT, b.PRENOM_CONSULTANT, b.EMAIL_CONSULTANT, a.DEBUT_CONGES, a.FIN_CONGES, a.DEBUTMM_CONGES, a.FINMS_CONGES  FROM conges a, consultant b WHERE a.CONSULTANT_CONGES = b.ID_CONSULTANT and a.ID_CONGES = '.$id_conges);
-                        while ($donnees1 = $reponse1->fetch())
-                        {
-                                $NOM_CONSULTANT = $donnees1['NOM_CONSULTANT'];
-                                $PRENOM_CONSULTANT = $donnees1['PRENOM_CONSULTANT'];
-                                $EMAIL_CONSULTANT = $donnees1['EMAIL_CONSULTANT'];
-                                $FIN_CONGES = $donnees1['FIN_CONGES'];
-                                $DEBUT_CONGES = $donnees1['DEBUT_CONGES'];
-                                $FINMS_CONGES = $donnees1['FINMS_CONGES'];
-                                $DEBUTMM_CONGES = $donnees1['DEBUTMM_CONGES'];
-                        }
-                        $reponse1->closeCursor();
-                        include("controller/sendmail.php");
-                        mailtoCOfromDir_ko($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-                        header("Location: ?action=Validation");
-                        exit();
-                }
-                catch(Exception $e)
-                {
-                        die('Erreur : '.$e->getMessage());
-                }
-        }
-
-
-
-try{
-	if ($_SESSION['role'] == "DM"){
-		$historique = $bdd->query('SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.TRIGRAMME_CONSULTANT = a.VALIDEUR_CONGES and (a.STATUT_CONGES = "ValidÃ©e" or a.STATUT_CONGES = "Annule Direction" or a.STATUT_CONGES = "AnnulÃ©e MD" a dm.ID_CONSULTANT = \''.$_SESSION['id'].'\' ');
-
-		$conges_validation_DM = $bdd->query('SELECT * FROM conges a, consultant b, consultant c, consultant dm  WHERE a.VALIDEUR_CONGES = b.TRIGRAMME_CONSULTANT and b.ID_CONSULTANT = \''.$_SESSION['id'].'\' and c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation DM"');
-	}
-
-	if ($_SESSION['role'] == "DIRECTEUR"){
-		$historique = $bdd->query('SELECT * FROM conges a, consultant c WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and (a.STATUT_CONGES = "ValidÃ©e" or a.STATUT_CONGES = "AnnulÃ Direction" or a.STATUT_CONGES = "AnnulÃ©e DM")');
-		$conges_validation_DM = $bdd->query('SELECT * FROM conges AS a, consultant AS b, consultant AS c WHERE a.VALIDEUR_CONGES = b.TRIGRAMME_CONSULTANT and c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation DM"');
-		$conges_validation_direction = $bdd->query('SELECT * FROM conges a, consultant c WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and a.STATUT_CONGES = "En cours de validation Direction"');
-	}
+try
+{
+	$historique = $DEMANDE->get_historique();
+	$conges_validation = $DEMANDE->get_demandes_en_cours();
 }
 catch(Exception $e)
 {
-	die('Erreur : '.$e->getMessage());
+	$message_erreur	= $e->POSTMessage();
 }
 
 $view_to_display='Validation.php';

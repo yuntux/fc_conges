@@ -100,6 +100,7 @@ else if ($nbjrsSaisi != $nb_jours_ouvres) {
 	$message_erreur = "Le nombre de jours ventilé n'est pas égal au nombre de jours ouvrés.";
 		}
 else{
+/*
 	if(isset($_POST['Enregistrer']))
 		{
 			$dateFromDu=$_POST['dateFromDu'];
@@ -186,7 +187,8 @@ else{
 			header("Location: ?action=home");
 			exit();
 	
-		}		
+		}	
+*/	
 
 	if(isset($_POST['Envoyer']))
 		{
@@ -297,7 +299,7 @@ else{
 			{
 				die('Erreur : '.$e->POSTMessage());
 			}
-			include("controller/sendmail.php");
+			include_once("controller/sendmail.php");
 			mailtoDMfromCO($mail_valideur, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $_POST['dateFromDu'], $_POST['thelistMM'], $_POST['dateFromAu'], $_POST['thelistMS']);
 			header("Location: ?action=home");
 			exit();

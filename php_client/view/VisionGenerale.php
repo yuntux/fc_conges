@@ -29,13 +29,13 @@
 					<table class="vg-table">
 						<tbody>
 							<?php 
-									while ($donnees1 = $reponse1->fetch())
+									foreach ($reponse1 as $donnees1)
 									{
 										$ID_CONSULTANT_Conges = $donnees1['ID_CONSULTANT'];
 										echo '<tr><td style=" width: 200px;">'.$donnees1['PRENOM_CONSULTANT'].' '.$donnees1['NOM_CONSULTANT'].'</td>';
 										$semaine_conges =array($ID_CONSULTANT_Conges);
 										$semaine_conges_pasvalide =array($ID_CONSULTANT_Conges);								
-										while ($donnees2 = $reponse2->fetch())
+										foreach ($reponse2 as $donnees2)
 										{		
 											//$nb_semaine = round($donnees2['NBJRS_CONGES']/5);
 											//$nb_semaine = (strtotime($donnees2['DEBUT_CONGES'])->diff(strtotime($donnees2['FIN_CONGES'])))->days;
