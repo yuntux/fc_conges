@@ -26,7 +26,7 @@ if(!empty($_POST['login']) && !empty($_POST['password']))
                         die('Erreur : ' . $e->getMessage());
         }
 
-        if(hash('sha512', $GUERANDE.$_POST['password']) != $password)
+ 	if($CONSULTANT->check_password($login,$_POST['password'])!=True)
         {
 	        $message_erreur = 'Mauvais mot de passe !';
 		$view_to_display='login.php';

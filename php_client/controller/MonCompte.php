@@ -2,25 +2,14 @@
 
 if (isset($_POST['bouton_nouveauMdP']))
 {
+	$ancienMdP=$_POST['ancienMdP'];
 	$nouveauMdP=$_POST['nouveauMdP'];
 	$confirmationMdP=$_POST['confirmationMdP'];
 	$consultant = $_SESSION['id'];
-	$long = strlen($nouveauMdP);
 
-        if($nouveauMdP==$confirmationMdP && $long >7){
-                try
-                {
-                        $record_maj = $bdd->exec('UPDATE `consultant` SET `PASSWORD_AUTHEN`= "'.hash('sha512', $GUERANDE.$nouveauMdP).'" WHERE `ID_CONSULTANT` = "'.$consultant.'"');
-			$message_succes = "Mot de passe changé avec sucès";
-                }
-                catch(Exception $e)
-                {
-                        die('Erreur : '.$e->POSTMessage());
-                }
-        }elseif($long <8){
-                $message_erreur = "Mot de passe trop court (saisir un mot de passe de 8 caractères minimu.";
-        }
-        else{
+        if($nouveauMdP==$confirmationMdP){
+		$CONSULTANT->change_password($consultant,$ancienMdP,$nouveauMdP);
+        }else{
                 $message_erreur = "Les deux mots de passe saisis ne sont pas identiques.";
         }
 }

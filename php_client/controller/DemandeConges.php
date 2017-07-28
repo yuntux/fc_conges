@@ -1,10 +1,21 @@
 <?php
-	$reponse1 = $bdd->query('SELECT * FROM consultant where PROFIL_CONSULTANT ="DM" or PROFIL_CONSULTANT ="DIRECTEUR" ORDER BY TRIGRAMME_CONSULTANT');  
-	$reponse2 = $bdd->query('SELECT * FROM conges WHERE (CONSULTANT_CONGES = '.$_SESSION['id'].') AND `STATUT_CONGES` = "Attente envoie" OR `STATUT_CONGES` = "En cours de validation DM" OR `STATUT_CONGES` = "En cours de validation Direction" OR (CONSULTANT_CONGES = '.$_SESSION['id'].') AND `STATUT_CONGES` = "Validée" AND `DEBUT_CONGES` >= CURRENT_DATE'); 
+	$reponse1 =$CONSULTANT->get_manager_list();
 
-	//if(isset($_POST['Enregistrer']) || isset($_POST['Envoyer']))
-	if(isset($_POST['Envoyer']))
-		include('controller/DemandeConges_post.php');
+	if(isset($_POST['Envoyer'])){
+		$dateFromDu=$_POST['dateFromDu'];
+		$dateFromAu=$_POST['dateFromAu'];
+		$thelistMM=$_POST['thelistMM'];
+		$thelistMS=$_POST['thelistMS'];
+		$thelistDM=$_POST['thelistDM'];
+		$commentaire=$_POST['commentaire'];
+		$nbjrsSS=$_POST['nbjrsSS'];
+		$nbjrsAutres=$_POST['nbjrsAutres'];
+		$nbjrsConv=$_POST['nbjrsConv'];
+		$nbjrsRTT=$_POST['nbjrsRTT'];
+		$nbjrsCP=$_POST['nbjrsCP'];
+		
+		$DEMANDE->enregistrer_demande($dateFromDu,$dateFromAu,$thelistMM,$thelistMS,$thelistDM,$commentaire,$nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP);
+	}
 
 	$view_to_display='DemandeConges.php';
 ?>

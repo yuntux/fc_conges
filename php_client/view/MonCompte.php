@@ -7,13 +7,12 @@
 					<div class="form-style-3" style="border-bottom:1px solid #000;">
 						<h3>Changer le Mot de passe</h2>
 						<form action="?action=MonCompte" method="post">
+							<label for="field0"><span>Ancien mot de passe <span class="required">*</span></span><input type="password" class="input-field" name="ancienMdP" value="" /></label>
 							<label for="field1"><span>Nouveau <span class="required">*</span></span><input type="password" class="input-field" name="nouveauMdP" value="" /></label>
 							<label for="field2"><span>Confirmer <span class="required">*</span></span><input type="password" class="input-field" name="confirmationMdP" value="" /></label>
 							<label><input type="submit" value="Enregistrer" name="bouton_nouveauMdP" style="float:right;"/></label>
 						</form>
 					</div>
-					<?php if($_SESSION['role'] == "DIRECTEUR"){
-							include("Includes/AddCO_UPCO.php");}?>
 				</div>
 				<div id="bloc_donnees1">
 					<h2>Mise à jour du solde</h2>

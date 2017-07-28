@@ -39,5 +39,13 @@ include("view/foot.php");
 - dissocier l'annulation par le consultant d'une demande envoyée au DM mais pas encore validée par le DM d'une demande supprimée par le consultant avant envoie au DM ?
 	=> inutile s'il on supprimer l'étape d'envoie au DM (on ne laisse qu'un bouton Enregistrer et envoyer au DM" au bas du formulaire de saisie
 - vérifier les try/catch et les close cursor pour chaque requete dans les modeles
+- supprimer les trigrammes
+- verifier la robustesse des calcul
+- ajouter les rapports pour Denis
+- bouton d'ecretage/remis eà 0 des soldes RTT et CP
+- gestion en dur des jours chomés chez FC
+- vérifier le non chevauchement de deux zones de congès 
+- vérification de l'ancien mot de passe avant d'accepeter le changement
+- email "mot de passe oublié"
 */	
 ?>

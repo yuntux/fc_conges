@@ -30,12 +30,12 @@ function return_isset($post_name){
 						<?php 
 						try
 						{  
-							while ($donnees1 = $reponse1->fetch())
+							foreach ($reponse1 as $donnees1)
 							{
 								echo "<option";
-								if (return_isset('thelistDM') == $donnees1['TRIGRAMME_CONSULTANT'])
+								if ($thelistDM == $donnees1['TRIGRAMME_CONSULTANT'])
 									echo " selected";
-								echo">".$donnees1['TRIGRAMME_CONSULTANT']."</option>";
+								echo">".$donnees1['PRENOM_CONSULTANT']." ".$donnees1['NOM_CONSULTANT']."</option>";
 							}
 						}
 						catch(Exception $e)
@@ -63,8 +63,7 @@ function return_isset($post_name){
 					<p style="margin-top: 50px;">Commentaire</p>
 					<p><textarea name="commentaire" id="commentaire" style="width: 100%;height:50px;"><?php return_isset('commentaire');?></textarea>
 					<p style="float:right">
-						<!--<input type="submit" value="Enregistrer" name="Enregistrer" style=""/>-->
-						<input type="submit" value="Enregistrer et envoyer" name="Envoyer" style=""/>
+						<input type="submit" value="Valider" name="Envoyer" style=""/>
 					</p>	
 				</div>
 		</div>
@@ -136,7 +135,7 @@ function ok(){
 		diffj = diffj - demif; 
 	}
 
-	document.getElementById('nbJrs').innerHTML = 'Nombre de jours de repos ÃÂÃÂ  rÃÂÃÂ©partir : '+diffj+' jours.';
+	document.getElementById('nbJrs').innerHTML = 'Nombre de jours de repos à répartir : '+diffj+' jours.';
 	document.getElementById('nbJrs_hidden').value = diffj;
 }
 function jrspose(){
