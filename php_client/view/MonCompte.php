@@ -16,7 +16,7 @@
 				</div>
 				<div id="bloc_donnees1">
 					<h2>Mise à jour du solde</h2>
-					<form action="MonCompteSolde_post.php" method="post">
+					<form action="?action=MonCompte" method="post">
 						<table id="background-image" class="styletab">
 							<thead>
 								<tr>

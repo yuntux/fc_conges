@@ -8,9 +8,9 @@
 		<?php 
 			try
 			{  
-				while ($donnees1 = $liste_consultants->fetch())
+				foreach($liste_consultants as $donnees)
 				{
-					echo "<option value='".$donnees1['ID_CONSULTANT']."'>".$donnees1['NOM_CONSULTANT']." ".$donnees1['PRENOM_CONSULTANT']."</option>";
+					echo "<option value='".$donnees['ID_CONSULTANT']."'>".$donnees['NOM_CONSULTANT']." ".$donnees['PRENOM_CONSULTANT']."</option>";
 				}
 			}
 			catch(Exception $e)
