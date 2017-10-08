@@ -53,7 +53,7 @@
 							?>
 							<td><?php echo $type; ?></td>
 							<td><?php echo $donnees1['STATUT_CONGES']; ?></td>
-							<td><?php echo $donnees1['VALIDEUR_CONGES']; ?></td>
+							<td><?php echo $donnees1[27].' '.$donnees1[26]; ?></td>
 							<td>
 								<form action="?action=Historiques" method="post">
 									<?php 
@@ -128,7 +128,7 @@
 							?>
 							<td><?php echo $type; ?></td>
 							<td><?php echo $donnees1['STATUT_CONGES']; ?></td>
-							<td><?php echo $donnees1['VALIDEUR_CONGES']; ?></td>
+							<td><?php echo $donnees1[27].' '.$donnees1[26]; ?></td>
 						</tr>
 					<?php
 					}

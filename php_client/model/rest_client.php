@@ -24,9 +24,9 @@ class REST_client{
 		$url = $this->host."/".$this->api_version."/dispatcher.php?object=".$object."&method=".$method."&args_array=".base64_encode(json_encode($parameter_array));
 		
 		$header = "Content-type: application/x-www-form-urlencoded\r\n";
-		if (isset($_SESSION['auth_token'])){
+		if (isset($_SESSION['mon_token'])){
 			//$header.= "Authorization: ".$this->auth_token;
-			$url.="&auth_token=".$_SESSION['auth_token'];
+			$url.="&auth_token=".$_SESSION['mon_token'];
 		}
 		$options = array(
 		    'http' => array(
@@ -36,13 +36,13 @@ class REST_client{
 		    )
 		);
 		$context  = stream_context_create($options);
-echo $url;
+echo $url.'<br>';
 //echo json_encode($parameter_array);
 		$result = file_get_contents($url, false, $context);
 //echo $result;
 		if ($result === FALSE) { /* Handle error */ }
 
-		$result = json_decode($result);
+		$result = json_decode($result,True);
 //echo $result;
 //echo var_dump($result);
 		return $result;

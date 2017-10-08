@@ -1,13 +1,9 @@
 <?php
 class server_api{
         public $bdd;
-	public $CONSULTANT;
-	public $DEMANDE;
 
         public function __construct($bdd) {
                 $this->bdd = $bdd;
-		$this->CONSULTANT = new Consultant($bdd);
-		$this->DEMANDE = new Demande($bdd);
         }
 
 	function hello($p)
@@ -35,12 +31,13 @@ class server_api_authentificated extends server_api{
 		return call_user_func_array(array($this, $method_name), $args_array);
         }
 
-	function check_token_validity($token){
+	function check_token_validity(){
 		if (isset($_GET['auth_token']) == False){
 			return False;
 		} else {
 			$token = $_GET['auth_token'];
 		}
+//echo $toke;
 		session_id($token);
 		session_start();
 		if (count($_SESSION)>0)

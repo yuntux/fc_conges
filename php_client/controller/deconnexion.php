@@ -3,9 +3,9 @@
 
 //  $_SESSION = array();
 
-  session_destroy();
 
   unset($_SESSION);
+  session_destroy();
 
   header('Location: /index.php?action=login');
   exit();

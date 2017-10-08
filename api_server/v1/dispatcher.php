@@ -1,11 +1,9 @@
 <?php
-session_start();
+//session_start();
 include("connection.php");
 include("rest_server_api.php");
 include("consultant.php");
 include("demande.php");
-$CONSULTANT = new Consultant($bdd);
-$DEMANDE = new Demande($bdd);
 include("auth.php");
 
 //echo var_dump($_GET);

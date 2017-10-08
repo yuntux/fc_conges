@@ -2,8 +2,11 @@
 include_once("sendmail.php");
 
 class Demande extends server_api_authentificated{
+	public $CONSULTANT;
+
         public function __construct($bdd) {
 		parent::__construct($bdd);
+//                $this->CONSULTANT = new Consultant($bdd);
         }
 
         public function get_list($fields ='*', $filter=False, $order_by=False){
@@ -52,7 +55,7 @@ class Demande extends server_api_authentificated{
 			mailtoDirfromDM($EMAIL_CDG, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $TRI_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
 		if ($mailtoDMfromCO)
 		{
-			$EMAIL_DM = $this->bdd->query('SELECT * FROM consultant WHERE TRIGRAMME_CONSULTANT = '.$VALIDEUR_CONGES)->fetch()['EMAIL_CONSULTANT'];
+			$EMAIL_DM = $this->bdd->query('SELECT * FROM consultant WHERE ID_CONSULTANT = '.$VALIDEUR_CONGES)->fetch()['EMAIL_CONSULTANT'];
 			mailtoDMfromCO($EMAIL_DM, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
 		}
 		if ($mailtoCOfromDM_ko)
@@ -167,25 +170,27 @@ class Demande extends server_api_authentificated{
 
         public function get_historique($id_consultant = False){
 		// TODO : appeler get_list de cette classe ?
-		$q = 'SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.TRIGRAMME_CONSULTANT = a.VALIDEUR_CONGES AND (`STATUT_CONGES` = "Annulée" OR `STATUT_CONGES` = "Annulée Direction" OR `STATUT_CONGES` = "Annulée DM" OR `STATUT_CONGES` = "Validée")';
+		$q = 'SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.ID_CONSULTANT = a.VALIDEUR_CONGES AND (`STATUT_CONGES` = "Annulée" OR `STATUT_CONGES` = "Annulée Direction" OR `STATUT_CONGES` = "Annulée DM" OR `STATUT_CONGES` = "Validée")';
 
-		if($_SESSION['role'] == "DIRECTEUR")
-		{
-			//no restriction
-		} 
-		elseif ($_SESSION['role'] == "DM")
-		{
-			$q.= "AND dm.ID_CONSULTANT = '".$_SESSION['id']."'";
-		}
-		else
-		{
-			$q.= " AND a.ID_CONSULTANT = '".$_SESSION['id']."'";
-		}
 
 		if ($id_consultant != False)
 		{
-			$q.= " AND a.ID_CONSULTANT = '".$id_consultant."'";
+			$q.= " AND a.CONSULTANT_CONGES = '".$id_consultant."'";
+		} else {
+			if($_SESSION['role'] == "DIRECTEUR")
+			{
+				//no restriction
+			} 
+			elseif ($_SESSION['role'] == "DM")
+			{
+				$q.= "AND dm.ID_CONSULTANT = '".$_SESSION['id']."'";
+			}
+			else
+			{
+				$q.= " AND a.CONSULTANT_CONGES = '".$_SESSION['id']."'";
+			}
 		}
+
                 $reponse = $this->bdd->query($q);
                 return $reponse->fetchAll();
         }
@@ -193,31 +198,29 @@ class Demande extends server_api_authentificated{
         public function get_demandes_en_cours($id_consultant = False){
 		// TODO : appeler get_list de cette classe ?
 
-		if($_SESSION['role'] == "DIRECTEUR")
-		{
-			$restriction = "";
-			$status = '(`STATUT_CONGES` = "En cours de validation Direction" OR (`STATUT_CONGES` = "En cours de validation DM" AND  dm.ID_CONSULTANT = \''.$_SESSION['id'].'\'))';
-		} 
-		elseif ($_SESSION['role'] == "DM")
-		{
-			$restriction = "AND dm.ID_CONSULTANT = '".$_SESSION['id']."'";
-			$status = '(`STATUT_CONGES` = "En cours de validation DM")';
-		}
-		else
-		{
-			$restriction = " AND a.ID_CONSULTANT = '".$_SESSION['id']."'";
-			//seul le consultant peut voir les demande non encore envoyées au DM(status = "Attente envoie")
-			$status = '(`STATUT_CONGES` = "Attente envoie" OR `STATUT_CONGES` = "En cours de validation DM" OR `STATUT_CONGES` = "En cours de validation Direction")';
-		}
-
 		if ($id_consultant != False)
 		{
-			$restriction.= " AND a.ID_CONSULTANT = '".$id_consultant."'";
+			$restriction = " AND a.CONSULTANT_CONGES = '".$id_consultant."'";
+			$status = 'AND (`STATUT_CONGES` = "Attente envoie" OR `STATUT_CONGES` = "En cours de validation DM" OR `STATUT_CONGES` = "En cours de validation Direction")';
+		} else {
+			if($_SESSION['role'] == "DIRECTEUR")
+			{
+				$restriction = "";
+				$status = 'AND (`STATUT_CONGES` = "En cours de validation Direction" OR (`STATUT_CONGES` = "En cours de validation DM" AND  dm.ID_CONSULTANT = \''.$_SESSION['id'].'\'))';
+			} 
+			elseif ($_SESSION['role'] == "DM")
+			{
+				$restriction = "AND dm.ID_CONSULTANT = '".$_SESSION['id']."'";
+				$status = 'AND (`STATUT_CONGES` = "En cours de validation DM")';
+			}
+			else
+			{
+				$restriction = " AND a.CONSULTANT_CONGES = '".$_SESSION['id']."'";
+				//seul le consultant peut voir les demande non encore envoyées au DM(status = "Attente envoie")
+				$status = 'AND (`STATUT_CONGES` = "Attente envoie" OR `STATUT_CONGES` = "En cours de validation DM" OR `STATUT_CONGES` = "En cours de validation Direction")';
+			}
 		}
-		$q = 'SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.TRIGRAMME_CONSULTANT = a.VALIDEUR_CONGES AND '.$status.' '.$restriction;
-                $reponse = $this->bdd->query($q);
-                return $reponse->fetchAll();
-
+		$q = 'SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.ID_CONSULTANT = a.VALIDEUR_CONGES '.$status.' '.$restriction;
                 $reponse = $this->bdd->query($q);
                 return $reponse->fetchAll();
         }
@@ -383,7 +386,7 @@ class Demande extends server_api_authentificated{
 					}
 					try
 					{  
-						$reponse1 = $this->bdd->query('SELECT * from consultant where TRIGRAMME_CONSULTANT = "'.$thelistDM.'"');  
+						$reponse1 = $this->bdd->query('SELECT * from consultant where ID_CONSULTANT = "'.$thelistDM.'"');  
 						while ($donnees1 = $reponse1->fetch())
 						{
 							$mail_valideur = $donnees1['EMAIL_CONSULTANT']; 
@@ -408,9 +411,8 @@ class Demande extends server_api_authentificated{
 					{
 						die('Erreur : '.$e->POSTMessage());
 					}
-					include_once("controller/sendmail.php");
 					mailtoDMfromCO($mail_valideur, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $dateFromDu, $thelistMM, $dateFromAu, $thelistMS);
-					header("Location: ?action=home");
+					return True;
 		}
 	}
 }

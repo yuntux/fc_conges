@@ -32,8 +32,8 @@ function return_isset($post_name){
 						{  
 							foreach ($reponse1 as $donnees1)
 							{
-								echo "<option";
-								if ($thelistDM == $donnees1['TRIGRAMME_CONSULTANT'])
+								echo "<option value=\"".$donnees1['ID_CONSULTANT']."\" ";
+								if ($thelistDM == $donnees1['ID_CONSULTANT'])
 									echo " selected";
 								echo">".$donnees1['PRENOM_CONSULTANT']." ".$donnees1['NOM_CONSULTANT']."</option>";
 							}

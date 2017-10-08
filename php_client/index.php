@@ -17,6 +17,7 @@ function get_action(){
 
 if(empty($_SESSION['id']))
 {
+echo "mmmmmmmmmmmmmmmmmmm";
 	$action="login";
 }
 else 

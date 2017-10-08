@@ -1,8 +1,13 @@
 <?php
 class auth extends server_api {
+
+        public $CONSULTANT;
+        public $DEMANDE;
+
         public function __construct($bdd) {
                 parent::__construct($bdd);
-echo 'ppppppppppppppppppp';
+		$this->CONSULTANT = new Consultant($bdd);
+		$this->DEMANDE = new Demande($bdd);
         }
 
 	function login_password($login,$password_given){
@@ -34,7 +39,7 @@ echo 'ppppppppppppppppppp';
 			if($this->CONSULTANT->check_password($login,$password_given)!=True)
 			{
 				$message_erreur = 'Mauvais mot de passe !';
-echo "Mauvais mot de passe";
+//echo "Mauvais mot de passe";
 				$view_to_display='login.php';
 			}
 			else
@@ -48,8 +53,10 @@ echo "Mauvais mot de passe";
 				$res['login'] = $login;
 				session_start();
 				$res['token'] = session_id();
+
 				$_SESSION['login']=$login;
-echo "mmmmmmmmmmmmmm";
+                		$_SESSION['id'] = $id;
+                		$_SESSION['role'] = $role;
 			}
 			return $res;
 		}

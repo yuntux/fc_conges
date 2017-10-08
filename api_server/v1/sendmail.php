@@ -1,4 +1,12 @@
 <?php
+
+function mail_gateway($mail,$sujet,$message,$header)
+{
+	$mail="adumaine@fontaine-consultants.fr";//pour les tests uniquement
+	mail($mail,$sujet,$message,$header);
+}
+
+
 function mailtoCOfromDM_ok($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES){	
 	$mail = $EMAIL_CONSULTANT; // Déclaration de l'adresse de destination.
 	if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)) // On filtre les serveurs qui rencontrent des bogues.

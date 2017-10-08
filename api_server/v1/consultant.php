@@ -1,17 +1,11 @@
 <?php
+include_once('rest_server_api.php');
 class Consultant extends server_api_authentificated{
-/*
-	private $ID_CONSULTANT;
-	private $NOM_CONSULTANT;
-	private $PRENOM_CONSULTANT;
-	private $EMAIL_CONSULTANT;
-	private $PROFIL_CONSULTANT;
-	private $TRIGRAMME_CONSULTANT;
-	private $STATUS_CONSULTANT;
-	private $PASSWORD_AUTHEN;
-*/
+	public $DEMANDE;
+
 	public function __construct($bdd) {
 		parent::__construct($bdd);
+                $this->DEMANDE = new Demande($bdd);
 	}
 
 	public function get(){
@@ -43,16 +37,21 @@ class Consultant extends server_api_authentificated{
 
 	public function get_historique($id_consultant){
 		//TODO : passer par la methode get_historique de la classe Demande
-		$q = 'SELECT * FROM conges WHERE CONSULTANT_CONGES = '.$id_consultant.' AND ((`STATUT_CONGES` = "Annulée" OR `STATUT_CONGES` = "Annulée Direction" OR `STATUT_CONGES` = "Annulée DM") OR (`STATUT_CONGES` = "Validée" AND `DEBUT_CONGES` < CURRENT_DATE))';
+/*		$q = 'SELECT * FROM conges WHERE CONSULTANT_CONGES = '.$id_consultant.' AND ((`STATUT_CONGES` = "Annulée" OR `STATUT_CONGES` = "Annulée Direction" OR `STATUT_CONGES` = "Annulée DM") OR (`STATUT_CONGES` = "Validée" AND `DEBUT_CONGES` < CURRENT_DATE))';
 		$reponse = $this->bdd->query($q);
 		return $reponse->fetchAll();
+*/
+		return $this->DEMANDE->get_historique($id_consultant);
 	}
 
 	public function get_demandes_en_cours($id_consultant){
 		//TODO : passer par la methode get_demandes en cours de la classe Demande
+/*
 		$q = 'SELECT * FROM conges WHERE CONSULTANT_CONGES = '.$id_consultant.' AND ((`STATUT_CONGES` = "Attente envoie" OR `STATUT_CONGES` = "En cours de validation DM" OR `STATUT_CONGES` = "En cours de validation Direction") OR (`STATUT_CONGES` = "Validée" AND `DEBUT_CONGES` >= CURRENT_DATE))';
 		$reponse = $this->bdd->query($q);
 		return $reponse->fetchAll();
+*/
+		return $this->DEMANDE->get_demandes_en_cours($id_consultant);
 	}
 
 	public function get_acquis($id_consultant){
@@ -75,7 +74,7 @@ class Consultant extends server_api_authentificated{
 
 	public function get_solde($id_consultant){
 		// TODO check rights
-		if ($_SESSION['role'] == "CONSULTANT" && $id_consulant != $_SESSION['id'])
+		if ($_SESSION['role'] == "CONSULTANT" && $id_consultant != $_SESSION['id'])
 		{
 			throw new Exception('Droits insuffisants');
 			return False;
@@ -127,7 +126,7 @@ class Consultant extends server_api_authentificated{
 		{
 			try
 			{
-				$this->bdd->exec('UPDATE `consultant` SET `PASSWORD_AUTHEN`= "'.$this->hash_password($nouveauMdP).'" WHERE `ID_CONSULTANT` = "'.$id_consultant.'"');
+				$this->bdd->exec('UPDATE `consultant` SET `PASSWORD_AUTHEN`= "'.$this->hash_password($new_password).'" WHERE `ID_CONSULTANT` = "'.$id_consultant.'"');
 			}
 			catch(Exception $e)
 			{
@@ -145,6 +144,9 @@ class Consultant extends server_api_authentificated{
 			die('Erreur : '.$e->POSTMessage());
 		}
 
+//echo "<br>passed : ".$password;
+//echo "<br>passed : ".$this->hash_password($password);
+//echo "<br>attendu : ".$reponse['PASSWORD_AUTHEN'];
 		if($this->hash_password($password)==$reponse['PASSWORD_AUTHEN'])
 			return True;
 		else
@@ -319,7 +321,7 @@ class Consultant extends server_api_authentificated{
 	{
                 try
                 {
-                        $reponse = $bdd->query('SELECT DATE_ACQUIS FROM acquis where CONSULTANT_ACQUIS = '.$id_consultant);
+                        $reponse = $this->bdd->query('SELECT DATE_ACQUIS FROM acquis where CONSULTANT_ACQUIS = '.$id_consultant);
                         while ($donnees = $reponse->fetch())
                         {
                                 $datemaj = $donnees['DATE_ACQUIS'];
@@ -342,7 +344,7 @@ class Consultant extends server_api_authentificated{
                 $indice=0;
                 try
                 {
-                        $record_maj = $bdd->exec('UPDATE `acquis` SET `CPn_ACQUIS`= CPn_ACQUIS+'.$majCP.', `DATE_ACQUIS`=CURRENT_DATE WHERE `CONSULTANT_ACQUIS`= '.$id_consultant);
+                        $record_maj = $this->bdd->exec('UPDATE `acquis` SET `CPn_ACQUIS`= CPn_ACQUIS+'.$majCP.', `DATE_ACQUIS`=CURRENT_DATE WHERE `CONSULTANT_ACQUIS`= '.$id_consultant);
                         $indice=1;
                 }
                 catch(Exception $e)
@@ -352,7 +354,7 @@ class Consultant extends server_api_authentificated{
                 if($indice=1){
                         try
                         {
-                                $record_maj = $bdd->exec('UPDATE `solde` SET `CPn_SOLDE`= CPn_SOLDE+'.$majCP.' WHERE `CONSULTANT_SOLDE`= '.$id_consultant);
+                                $record_maj = $this->bdd->exec('UPDATE `solde` SET `CPn_SOLDE`= CPn_SOLDE+'.$majCP.' WHERE `CONSULTANT_SOLDE`= '.$id_consultant);
                                 $indice=1;
                         }
                         catch(Exception $e)

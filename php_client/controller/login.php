@@ -11,6 +11,9 @@ if(!empty($_POST['login']) && !empty($_POST['password']))
 		$message_erreur = 'Mauvais mot de passe !';
 		$view_to_display='login.php'; 
 	} else{
+//echo $res;
+//echo var_dump($res);
+//echo"<br>";
 		$_SESSION['id'] = $res['id'];
 		$_SESSION['role'] = $res['role'];
 		$_SESSION['nom'] = $res['nom'];
@@ -18,9 +21,11 @@ if(!empty($_POST['login']) && !empty($_POST['password']))
 		$_SESSION['trigramme'] = $res['trigramme'];
 		$_SESSION['login'] = $res['login'];
 
-		//$CONSULTANT->trigger_login_solde_conges($id);
+		$_SESSION['mon_token'] = $res['token'];
+echo "token= ".$_SESSION['mon_token']."<br>";
+		$CONSULTANT->trigger_login_solde_conges($res['id']);
 		$message_succes = "Réussi";
-		header("Location: index.php?action=home");
+//		header("Location: index.php?action=home");
 	}
 }else{
 	$view_to_display='login.php'; 
