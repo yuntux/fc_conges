@@ -1,5 +1,5 @@
 <?php
-include('controller/db_parameters_prod.php');
+include('db_parameters_prod.php');
 	try
 	{
 		$pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;

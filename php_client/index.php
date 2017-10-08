@@ -1,12 +1,12 @@
 <?php 
 session_start();
 $EMAIL_CDG = 'validation_conges_cdg@fontaine-consultants.fr';
-include("controller/connection.php");
-include("model/consultant.php");
-include("model/demande.php");
+include("model/rest_client.php");
 
-$CONSULTANT = new Consultant($bdd); 
-$DEMANDE = new Demande($bdd); 
+$CONSULTANT = new Consultant(); 
+$DEMANDE = new Demande(); 
+
+//echo var_dump($CONSULTANT->get_list());
 
 function get_action(){
 	$action = null;
