@@ -1,9 +1,9 @@
 <?php
-function get_content(){
+function get_content($nom, $prenom, $debut_periode, $fin_periode){
 	$res = "
 FONTAINE CONSULTANTS - FICHE NOMINATIVE DE SUIVI MENSUEL
 <br>Nom du salarié cadre relevant du forfait-jour :  ".$nom." ".$prenom."
-<br>Période : ".$mois." ".$annee."
+<br>Période : du ".$debut_periode." au ".$fin_periode."
 
 <br>
 <br>Fiche de suivi :
@@ -13,121 +13,171 @@ FONTAINE CONSULTANTS - FICHE NOMINATIVE DE SUIVI MENSUEL
 <br>SUIVI DES JOURS TRAVAILLES ET DES JOURS NON TRAVAILLES :
 <br>Rappel : RH = repos hebdomadaire (gris) / F = jours fériés (gris) / CP = congés payés (jaune) / JR = jours de repos (ex RTT) (vert) / JC = jours d’absences conventionnel (orange) / AA = autres absences (rose) / JT = jours travaillés (blanc)
 
-<br>Détail de l’activité du mois de : ".$mois." ".$annee;
+<br>Détail de l’activité sur la période : ";
 
-$cp = array();
-$rtt = array();
-$conventionnel = array();
-$sans_solde = array();
-$autre = array();
-$jours_rh = array();
-$jours_feries = array();
-$travailles = array();
-
+$mois = ;
+$annee = ;
+$debut_annee = $annee."-01-01";
+$mi_periode = $annee."-".$mois."-15";
 $tab_annuel = array();
-$jour = "01/01/".$annee;
-while ($jour <= "31/12/".$annee)
+$jour = $debut_annee;
+while ($jour <= $fin_periode)
 {
-	$tab_j = array("matin"=>False, "apres-midi"=>False);
+	$tab_j = array("Matin"=>False, "Soir"=>False);
 	$tab_annuel[$jour]=$tab_j;
 	$jour = lendemain($jour);
 }
 
+function jour_weekend($jour){
+	if (date("l",($jour)) == 6 or date("l",($jour)) == 0){
+		return True;
+	}
+	return False;
+}
+function lendemain($jour){
+	return date('Y-m-d', strtotime('+1 day', strtotime($date)))
+}
+function jour_ferie($jour)
+	return $DEMANDE->jrFerie($jour);
+}
+
 //trouver les demande de congés dont la date de fin est dans l'annee ou la date de début est dans l'annee.
+$DEMANDE->get_list('*', "(DEBUT_CONGES >= ".$debut_annee." AND DEBUT_CONGES <= "$fin_periode.") OR (FIN_CONGES>= ".$debut_annee." AND FIN_CONGES <= "$fin_periode.")",False);
+
 foreach ($conges => $liste_conges){
-	$jour = $conges['jour_debut'];
-	while ($jour <= $conges['jour_fin'])
+	$jour = $conges['DEBUT_CONGE'];
+	$am_pm = $conges['DEBUTMM_CONGES'];
+	$cp_restant = $conges['CP_CONGES'];
+	$rtt_restant = $conges['RTT_CONGES'];
+	$conventionnel_restant = $conges['CONV_CONGES'];
+	$sans_solde_restant = $conges['SS_CONGES'];
+	$autre_restant = $conges['AUTRE_CONGES'];
+
+//TODO : contrôler qu'on a bien des multiples de 0.5 lors de la saisie des demandes
+
+	while ($jour <= $conges['FIN_CONGES'] && $jour<= $fin_periode)
 	{	
+		if ($jour == $conges['FIN_CONGES'] && $conges['FINMM_CONGES'] == "Matin"){
+			continue;
+		}
+
 		if (jour_ferie($jour)){
 			//$jours_ferie.append($jour);
-		}elseif (jour_semaine($jour) == "samedi" or jour_semaine($jour) == "dimanche"){
+		}elseif (jour_weekend($jour)){
 			//$jours_rh.append($jour);
 		}elseif ($cp_restant>0){
-			$cp.append($jour)
-			$cp_restant--;
+			$tab_annuel[$jour][$am_pm]="CP";
+			$cp_restant = $cp_restant-0.5;
 		}elseif ($rtt_restant>0){
-			$rtt.append($jour)
-			$rtt_restant--;
+			$tab_annuel[$jour][$am_pm]="RTT";
+			$rtt_restant = $rtt_restant-0.5;
 		}elseif ($conventionnel_restant>0){
-			$conventionnel.append($jour)
-			$conventionnel_restant--;
+			$tab_annuel[$jour][$am_pm]="CONV";
+			$conventionnel_restant = $conventionnel_restant-0.5;
 		}elseif ($sans_solde_restant>0){
-			$sans_solde.append($jour)
-			$sans_solde_restant--;
+			$tab_annuel[$jour][$am_pm]="SS";
+			$sans_solde_restant = $sans_solde_restant-0.5;
 		}elseif ($autre_restant>0){
-			$autre.append($jour)
-			$autre_restant--;
+			$tab_annuel[$jour][$am_pm]="AUTRE";
+			$autre_restant = $autre_restant-0.5;
+		} else {
+			echo "erreur";
 		}
-		$jour = lendemain($jour);
-	} 
+
+		if $am_pm = "Matin" {
+			$am_pm = "Soir";
+		} else {
+			$am_pm = "Matin";
+			$jour = lendemain($jour);
+		}
+	} 	
 }
 
-$temp_periode = array_merge($cp, $rtt, $conventionnel, $sans_solde, $autre, $jours_ferie, $jours_rh)
-
-$jour = $debut_periode;
+$jour = $debut_annee;
 while ($jour <= $fin_periode)
 {
-	if jour not in $temp_periode {
-                if (jour_ferie($jour)){
-                        $jours_ferie.append($jour);
-                }elseif (jour_semaine($jour) == "samedi" or jour_semaine($jour) == "dimanche"){
-                        $jours_rh.append($jour);
-		} else {
-			$travailles.append($jour);
-		}
+	if (jour_ferie($jour)){
+		$tab_annuel[$jour][$am_pm]="F";
 	}
-	$jour = lendemain($jour);
+	}elseif (jour_weekend($jour)){
+		$tab_annuel[$jour][$am_pm]="RH";
+	} else {
+		$tab_annuel[$jour][$am_pm]="TRA";
+	}
+
+	if $am_pm = "Matin" {
+		$am_pm = "Soir";
+	} else {
+		$am_pm = "Matin";
+		$jour = lendemain($jour);
+	}
+
 }
 
-$tab = "<table>";
-$tab.=  '<tr>'
-	$jour = $debut_periode;
-	while ($jour <= $fin_periode)
-	{
-		$tab.='<td>'.$jour.'</td>';
-		$tab.='<td>'.$jour.'</td>'; //TODO : fusionner les deux
-		$jour = lendemain($jour);
+function count_cat($date_debut,$date_fin,$tab_source){
+	$count = array("CP"=>0.0,"RTT"=>0.0,"CONV"=>0.0,"SS"=>0.0,"AUTRE"=>0.0,"F"=>0.0,"RH"=>0.0,"TRA"=>0.0);
+	for ($i=index($tab_source,$date_debut),$i++,$i<index($tab_source,$date_fin)){
+		$coun[$tab_source[$i]['Matin']]+=0.5;
+		$coun[$tab_source[$i]['Soir']]+=0.5;
 	}
-$tab.=  '</tr>'
+	return $count;
+}
 
-$tab.=  '<tr>'
-	$jour = $debut_periode;
-	while ($jour <= $fin_periode)
-	{
-		$tab.='<td>AM</td>';
-		$tab.='<td>PM</td>';
-		$jour = lendemain($jour);
-	}
-$tab.=  '</tr>'
+$compteur_annuel = count_cat($debut_annee, $fin_periode,$tab_annuel);
+$compteur_periode = count_cat($debut_periode,$fin_periode,$tab_annuel);
 
-$tab.=  '<tr>'
-	$jour = $debut_periode;
-	while ($jour <= $fin_periode)
-	{
-		$tab.='<td>AM</td>';
-		$tab.='<td>PM</td>';
-		$jour = lendemain($jour);
-	}
-$tab.=  '</tr>'
-$tab.="</table>";
+function tab_periode($debut_periode,$fin_periode,$tab_annuel){
+	$tab = "<table>";
+	$tab.=  '<tr>'
+		$jour = $debut_periode;
+		while ($jour <= $fin_periode)
+		{
+			$tab.='<td>'.$jour.'</td>';
+			$tab.='<td>'.$jour.'</td>'; //TODO : fusionner les deux
+			$jour = lendemain($jour);
+		}
+	$tab.=  '</tr>'
 
+	$tab.=  '<tr>'
+		$jour = $debut_periode;
+		while ($jour <= $fin_periode)
+		{
+			$tab.='<td>AM</td>';
+			$tab.='<td>PM</td>';
+			$jour = lendemain($jour);
+		}
+	$tab.=  '</tr>'
 
-$res.=$tab;
+	$tab.=  '<tr>'
+		$jour = $debut_periode;
+		while ($jour <= $fin_periode)
+		{
+			$tab.='<td>'.$tab_annuel[$jour]['Matin'].'</td>';
+			$tab.='<td>'.$tab_annuel[$jour]['Soir'].'</td>';
+			$jour = lendemain($jour);
+		}
+	$tab.=  '</tr>'
+	$tab.="</table>";
+	return $tab;
+}
+
+$res.=tab_periode($debut_periode,$mi_periode,$tab_annuel);
+$res.=tab_periode(lendemain($mi_periode),$fin_periode,$tab_annuel);
+
+function tab_synthese($compteur_periode){
+	$s = "<table>";
+	$s.= "<tr><td>RH</td><td>F</td><td>CP</td><td>JR</td><td>JC</td><td>JSS</td><td>AA</td></tr>";
+	$s.= "<tr><td>RH</td><td>".$compteur_periode['F']."</td><td>".$compteur_periode['CP']."</td><td>".$compteur_periode['RTT']."</td><td>".$compteur_periode['CONV']."</td><td>".$compteur_periode['SS']."</td><td>".$compteur_periode['AUTRE']."</td></tr>";
+	$s.= "</table>";
+	return $s;
+}
 
 $synthese = "<table><tr><td>";
-$synthese.="<br><br>Synthèse de l’activité du mois :<br>";	
-$s_mois = "<table>";
-$s_mois.= "<tr><td>RH</td><td>F</td><td>CP</td><td>JR</td><td>JC</td><td>JSS</td><td>AA</td></tr>";
-$s_mois.= "<tr><td>RH</td><td>F</td><td>CP</td><td>JR</td><td>JC</td><td>JSS</td><td>AA</td></tr>";
-$s_mois.= "</table>";
-$synthese.=$s_mois;
+$synthese.="<br><br>Synthèse de l’activité de la période :<br>";	
+$synthese.=tab_synthse($compteur_periode);
 $synthese.="</td><td>";
 $synthese.="<br><br>Synthèse de l’activité depuis le 1er janvier ".$annee." :<br>";	
-$s_annee = "<table>";
-$s_annee.= "<tr><td>RH</td><td>F</td><td>CP</td><td>JR</td><td>JC</td><td>JSS</td><td>AA</td></tr>";
-$s_annee.= "<tr><td>RH</td><td>F</td><td>CP</td><td>JR</td><td>JC</td><td>JSS</td><td>AA</td></tr>";
-$s_annee.= "</table>";
-$synthese.=$s_annee;
+$synthese.=tab_synthse($compteur_annuel);
 $synthese.="</td></tr></table>";
 
 $res.=$synthese;
