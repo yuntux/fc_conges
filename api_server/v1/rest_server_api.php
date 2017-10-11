@@ -28,6 +28,10 @@ class server_api_authentificated extends server_api{
 		if ($auth_ok==False) {
 			return "Error auth";
 		}
+/*		if ($args_array==null){
+			$args_array = array();
+		}
+*/
 		return call_user_func_array(array($this, $method_name), $args_array);
         }
 

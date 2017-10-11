@@ -18,6 +18,7 @@ if (isset($_GET['args_array'])) {
 	$args = array();
 }
 //echo var_dump($args);
+//echo json_decode(base64_decode($_GET['args_array']));
 $res = $obj->call_array_args($_GET['method'], $args);
 echo json_encode($res);
 

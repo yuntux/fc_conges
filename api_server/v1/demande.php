@@ -228,32 +228,9 @@ class Demande extends server_api_authentificated{
 	private function get_nb_open_days($dateFromDu, $dateFromAu) {	
 		$date_start = strtotime($dateFromDu);
 		$date_stop = strtotime($dateFromAu);
-		$arr_bank_holidays = array(); // Tableau des jours feriés	
-		
-		$diff_year = date('Y', $date_stop) - date('Y', $date_start);
-		for ($i = 0; $i <= $diff_year; $i++) {			
-			$year = (int)date('Y', $date_start) + $i;
-			// Liste des jours feriés
-			$arr_bank_holidays[] = '1_1_'.$year; // Jour de l'an
-			$arr_bank_holidays[] = '1_5_'.$year; // Fete du travail
-			$arr_bank_holidays[] = '8_5_'.$year; // Victoire 1945
-			$arr_bank_holidays[] = '14_7_'.$year; // Fete nationale
-			$arr_bank_holidays[] = '15_8_'.$year; // Assomption
-			$arr_bank_holidays[] = '1_11_'.$year; // Toussaint
-			$arr_bank_holidays[] = '11_11_'.$year; // Armistice 1918
-			$arr_bank_holidays[] = '25_12_'.$year; // Noel
-					
-			// Récupération de paques. Permet ensuite d'obtenir le jour de l'ascension et celui de la pentecote	
-			$easter = easter_date($year);
-			$arr_bank_holidays[] = date('j_n_'.$year, $easter + 86400); // Paques
-			$arr_bank_holidays[] = date('j_n_'.$year, $easter + (86400*39)); // Ascension
-			$arr_bank_holidays[] = date('j_n_'.$year, $easter + (86400*50)); // Pentecote	
-		}
 		$nb_days_open = 0;
-
 		while ($date_start <= $date_stop) {
-			if (!in_array(date('w', $date_start), array(0, 6)) 
-			&& !in_array(date('j_n_'.date('Y', $date_start), $date_start), $arr_bank_holidays)) {
+			if ($this->jrTravaille($date_start)) {
 				$nb_days_open++;		
 			}
 			$date_start = mktime(date('H', $date_start), date('i', $date_start), date('s', $date_start), date('m', $date_start), date('d', $date_start) + 1, date('Y', $date_start));			
@@ -261,7 +238,25 @@ class Demande extends server_api_authentificated{
 		return $nb_days_open;
 	}
 
-	private function jrFerie($date_saisie) {	
+	private function jrTravaille($date_saisie) {	
+		if (!$this->jrSemaine($date_saisie) || $this->jrFerie($date_saisie)){
+			return False;
+		}
+		return True;
+	}
+	private function jrSemaine($date_saisie) {	
+		if (in_array(date('w', $date_start), array(0, 6))){
+			return True;
+		}
+		return False;
+	}
+
+	private function jrWeekend($date_saisie) {
+		return !$this->jrSemaine($date_saisie);
+	}
+
+	public function jrFerie($date_saisie) {	
+	//	return True;
 		$arr_bank_holidays = array(); // Tableau des jours feriés	
 		$jrferie = 0 ;
 		$year = (int)date('Y', $date_saisie) ;
@@ -280,7 +275,7 @@ class Demande extends server_api_authentificated{
 		$arr_bank_holidays[] = date('j_n_'.$year, $easter + 86400); // Paques
 		$arr_bank_holidays[] = date('j_n_'.$year, $easter + (86400*39)); // Ascension
 		$arr_bank_holidays[] = date('j_n_'.$year, $easter + (86400*50)); // Pentecote
-		if (!in_array(date('w', $date_saisie), array(0, 6)) && !in_array(date('j_n_'.date('Y', $date_saisie), $date_saisie), $arr_bank_holidays)) {
+		if (!in_array(date('j_n_Y', $date_saisie), $arr_bank_holidays)) {
 			$jrferie = 1 ;	
 		}					
 		return $jrferie;
@@ -294,14 +289,14 @@ class Demande extends server_api_authentificated{
 		$demif =0.5 ;
 
 		$nb_jours_ouvres = $this->get_nb_open_days($dateFromDu, $dateFromAu);
-		$test = $this->jrFerie(strtotime($dateFromDu));
+		$test = $this->jrTravaille(strtotime($dateFromDu));
 		if($test == 0) {
 			$demid = 0;
 				}
 		if ($thelistMM == 'Midi') {
 			$nb_jours_ouvres = $nb_jours_ouvres - $demid;
 				}
-		$test = $this->jrFerie(strtotime($dateFromAu));
+		$test = $this->jrTravailee(strtotime($dateFromAu));
 		if($test == 0) {
 			$demif = 0;
 			}
@@ -384,34 +379,14 @@ class Demande extends server_api_authentificated{
 					{
 						die('Erreur : '.$e->POSTMessage());
 					}
-					try
-					{  
-						$reponse1 = $this->bdd->query('SELECT * from consultant where ID_CONSULTANT = "'.$thelistDM.'"');  
-						while ($donnees1 = $reponse1->fetch())
-						{
-							$mail_valideur = $donnees1['EMAIL_CONSULTANT']; 
-						}
-						$reponse1->closeCursor();
-					}
-					catch(Exception $e)
-					{
-						die('Erreur : '.$e->POSTMessage());
-					}
-					try
-					{  
-						$reponse1 = $this->bdd->query('SELECT * from consultant where ID_CONSULTANT = "'.$consultant.'"');  
-						while ($donnees1 = $reponse1->fetch())
-						{
-							$NOM_CONSULTANT = $donnees1['NOM_CONSULTANT']; 
-							$PRENOM_CONSULTANT = $donnees1['PRENOM_CONSULTANT']; 
-						}
-						$reponse1->closeCursor();
-					}
-					catch(Exception $e)
-					{
-						die('Erreur : '.$e->POSTMessage());
-					}
-					mailtoDMfromCO($mail_valideur, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $dateFromDu, $thelistMM, $dateFromAu, $thelistMS);
+
+					$mailtoDMfromCO = True;
+					$mailtoCOfromDir_ok = False;
+					$mailtoCOfromDM_ok = False;
+					$mailtoDirfromDM = False;
+					$mailtoCOfromDM_ko = False;
+					$mailtoCOfromDir_ko = False;
+					$this->mail_statut($id_demande, $mailtoDMfromCO, $mailtoCOfromDir_ok, $mailtoCOfromDM_ok, $mailtoDirfromDM, $mailtoCOfromDM_ko, $mailtoCOfromDir_ko);
 					return True;
 		}
 	}
