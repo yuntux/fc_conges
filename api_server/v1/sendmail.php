@@ -3,6 +3,8 @@
 function mail_gateway($mail,$sujet,$message,$header)
 {
 	$mail="adumaine@fontaine-consultants.fr";//pour les tests uniquement
+echo $sujet;
+echo $message;
 	mail($mail,$sujet,$message,$header);
 }
 
@@ -65,7 +67,7 @@ function mailtoCOfromDM_ok($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTAN
 	//==========
 	 
 	//=====Envoi de l'e-mail.
-	mail($mail,$sujet,$message,$header);
+	mail_gateway($mail,$sujet,$message,$header);
 	//==========
 }	
 function mailtoCOfromDir_ok($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES){	
@@ -126,7 +128,7 @@ function mailtoCOfromDir_ok($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTA
 	//==========
 	 
 	//=====Envoi de l'e-mail.
-	mail($mail,$sujet,$message,$header);
+	mail_gateway($mail,$sujet,$message,$header);
 	//==========
 }
 function mailtoCOfromDM_ko($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES){	
@@ -187,7 +189,7 @@ function mailtoCOfromDM_ko($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTAN
 	//==========
 	 
 	//=====Envoi de l'e-mail.
-	mail($mail,$sujet,$message,$header);
+	mail_gateway($mail,$sujet,$message,$header);
 	//==========
 }
 function mailtoCOfromDir_ko($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES){	
@@ -248,7 +250,7 @@ function mailtoCOfromDir_ko($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTA
 	//==========
 	 
 	//=====Envoi de l'e-mail.
-	mail($mail,$sujet,$message,$header);
+	mail_gateway($mail,$sujet,$message,$header);
 	//==========
 }
 function mailtoDMfromCO($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES){	
@@ -309,7 +311,7 @@ function mailtoDMfromCO($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, 
 	//==========
 	 
 	//=====Envoi de l'e-mail.
-	mail($mail,$sujet,$message,$header);
+	mail_gateway($mail,$sujet,$message,$header);
 	//==========
 }
 function mailtoDirfromDM($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $TRI_VALIDEUR, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES){	
@@ -370,7 +372,7 @@ function mailtoDirfromDM($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT,
 	//==========
 	 
 	//=====Envoi de l'e-mail.
-	mail($mail,$sujet,$message,$header);
+	mail_gateway($mail,$sujet,$message,$header);
 	//==========
 }
 
@@ -428,7 +430,7 @@ Bonjour, <br>votre nouveau mot de passe : '.$PASSWORD.'<br>Cordialement.
 	//==========
 	 
 	//=====Envoi de l'e-mail.
-	mail($mail,$sujet,$message,$header);
+	return mail_gateway($mail,$sujet,$message,$header);
 	//==========
 }
 ?>

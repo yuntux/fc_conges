@@ -10,7 +10,12 @@ class auth extends server_api {
 		$this->DEMANDE = new Demande($bdd);
         }
 
-	function login_password($login,$password_given){
+	public function init_consultant_pass_from_login($login){
+		$id=$this->CONSULTANT->get_id_from_login($login);	
+		return $this->CONSULTANT->init_password($id);
+	} 
+
+	public function login_password($login,$password_given){
 
 		$res = False;
 		if(!empty($login) && !empty($password_given))

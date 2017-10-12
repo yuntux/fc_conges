@@ -1,10 +1,4 @@
 		<form action="?action=login" method="post">
-			<?php
-				  if(!empty($errorMessage)) 
-				  {
-				    echo '<p> Erreur </p><p>', htmlspecialchars($errorMessage) ,'</p>';
-				  }
-				?>
 			<table style="position:absolute;left:55%;top:30%;">
 				<thead>
 					<tr>
@@ -26,6 +20,7 @@
 					</tr>
 					<tr>
 						<td><input type="submit" value="submit" /></td>
+						<td><input type="submit" name="mdp_oublie" value="mdp_oublie" /></td>
 					</tr>
 				</tbody>
 			</table>

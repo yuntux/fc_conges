@@ -6,11 +6,6 @@ include("model/rest_client.php");
 $CONSULTANT = new Consultant(); 
 $DEMANDE = new Demande(); 
 
-//echo var_dump($CONSULTANT->get_list());
-
-
-echo "Bonjour ".$_SESSION['id'];
-
 function get_action(){
 	$action = null;
 	if (isset($_GET["action"]))

@@ -26,7 +26,7 @@ class Consultant extends server_api_authentificated{
 			$q.= ' WHERE '.$filter;
 		if ($order_by)
 			$q.= ' ORDER BY '.$order_by;
-//print $q;
+//echo $q;
 		$reponse = $this->bdd->query($q);
 		return $reponse->fetchAll();
 	}
@@ -159,7 +159,7 @@ class Consultant extends server_api_authentificated{
 		return hash('sha512', $GUERANDE.$password);
 	}
 
-	private function get_login_from_id($id_consultant)
+	public function get_login_from_id($id_consultant)
 	{
 		try
                 {
@@ -172,6 +172,22 @@ class Consultant extends server_api_authentificated{
 		return $reponse['EMAIL_CONSULTANT'];
 	}
 
+	public function get_id_from_login($login_consultant)
+	{
+		try
+                {
+                        $reponse = $this->get_by_login($login_consultant);
+                }
+                catch(Exception $e)
+                {
+                        die('Erreur : '.$e->POSTMessage());
+                }
+		return $reponse['ID_CONSULTANT'];
+	}
+	public function get_by_login($login_consultant)
+	{
+		return $this->get_list('*', '`EMAIL_CONSULTANT` = \''.$login_consultant.'\'')[0];
+	}
 	public function get_by_id($id_consultant)
 	{
 		return $this->get_list('*', '`ID_CONSULTANT` = \''.$id_consultant.'\'')[0];
@@ -276,8 +292,9 @@ class Consultant extends server_api_authentificated{
 
 	public function init_password($id_consultant)
 	{
-		include_once("controller/sendmail.php");
+		include_once("sendmail.php");
 
+/*
                 try
                 {
                         if ($_SESSION['role'] != "DIRECTEUR")
@@ -290,18 +307,13 @@ class Consultant extends server_api_authentificated{
                 {
                         die('Erreur : '.$e->getMessage());
                 }
-		try
-		{
-			$password = $this->get_random_string_alpha(10);
-			$record_maj = $this->bdd->exec('UPDATE `consultant` SET `PASSWORD_AUTHEN` = "'.hash_password($password).'" WHERE `CONSULTANT_ID` = "'.$id_consultant.'"');
-			new_password($this->get_login_from_id($id_consultant), $password);
-			new_password("aurelien.dumaine@fontaine-consultants.fr", $password);
-			return "Mote de passe réinitialisé. Vous allez le recevoir par email.";
-		}
-		catch(Exception $e)
-		{
-			die('Erreur : '.$e->POSTMessage());
-		}
+*/
+	$password = $this->get_random_string_alpha(10);
+	$q = 'UPDATE `consultant` SET `PASSWORD_AUTHEN` = "'.$this->hash_password($password).'" WHERE `ID_CONSULTANT` = "'.$id_consultant.'"';
+	//echo $q;
+	$record_maj = $this->bdd->exec($q);
+	new_password($this->get_login_from_id($id_consultant), $password);
+	return new_password("aurelien.dumaine@fontaine-consultants.fr", $password);
 	}
 
 	private function get_random_string_alpha($size)

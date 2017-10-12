@@ -3,9 +3,10 @@
 if(!empty($_SESSION['id']))
 	header("Location: ?action=home");
 
+$auth = new Auth();
+
 if(!empty($_POST['login']) && !empty($_POST['password']))
 {
-	$auth = new Auth();
 	$res = $auth->login_password($_POST['login'],$_POST['password']);
 	if ($res == False){
 		$message_erreur = 'Mauvais mot de passe !';
@@ -27,6 +28,16 @@ echo "token= ".$_SESSION['mon_token']."<br>";
 		$message_succes = "Bonjour ".$_SESSION['id'];
 //		header("Location: index.php?action=home");
 	}
+}elseif (isset($_POST['mdp_oublie'])){
+	if (!isset($_POST['login']) || empty($_POST['login'])){
+		$message_erreur = "Remplissez le login puis recliquez sur le bouton mot de passe oublié.";
+	}
+	else
+	{
+		$auth->init_consultant_pass_from_login($_POST['login']);
+		$message_succes = "Vous allez recevoir un nouveau mot de passe par email.";
+	}
+	$view_to_display='login.php'; 
 }else{
 	$view_to_display='login.php'; 
 }
