@@ -21,12 +21,11 @@ class REST_client{
 
 	public function post($method,$parameter_array){
 		$object = $this->object;
-		$url = $this->host."/".$this->api_version."/dispatcher.php?object=".$object."&method=".$method."&args_array=".base64_encode(json_encode($parameter_array));
-		
+		$url = $this->host."/".$this->api_version."/dispatcher.php?object=".urlencode($object)."&method=".urlencode($method)."&args_array=".urlencode(base64_encode(json_encode($parameter_array)));
 		$header = "Content-type: application/x-www-form-urlencoded\r\n";
 		if (isset($_SESSION['mon_token'])){
 			//$header.= "Authorization: ".$this->auth_token;
-			$url.="&auth_token=".$_SESSION['mon_token'];
+			$url.="&auth_token=".urlencode($_SESSION['mon_token']);
 		}
 		$options = array(
 		    'http' => array(
@@ -39,13 +38,15 @@ class REST_client{
 echo $url.'<br>';
 //echo json_encode($parameter_array);
 		$result = file_get_contents($url, false, $context);
-//echo $result;
-		if ($result === FALSE) { /* Handle error */ }
+	//	if ($result === FALSE) { /* Handle error */ }
 
 		$result = json_decode($result,True);
-//echo $result;
-//echo var_dump($result);
-		return $result;
+		if ($result == "Error auth"){
+			$message_erreur = 'Session inactive.';
+			//include("controller/deconnexion.php"); 	
+		} else {
+			return $result;
+		}
 	}
 
 	public function get(){

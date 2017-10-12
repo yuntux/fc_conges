@@ -1,5 +1,6 @@
 <?php
 include_once("sendmail.php");
+include_once("lib_date.php");
 
 class Demande extends server_api_authentificated{
 	public $CONSULTANT;
@@ -225,7 +226,7 @@ class Demande extends server_api_authentificated{
                 return $reponse->fetchAll();
         }
 
-	private function get_nb_open_days($dateFromDu, $dateFromAu) {	
+	public function get_nb_open_days($dateFromDu, $dateFromAu) {	
 		$date_start = strtotime($dateFromDu);
 		$date_stop = strtotime($dateFromAu);
 		$nb_days_open = 0;
@@ -238,47 +239,19 @@ class Demande extends server_api_authentificated{
 		return $nb_days_open;
 	}
 
-	private function jrTravaille($date_saisie) {	
-		if (!$this->jrSemaine($date_saisie) || $this->jrFerie($date_saisie)){
-			return False;
-		}
-		return True;
+	public function jrTravaille($date_saisie) {	
+		return jrTravaille($date_saisie);
 	}
-	private function jrSemaine($date_saisie) {	
-		if (in_array(date('w', $date_start), array(0, 6))){
-			return True;
-		}
-		return False;
+	public function jrSemaine($date_saisie) {	
+		return jrSemaine($date_saisie);
 	}
 
-	private function jrWeekend($date_saisie) {
-		return !$this->jrSemaine($date_saisie);
+	public function jrWeekend($date_saisie) {
+		return jrWeekend($date_saisie);
 	}
 
 	public function jrFerie($date_saisie) {	
-	//	return True;
-		$arr_bank_holidays = array(); // Tableau des jours feriés	
-		$jrferie = 0 ;
-		$year = (int)date('Y', $date_saisie) ;
-			// Liste des jours feriés
-		$arr_bank_holidays[] = '1_1_'.$year; // Jour de l'an
-		$arr_bank_holidays[] = '1_5_'.$year; // Fete du travail
-		$arr_bank_holidays[] = '8_5_'.$year; // Victoire 1945
-		$arr_bank_holidays[] = '14_7_'.$year; // Fete nationale
-		$arr_bank_holidays[] = '15_8_'.$year; // Assomption
-		$arr_bank_holidays[] = '1_11_'.$year; // Toussaint
-		$arr_bank_holidays[] = '11_11_'.$year; // Armistice 1918
-		$arr_bank_holidays[] = '25_12_'.$year; // Noel
-				
-		// Récupération de paques. Permet ensuite d'obtenir le jour de l'ascension et celui de la pentecote	
-		$easter = easter_date($year);
-		$arr_bank_holidays[] = date('j_n_'.$year, $easter + 86400); // Paques
-		$arr_bank_holidays[] = date('j_n_'.$year, $easter + (86400*39)); // Ascension
-		$arr_bank_holidays[] = date('j_n_'.$year, $easter + (86400*50)); // Pentecote
-		if (!in_array(date('j_n_Y', $date_saisie), $arr_bank_holidays)) {
-			$jrferie = 1 ;	
-		}					
-		return $jrferie;
+		return jrFerie($date_saisie);
 	}
 
 	public function enregistrer_demande($dateFromDu,$dateFromAu,$thelistMM,$thelistMS,$thelistDM,$commentaire,$nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP){

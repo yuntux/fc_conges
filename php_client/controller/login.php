@@ -24,7 +24,7 @@ if(!empty($_POST['login']) && !empty($_POST['password']))
 		$_SESSION['mon_token'] = $res['token'];
 echo "token= ".$_SESSION['mon_token']."<br>";
 		$CONSULTANT->trigger_login_solde_conges($res['id']);
-		$message_succes = "Réussi";
+		$message_succes = "Bonjour ".$_SESSION['id'];
 //		header("Location: index.php?action=home");
 	}
 }else{

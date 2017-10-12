@@ -8,6 +8,9 @@ $DEMANDE = new Demande();
 
 //echo var_dump($CONSULTANT->get_list());
 
+
+echo "Bonjour ".$_SESSION['id'];
+
 function get_action(){
 	$action = null;
 	if (isset($_GET["action"]))
@@ -17,7 +20,6 @@ function get_action(){
 
 if(empty($_SESSION['id']))
 {
-echo "mmmmmmmmmmmmmmmmmmm";
 	$action="login";
 }
 else 
