@@ -28,10 +28,6 @@ class server_api_authentificated extends server_api{
 		if ($auth_ok==False) {
 			return "Error auth";
 		}
-/*		if ($args_array==null){
-			$args_array = array();
-		}
-*/
 		return call_user_func_array(array($this, $method_name), $args_array);
         }
 
@@ -41,13 +37,13 @@ class server_api_authentificated extends server_api{
 		} else {
 			$token = $_GET['auth_token'];
 		}
-//echo $toke;
 		session_id($token);
 		session_start();
-		if (count($_SESSION)>0)
+		if (count($_SESSION)>0){
 			return True;
-		else
+		}else{
 			return False;
+		}
 	}
 }
 

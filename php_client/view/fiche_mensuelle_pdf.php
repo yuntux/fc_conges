@@ -248,7 +248,7 @@ echo '<form action="controller/gen_pdf.php" method="post">
 <input type="submit" value="Récupérer PDF"></input>
 </form>';
 
-echo $res;
+//echo $res;
 
 
 ?>

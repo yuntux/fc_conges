@@ -98,7 +98,7 @@ function nombre_jours_a_poser(){
 			if (req.status==200){
 				var diffj = req.responseText;
 				//diffj = JSON.parse(diffj);
-				alert(diffj);
+				//alert(diffj);
 				document.getElementById('nbJrs').innerHTML = 'Nombre de jours de repos à répartir : '+diffj+' jours.';
 				document.getElementById('nbJrs_hidden').value = diffj;
 			}

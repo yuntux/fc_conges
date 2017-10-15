@@ -10,6 +10,8 @@ include("helpers.php");
 //echo var_dump($_GET);
 //echo var_dump($_POST);
 $obj = new $_GET['object']($bdd);
+
+error_log($_GET['object'], 3,"/tmp/test.log");
 if (isset($_GET['args_array'])) {
 	$args = json_decode(base64_decode($_GET['args_array']));
 }else{

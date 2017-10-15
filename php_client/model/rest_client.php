@@ -45,15 +45,13 @@ class REST_client{
 		);
 		$context  = stream_context_create($options);
 echo $url.'<br>';
-//echo json_encode($parameter_array);
 		$result = file_get_contents($url, false, $context);
-	//	if ($result === FALSE) { /* Handle error */ }
-
 		$result = json_decode($result,True);
-		if ($result == "Error auth"){
+		if ($result === "Error auth"){ //ATTENTION : la tiple égalité est primmordiale !!
 			$message_erreur = 'Session inactive.';
-			//include("controller/deconnexion.php"); 	
+			include("controller/deconnexion.php"); 	
 		} else {
+echo "=>".$result."<=";
 			return $result;
 		}
 	}

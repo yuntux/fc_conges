@@ -34,6 +34,9 @@ include("view/".$view_to_display);
 include("view/foot.php");
 
 /*TODO 
+- gestion des CP et RTT n-2
+- bouton re RAZ des compteur au 31/12 et 31/05
+- validation automatique des demandes des membres du CDG
 - annulation automatique des demandes nont traitée le jour du démarrage du congés ?
 - dissocier l'annulation par le consultant d'une demande envoyée au DM mais pas encore validée par le DM d'une demande supprimée par le consultant avant envoie au DM ?
 	=> inutile s'il on supprimer l'étape d'envoie au DM (on ne laisse qu'un bouton Enregistrer et envoyer au DM" au bas du formulaire de saisie

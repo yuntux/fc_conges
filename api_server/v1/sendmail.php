@@ -3,8 +3,8 @@
 function mail_gateway($mail,$sujet,$message,$header)
 {
 	$mail="adumaine@fontaine-consultants.fr";//pour les tests uniquement
-echo $sujet;
-echo $message;
+//echo $sujet;
+//echo $message;
 	mail($mail,$sujet,$message,$header);
 }
 

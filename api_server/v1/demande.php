@@ -35,9 +35,10 @@ class Demande extends server_api_authentificated{
 	public function mail_statut($id_demande, $mailtoDMfromCO=False, $mailtoCOfromDir_ok=False, $mailtoCOfromDM_ok=False, $mailtoDirfromDM=False, $mailtoCOfromDM_ko=False, $mailtoCOfromDir_ko=False)
 	{
 		global $EMAIL_CDC;
-		$reponse1 = $this->bdd->query('SELECT b.NOM_CONSULTANT, b.PRENOM_CONSULTANT, b.EMAIL_CONSULTANT, a.DEBUT_CONGES, a.FIN_CONGES, a.DEBUTMM_CONGES, a.FINMS_CONGES  FROM conges a, consultant b WHERE a.CONSULTANT_CONGES = b.ID_CONSULTANT and a.ID_CONGES = '.$id_demande);
-		$reponse1->fetch();
-		{
+		$q ='SELECT b.NOM_CONSULTANT, b.PRENOM_CONSULTANT, b.EMAIL_CONSULTANT, a.VALIDEUR_CONGES, a.DEBUT_CONGES, a.FIN_CONGES, a.DEBUTMM_CONGES, a.FINMS_CONGES  FROM conges a, consultant b WHERE a.CONSULTANT_CONGES = b.ID_CONSULTANT and a.ID_CONGES = '.$id_demande.';';
+//		error_log("TEST => ".$q, 3,"/tmp/test.log");
+		$reponse1 = $this->bdd->query($q);
+		$donnees1 = $reponse1->fetch();
 			$NOM_CONSULTANT = $donnees1['NOM_CONSULTANT'];
 			$PRENOM_CONSULTANT = $donnees1['PRENOM_CONSULTANT'];
 			$EMAIL_CONSULTANT = $donnees1['EMAIL_CONSULTANT'];
@@ -46,7 +47,6 @@ class Demande extends server_api_authentificated{
 			$FINMS_CONGES = $donnees1['FINMS_CONGES'];
 			$DEBUTMM_CONGES = $donnees1['DEBUTMM_CONGES'];
 			$VALIDEUR_CONGES = $donnees1['VALIDEUR_CONGES'];
-		}
 
 		if ($mailtoCOfromDir_ok)
 			mailtoCOfromDir_ok($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
@@ -56,12 +56,13 @@ class Demande extends server_api_authentificated{
 			mailtoDirfromDM($EMAIL_CDG, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $TRI_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
 		if ($mailtoDMfromCO)
 		{
-			$EMAIL_DM = $this->bdd->query('SELECT * FROM consultant WHERE ID_CONSULTANT = '.$VALIDEUR_CONGES)->fetch()['EMAIL_CONSULTANT'];
+			$EMAIL_DM = $this->bdd->query('SELECT * FROM consultant WHERE ID_CONSULTANT = '.$VALIDEUR_CONGES)->fetch();
+			$EMAIL_DM = $EMAIL_DM['EMAIL_CONSULTANT'];
 			mailtoDMfromCO($EMAIL_DM, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
 		}
 		if ($mailtoCOfromDM_ko)
                         mailtoCOfromDM_ko($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-		if ($$mailtoCOfromDir_ko)
+		if ($mailtoCOfromDir_ko)
                         mailtoCOfromDir_ko($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
 
 	}
@@ -332,9 +333,13 @@ class Demande extends server_api_authentificated{
 					}
 					try
 					{
+// TODO : dangereux, disque de concurrence, à encapsuler dans un transaction ACID
+						//$this->bdd->beginTransaction(); 
 						//TODO : ne plus stocker le nombre total de jours de congÃs NBJRS_CONGES
 						$req = $this->bdd->prepare('INSERT INTO  conges (`ID_CONGES`, `DATEDEM_CONGES`, `DEBUT_CONGES`, `DEBUTMM_CONGES`, `FIN_CONGES`, `FINMS_CONGES`, `NBJRS_CONGES`, `CP_CONGES`, `RTT_CONGES`, `SS_CONGES`, `CONV_CONGES`, `AUTRE_CONGES`, `COMMENTAIRE`, `STATUT_CONGES`, `VALIDEUR_CONGES`, `CONSULTANT_CONGES`, `SOLDE_CONGES`) VALUES (DEFAULT,CURRENT_DATE,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
 						$req->execute(array($dateFromDu,$thelistMM,$dateFromAu,$thelistMS,$nbjrsTotal,$nbjrsCP, $nbjrsRTT, $nbjrsSS, $nbjrsConv,$nbjrsAutres,$commentaire,'En cours de validation DM',$thelistDM,$consultant,$max_ID+1));
+						//$this->bdd->commit(); 
+						$id_demande = $this->bdd->lastInsertId();
 					}
 					catch(Exception $e)
 					{
