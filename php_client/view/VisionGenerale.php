@@ -42,7 +42,7 @@
 					}	
 				}
 				for ($i = 1;$i<= $nb_semaine; $i++){
-					if($consultant_conges == $ID_CONSULTANT_Conges && $donnees2['STATUT_CONGES'] != "Validée" && $donnees2['STATUT_CONGES'] != "Annulée" && $donnees2['STATUT_CONGES'] != "Annulée DM" && $donnees2['STATUT_CONGES'] != "Annulée Dir"){	
+					if($consultant_conges == $ID_CONSULTANT_Conges && $donnees2['STATUT_CONGES'] != "Validée" && $donnees2['STATUT_CONGES'] != "Annulée" && $donnees2['STATUT_CONGES'] != "Annulée DM" && $donnees2['STATUT_CONGES'] != "Annulée Dir" && $donnees2['STATUT_CONGES'] != "Annulée DM"){	
 						$semaine_conges_pasvalide[] = $no_semaine + $i -1;
 					}	
 				}

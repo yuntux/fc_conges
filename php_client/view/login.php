@@ -19,7 +19,7 @@
 						<td><input type="checkbox" name="auto_connect" value="Y"/></td>
 					</tr>
 					<tr>
-						<td><input type="submit" value="Login" /></td>
+						<td><input type="submit" name="bouton_login" value="Login" /></td>
 						<td><input type="submit" name="mdp_oublie" value="Mot de passe oublié." /></td>
 					</tr>
 				</tbody>

@@ -5,28 +5,27 @@ if(!empty($_SESSION['id']))
 
 $auth = new Auth();
 
-if(!empty($_POST['login']) && !empty($_POST['password']))
-{
-	$res = $auth->login_password($_POST['login'],$_POST['password']);
-	if ($res == False){
-		$message_erreur = 'Mauvais mot de passe !';
-		$view_to_display='login.php'; 
-	} else{
-//echo $res;
-//echo var_dump($res);
-//echo"<br>";
-		$_SESSION['id'] = $res['id'];
-		$_SESSION['role'] = $res['role'];
-		$_SESSION['nom'] = $res['nom'];
-		$_SESSION['prenom'] = $res['prenom'];
-		$_SESSION['trigramme'] = $res['trigramme'];
-		$_SESSION['login'] = $res['login'];
+if (isset($_POST['bouton_login'])){
+	if(!empty($_POST['login']) && !empty($_POST['password']))
+	{
+		$res = $auth->login_password($_POST['login'],$_POST['password']);
+		if ($res == False){
+			$message_erreur = 'Mauvais mot de passe !';
+			$view_to_display='login.php'; 
+		} else{
+			$_SESSION['id'] = $res['id'];
+			$_SESSION['role'] = $res['role'];
+			$_SESSION['nom'] = $res['nom'];
+			$_SESSION['prenom'] = $res['prenom'];
+			$_SESSION['trigramme'] = $res['trigramme'];
+			$_SESSION['login'] = $res['login'];
 
-		$_SESSION['mon_token'] = $res['token'];
+			$_SESSION['mon_token'] = $res['token'];
 
-		$CONSULTANT->trigger_login_solde_conges($res['id']);
-		$message_succes = "Bonjour ".$_SESSION['id'];
-//		header("Location: index.php?action=home");
+			$CONSULTANT->trigger_login_solde_conges($res['id']);
+			$message_succes = "Bonjour ".$_SESSION['id'];
+	//		header("Location: index.php?action=home");
+		}
 	}
 }elseif (isset($_POST['mdp_oublie'])){
 	if (!isset($_POST['login']) || empty($_POST['login'])){

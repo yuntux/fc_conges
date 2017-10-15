@@ -115,12 +115,12 @@ class Consultant extends server_api_authentificated{
 	public function change_password($id_consultant,$old_password,$new_password){
 		if ($_SESSION['id'] != $id_consultant)
 		{
-                        throw new Exception('Seul le consultant peut changer son propre mot de passe. Néanmoins, les directeurs peuvent déclencher l\'envoi d\'un nouveau mot de passe.');
-                        return False;
+                        //throw new Exception('Seul le consultant peut changer son propre mot de passe. Néanmoins, les directeurs peuvent déclencher l\'envoi d\'un nouveau mot de passe.');
+                        return "Seul le consultant peut changer son propre mot de passe. Néanmoins, les directeurs peuvent déclencher l\'envoi d\'un nouveau mot de passe.";
 		}
 		if (strlen($new_password) <7){
-			throw new Exception('Le mot de passe est trop court.');
-			return False;
+			//throw new Exception('Le mot de passe est trop court.');
+			return "Le mot de passe est trop court.";
 		}
 		if ($this->check_password($this->get_login_from_id($id_consultant),$old_password) == True)
 		{
@@ -132,6 +132,9 @@ class Consultant extends server_api_authentificated{
 			{
 				die('Erreur : '.$e->POSTMessage());
 			}
+			return True;
+		} else {
+			return "L'ancien mot de passe n'est pas corret.";
 		}
 	}
 	public function check_password($login,$password){
@@ -204,8 +207,9 @@ class Consultant extends server_api_authentificated{
 			}
 			if ($_SESSION['id'] == $id_consultant)
 			{
-                       		throw new Exception('Impossible de supprimer son propre compte.');
-                        	return False;
+                       		//throw new Exception('Impossible de supprimer son propre compte.');
+                       		return 'Impossible de supprimer son propre compte.';
+                        	//return False;
 			}
                 }
 		catch(Exception $e)
@@ -313,12 +317,12 @@ class Consultant extends server_api_authentificated{
                         die('Erreur : '.$e->getMessage());
                 }
 */
-	$password = $this->get_random_string_alpha(10);
-	$q = 'UPDATE `consultant` SET `PASSWORD_AUTHEN` = "'.$this->hash_password($password).'" WHERE `ID_CONSULTANT` = "'.$id_consultant.'"';
-	//echo $q;
-	$record_maj = $this->bdd->exec($q);
-	new_password($this->get_login_from_id($id_consultant), $password);
-	return new_password("aurelien.dumaine@fontaine-consultants.fr", $password);
+		$password = $this->get_random_string_alpha(10);
+		$q = 'UPDATE `consultant` SET `PASSWORD_AUTHEN` = "'.$this->hash_password($password).'" WHERE `ID_CONSULTANT` = "'.$id_consultant.'"';
+		//echo $q;
+		$record_maj = $this->bdd->exec($q);
+		$res = new_password($this->get_login_from_id($id_consultant), $password);
+		return $res;
 	}
 
 	private function get_random_string_alpha($size)

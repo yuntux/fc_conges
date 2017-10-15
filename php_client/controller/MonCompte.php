@@ -8,10 +8,13 @@ if (isset($_POST['bouton_nouveauMdP']))
 	$consultant = $_SESSION['id'];
 
         if($nouveauMdP==$confirmationMdP){
-		$CONSULTANT->change_password($consultant,$ancienMdP,$nouveauMdP);
+		$res = $CONSULTANT->change_password($consultant,$ancienMdP,$nouveauMdP);
         }else{
                 $message_erreur = "Les deux mots de passe saisis ne sont pas identiques.";
         }
+	if ($res !== True){ //ATTENTION à l'opérateur !==
+                $message_erreur = $res;
+	}
 }
 
 

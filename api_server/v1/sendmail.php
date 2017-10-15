@@ -2,10 +2,9 @@
 
 function mail_gateway($mail,$sujet,$message,$header)
 {
-	$mail="adumaine@fontaine-consultants.fr";//pour les tests uniquement
-//echo $sujet;
-//echo $message;
-	mail($mail,$sujet,$message,$header);
+	//$mail="yuntux@gmail.com";//pour les tests uniquement
+	mail("yuntux@gmail.com",$sujet,$message,$header);
+	return mail($mail,$sujet,$message,$header);
 }
 
 
@@ -402,7 +401,7 @@ Bonjour, <br>votre nouveau mot de passe : '.$PASSWORD.'<br>Cordialement.
 	//==========
 	 
 	//=====Définition du sujet.
-	$sujet = "Demande de congés";
+	$sujet = "Réinitialisation password FC Congés";
 	//=========
 	 
 	//=====Création du header de l'e-mail.

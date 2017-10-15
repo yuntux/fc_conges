@@ -110,7 +110,7 @@ while ($jour <= $fin_periode_str){
 	$jour = lendemain($jour);
 }
 
-$filter = "CONSULTANT_CONGES = ".$id_consultant." AND ((DEBUT_CONGES >= '".$debut_annee."' AND DEBUT_CONGES <= '".$fin_periode_str."') OR (FIN_CONGES>= '".$debut_annee."' AND FIN_CONGES <= '".$fin_periode_str."'))"; 
+$filter = "CONSULTANT_CONGES = ".$id_consultant." AND (STATUT_CONGES NOT IN ('Annulée DM','Annulée Direction','Annulée')) AND ((DEBUT_CONGES >= '".$debut_annee."' AND DEBUT_CONGES <= '".$fin_periode_str."') OR (FIN_CONGES>= '".$debut_annee."' AND FIN_CONGES <= '".$fin_periode_str."'))"; 
 $liste_conges = $DEMANDE->get_list('*',$filter,False);
 foreach ($liste_conges as $conges){
 	$jour = $conges['DEBUT_CONGES'];

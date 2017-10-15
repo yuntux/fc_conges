@@ -34,6 +34,8 @@ include("view/".$view_to_display);
 include("view/foot.php");
 
 /*TODO 
+- gestion des erreurs stricte : systématiser l'usage des exception. Remonter au client un status en erreur par le code de retour HTTP / 200 / 403(droits) /etc 
+
 - gestion des CP et RTT n-2
 - bouton re RAZ des compteur au 31/12 et 31/05
 - validation automatique des demandes des membres du CDG
@@ -42,12 +44,7 @@ include("view/foot.php");
 	=> inutile s'il on supprimer l'étape d'envoie au DM (on ne laisse qu'un bouton Enregistrer et envoyer au DM" au bas du formulaire de saisie
 - vérifier les try/catch et les close cursor pour chaque requete dans les modeles
 - supprimer les trigrammes
-- verifier la robustesse des calcul
-- ajouter les rapports pour Denis
-- bouton d'ecretage/remis eà 0 des soldes RTT et CP
-- gestion en dur des jours chomés chez FC
+- gestion en dur des 2 jours de repos imposés chez FC / y compris à l'arrivée de nouveaux consultants en cours d'année.
 - vérifier le non chevauchement de deux zones de congès 
-- vérification de l'ancien mot de passe avant d'accepeter le changement
-- email "mot de passe oublié"
 */	
 ?>

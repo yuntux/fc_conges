@@ -129,7 +129,7 @@ class Demande extends server_api_authentificated{
 
 		if($_SESSION['role'] == "DIRECTEUR")
 		{
-			$status = "'AnnulÃ©e Direction'"; 
+			$status = "'Annulée Direction'"; 
 			$mailtoCOfromDir_ko = True;
 		}
 		elseif ($_SESSION['role'] == "DM")
@@ -141,7 +141,7 @@ class Demande extends server_api_authentificated{
 			}
 			else
 			{
-				$status = "'AnnulÃ©e DM'"; 
+				$status = "'Annulée DM'"; 
 				$mailtoCOfromDM_ko = True;
 			}		
 		}
@@ -172,7 +172,7 @@ class Demande extends server_api_authentificated{
 
         public function get_historique($id_consultant = False){
 		// TODO : appeler get_list de cette classe ?
-		$q = 'SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.ID_CONSULTANT = a.VALIDEUR_CONGES AND (`STATUT_CONGES` = "AnnulÃ©e" OR `STATUT_CONGES` = "AnnulÃ©e Direction" OR `STATUT_CONGES` = "AnnulÃ©e DM" OR `STATUT_CONGES` = "ValidÃ©e")';
+		$q = 'SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.ID_CONSULTANT = a.VALIDEUR_CONGES AND (`STATUT_CONGES` = "Annulée" OR `STATUT_CONGES` = "Annulée Direction" OR `STATUT_CONGES` = "Annulée DM" OR `STATUT_CONGES` = "Validée")';
 
 
 		if ($id_consultant != False)
