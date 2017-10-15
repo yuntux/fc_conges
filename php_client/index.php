@@ -3,6 +3,7 @@ session_start();
 $EMAIL_CDG = 'validation_conges_cdg@fontaine-consultants.fr';
 include("model/rest_client.php");
 
+$REST_CLIENT = new REST_client(); 
 $CONSULTANT = new Consultant(); 
 $DEMANDE = new Demande(); 
 

@@ -14,8 +14,15 @@
 		$nbjrsRTT=$_POST['nbjrsRTT'];
 		$nbjrsCP=$_POST['nbjrsCP'];
 		
-		$DEMANDE->enregistrer_demande($dateFromDu,$dateFromAu,$thelistMM,$thelistMS,$thelistDM,$commentaire,$nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP);
+		$res = $DEMANDE->enregistrer_demande($dateFromDu,$dateFromAu,$thelistMM,$thelistMS,$thelistDM,$commentaire,$nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP);
+		if ($res == True){
+			$message_succes = "Demande de congés enregistrée.";
+			$view_to_display='home.php';
+		} else {
+			$message_erreur = $res;
+			$view_to_display='DemandeConges.php';
+		}
+	} else {
+		$view_to_display='DemandeConges.php';
 	}
-
-	$view_to_display='DemandeConges.php';
 ?>

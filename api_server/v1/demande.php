@@ -76,7 +76,7 @@ class Demande extends server_api_authentificated{
 
 		if($_SESSION['role'] == "DIRECTEUR")
 		{
-			$status = "'Validée'"; 
+			$status = "'ValidÃ©e'"; 
 			$mailtoCOfromDir_ok = True;
 		}
 		elseif ($_SESSION['role'] == "DM")
@@ -128,7 +128,7 @@ class Demande extends server_api_authentificated{
 
 		if($_SESSION['role'] == "DIRECTEUR")
 		{
-			$status = "'Annulée Direction'"; 
+			$status = "'AnnulÃ©e Direction'"; 
 			$mailtoCOfromDir_ko = True;
 		}
 		elseif ($_SESSION['role'] == "DM")
@@ -140,7 +140,7 @@ class Demande extends server_api_authentificated{
 			}
 			else
 			{
-				$status = "'Annulée DM'"; 
+				$status = "'AnnulÃ©e DM'"; 
 				$mailtoCOfromDM_ko = True;
 			}		
 		}
@@ -153,7 +153,7 @@ class Demande extends server_api_authentificated{
 			}
 			else
 			{
-				$status = "'Annulée'";
+				$status = "'AnnulÃ©e'";
 			}
 		}
                 try
@@ -171,7 +171,7 @@ class Demande extends server_api_authentificated{
 
         public function get_historique($id_consultant = False){
 		// TODO : appeler get_list de cette classe ?
-		$q = 'SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.ID_CONSULTANT = a.VALIDEUR_CONGES AND (`STATUT_CONGES` = "Annulée" OR `STATUT_CONGES` = "Annulée Direction" OR `STATUT_CONGES` = "Annulée DM" OR `STATUT_CONGES` = "Validée")';
+		$q = 'SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.ID_CONSULTANT = a.VALIDEUR_CONGES AND (`STATUT_CONGES` = "AnnulÃ©e" OR `STATUT_CONGES` = "AnnulÃ©e Direction" OR `STATUT_CONGES` = "AnnulÃ©e DM" OR `STATUT_CONGES` = "ValidÃ©e")';
 
 
 		if ($id_consultant != False)
@@ -217,7 +217,7 @@ class Demande extends server_api_authentificated{
 			else
 			{
 				$restriction = " AND a.CONSULTANT_CONGES = '".$_SESSION['id']."'";
-				//seul le consultant peut voir les demande non encore envoyées au DM(status = "Attente envoie")
+				//seul le consultant peut voir les demande non encore envoyÃ©es au DM(status = "Attente envoie")
 				$status = 'AND (`STATUT_CONGES` = "Attente envoie" OR `STATUT_CONGES` = "En cours de validation DM" OR `STATUT_CONGES` = "En cours de validation Direction")';
 			}
 		}
@@ -227,16 +227,7 @@ class Demande extends server_api_authentificated{
         }
 
 	public function get_nb_open_days($dateFromDu, $dateFromAu) {	
-		$date_start = strtotime($dateFromDu);
-		$date_stop = strtotime($dateFromAu);
-		$nb_days_open = 0;
-		while ($date_start <= $date_stop) {
-			if ($this->jrTravaille($date_start)) {
-				$nb_days_open++;		
-			}
-			$date_start = mktime(date('H', $date_start), date('i', $date_start), date('s', $date_start), date('m', $date_start), date('d', $date_start) + 1, date('Y', $date_start));			
-		}		
-		return $nb_days_open;
+		return get_nb_open_days($dateFromDu, $dateFromAu);
 	}
 
 	public function jrTravaille($date_saisie) {	
@@ -254,34 +245,40 @@ class Demande extends server_api_authentificated{
 		return jrFerie($date_saisie);
 	}
 
+	public function nbJoursAPoser($dateFromDu,$dateFromAu,$thelistMM,$thelistMS) {	
+		if ($dateFromDu == "" || $dateFromAu == ""){
+			return 0;
+		}
+
+		$nb_jours_a_poser = $this->get_nb_open_days($dateFromDu, $dateFromAu);
+
+		$jour_debut_travaille = $this->jrTravaille($dateFromDu);
+		if($jour_debut_travaille == True) {
+			if ($thelistMM == 'Midi') {
+				$nb_jours_a_poser = $nb_jours_a_poser - 0.5;
+			}
+		}
+
+		$jour_fin_travaille = $this->jrTravaille($dateFromAu);
+		if($jour_fin_travaille== True) {
+			if ($thelistMS == 'Midi') {
+				$nb_jours_a_poser = $nb_jours_a_poser - 0.5;
+			}
+		}
+		return $nb_jours_a_poser;
+	}
+
 	public function enregistrer_demande($dateFromDu,$dateFromAu,$thelistMM,$thelistMS,$thelistDM,$commentaire,$nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP){
 		$consultant = $_SESSION['id'];
-		//TODO : vérifier qu'il n'y a pas de recouvrement avec d'autres périodes de congés
+		$message_erreur = True;
 		$nbjrsTotal = $nbjrsCP + $nbjrsRTT + $nbjrsSS + $nbjrsConv + $nbjrsAutres;
-		$demid =0.5 ;
-		$demif =0.5 ;
-
-		$nb_jours_ouvres = $this->get_nb_open_days($dateFromDu, $dateFromAu);
-		$test = $this->jrTravaille(strtotime($dateFromDu));
-		if($test == 0) {
-			$demid = 0;
-				}
-		if ($thelistMM == 'Midi') {
-			$nb_jours_ouvres = $nb_jours_ouvres - $demid;
-				}
-		$test = $this->jrTravailee(strtotime($dateFromAu));
-		if($test == 0) {
-			$demif = 0;
-			}
-		if ($thelistMS == 'Midi') {
-			$nb_jours_ouvres = $nb_jours_ouvres - $demif;
-				}
-
+		$nb_jours_a_poser = $this->nbJoursAPoser($dateFromDu,$dateFromAu,$thelistMM,$thelistMS);
+//TODO : check overlape with other vacation periods
 		if ($dateFromDu > $dateFromAu) {
-			$message_erreur = "La date de fin ne doit pas etre anterieure à la date de débt";
+			$message_erreur = "La date de fin ne doit pas etre anterieure Ã  la date de dÃ©bt";
 				}
-		else if ($nbjrsTotal != $nb_jours_ouvres) {
-			$message_erreur = "Le nombre de jours ventilé n'est pas égal au nombre de jours ouvrés.";
+		else if ($nbjrsTotal != $nb_jours_a_poser) {
+			$message_erreur = "Le nombre de jours ventilÃ© n'est pas Ã©gal au nombre de jours ouvrÃ©s.";
 				}
 		else{
 					try
@@ -335,7 +332,7 @@ class Demande extends server_api_authentificated{
 					}
 					try
 					{
-						//TODO : ne plus stocker le nombre total de jours de cong�s NBJRS_CONGES
+						//TODO : ne plus stocker le nombre total de jours de congÃs NBJRS_CONGES
 						$req = $this->bdd->prepare('INSERT INTO  conges (`ID_CONGES`, `DATEDEM_CONGES`, `DEBUT_CONGES`, `DEBUTMM_CONGES`, `FIN_CONGES`, `FINMS_CONGES`, `NBJRS_CONGES`, `CP_CONGES`, `RTT_CONGES`, `SS_CONGES`, `CONV_CONGES`, `AUTRE_CONGES`, `COMMENTAIRE`, `STATUT_CONGES`, `VALIDEUR_CONGES`, `CONSULTANT_CONGES`, `SOLDE_CONGES`) VALUES (DEFAULT,CURRENT_DATE,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
 						$req->execute(array($dateFromDu,$thelistMM,$dateFromAu,$thelistMS,$nbjrsTotal,$nbjrsCP, $nbjrsRTT, $nbjrsSS, $nbjrsConv,$nbjrsAutres,$commentaire,'En cours de validation DM',$thelistDM,$consultant,$max_ID+1));
 					}
@@ -360,7 +357,7 @@ class Demande extends server_api_authentificated{
 					$mailtoCOfromDM_ko = False;
 					$mailtoCOfromDir_ko = False;
 					$this->mail_statut($id_demande, $mailtoDMfromCO, $mailtoCOfromDir_ok, $mailtoCOfromDM_ok, $mailtoDirfromDM, $mailtoCOfromDM_ko, $mailtoCOfromDir_ko);
-					return True;
 		}
+		return $message_erreur;	
 	}
 }

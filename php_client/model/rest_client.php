@@ -19,19 +19,28 @@ class REST_client{
 	}
 	*/
 
-	public function post($method,$parameter_array){
-		$object = $this->object;
-		$url = $this->host."/".$this->api_version."/dispatcher.php?object=".urlencode($object)."&method=".urlencode($method)."&args_array=".urlencode(base64_encode(json_encode($parameter_array)));
-		$header = "Content-type: application/x-www-form-urlencoded\r\n";
+	public function get_url($method,$object,$parameter_array=False){
+		$url = $this->host."/".$this->api_version."/dispatcher.php?object=".urlencode($object)."&method=".urlencode($method);
+		if ($parameter_array!=False){
+			$url.="&args_array=".urlencode(base64_encode(json_encode($parameter_array)));
+		}
+		return $url;
+	}
+
+	public function get_url_auth($method,$object,$parameter_array){
+		$url =  $this->get_url($method,$object,$parameter_array);
 		if (isset($_SESSION['mon_token'])){
-			//$header.= "Authorization: ".$this->auth_token;
 			$url.="&auth_token=".urlencode($_SESSION['mon_token']);
 		}
+		return $url;
+	}
+
+	public function post($method,$parameter_array){
+		$object = $this->object;
+		$url = $this->get_url_auth($method,$object,$parameter_array);
 		$options = array(
 		    'http' => array(
-			'header'  => $header,
 			'method'  => 'GET',
-			//'content' => json_encode($parameter_array)
 		    )
 		);
 		$context  = stream_context_create($options);
