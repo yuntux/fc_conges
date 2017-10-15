@@ -391,7 +391,7 @@ function new_password($EMAIL_CONSULTANT, $PASSWORD){
 
 	$message_html = '<html>
 				<body>
-Bonjour, <br>votre nouveau mot de passe : '.$PASSWORD.'<br>Cordialement.
+Bonjour, <br>votre nouveau mot de passe : '.$PASSWORD.'<br>Cordialement.<br>Destinataire:'.$mail.'
 				</body>
 			</html>';
 	//==========

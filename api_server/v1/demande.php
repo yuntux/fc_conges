@@ -277,11 +277,9 @@ class Demande extends server_api_authentificated{
 
 		$multiple_05 = True;
 		foreach (Array($nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP) as $nb_jour_cat){
-//echo 10*$nb_jour_cat;
 			if ((10*$nb_jour_cat) % 5 != 0){
 				$multiple_05 = False;
 			}
-//echo $multiple_05;
 		}
 //TODO : check overlape with other vacation periods
 		if ($dateFromDu > $dateFromAu) {

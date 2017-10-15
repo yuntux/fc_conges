@@ -44,7 +44,7 @@ class REST_client{
 		    )
 		);
 		$context  = stream_context_create($options);
-echo $url.'<br>';
+echo 'MODE DEBUG / URL appelée par le client PHP - endPoint de l\'API => '.$url.'<br>';
 		$result = file_get_contents($url, false, $context);
 		$result = json_decode($result,True);
 		if ($result === "Error auth"){ //ATTENTION : la tiple égalité est primmordiale !!
