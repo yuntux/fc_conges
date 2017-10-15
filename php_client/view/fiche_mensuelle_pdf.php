@@ -3,7 +3,7 @@
 include_once("../api_server/v1/lib_date.php");
 
 function tab_synthese($compteur_periode){
-	$s = '<div class="solid_table"><table>';
+	$s = '<div class="solid_table"><table style="width:10cm; height:3cm;font-size:26px; text-align:center; ">';
 	$s.= "<tr><td>RH</td><td>F</td><td>CP</td><td>JR</td><td>JC</td><td>JSS</td><td>AA</td></tr>";
 	$s.= "<tr><td>".$compteur_periode['RH']."</td><td>".$compteur_periode['F']."</td><td>".$compteur_periode['CP']."</td><td>".$compteur_periode['RTT']."</td><td>".$compteur_periode['CONV']."</td><td>".$compteur_periode['SS']."</td><td>".$compteur_periode['AUTRE']."</td></tr>";
 	$s.= "</table></div>";
@@ -34,12 +34,12 @@ $color['AA']="white";
 $color['TRA']="white";
 
 
-	$tab = '<div class="solid_table"><table>';
+	$tab = '<div class="solid_table"><table style="width:50cm; height:3cm;font-size:26px; text-align:center;">';
 	$tab.=  '<tr>';
 		$jour = $debut_periode;
 		while ($jour <= $fin_periode_str)
 		{
-			$jour_fr = date('d/m/Y',strtotime($jour));
+			$jour_fr = date('d/m',strtotime($jour));
 			$tab.='<td colspan=2>'.$jour_fr.'</td>';
 		//	$tab.='<td>'.$jour.'</td>'; //TODO : fusionner les deux
 			$jour = lendemain($jour);
@@ -84,6 +84,8 @@ $debut_annee_str = $debut_annee;
 $mi_periode = middle_between_date($debut_periode, $fin_periode);
 $tab_annuel = array();
 	$res = "
+
+<div style='font-size:26px;'>
 <h1>FONTAINE CONSULTANTS - FICHE NOMINATIVE DE SUIVI MENSUEL</h1>
 <br>Nom du salarié cadre relevant du forfait-jour :  ".$prenom." ".$nom."
 <br>Période : du ".$debut_periode_fr." au ".$fin_periode_fr."
@@ -93,7 +95,7 @@ $tab_annuel = array();
 <br>- Jours travaillé / non travaillés 
 <br>- Temps de repos charge de travail, organisation du travail, amplitude de la journée de travail et équilibre entre vie privée et vie professionnelle.
 <br>
-<br>SUIVI DES JOURS TRAVAILLES ET DES JOURS NON TRAVAILLES :
+<br><h3>SUIVI DES JOURS TRAVAILLES ET DES JOURS NON TRAVAILLES :</h3>
 <br>Rappel : RH = repos hebdomadaire (gris) / F = jours fériés (gris) / CP = congés payés (jaune) / JR = jours de repos (ex RTT) (vert) / JC = jours d’absences conventionnel (orange) / AA = autres absences (rose) / JT = jours travaillés (blanc)
 
 <br><br>Détail de l'activité sur la période :<br><br> ";
@@ -187,11 +189,11 @@ $res.=tab_periode(lendemain($mi_periode),$fin_periode_str,$tab_annuel);
 
 
 
-$synthese = '<table><tr><td>';
-$synthese.="<br><br>Synthèse de l’activité de la période :<br>";	
+$synthese = '<table style="width:50cm;font-size:26px;"><tr><td>';
+$synthese.="<br><br>Synthèse de l’activité de la période :<br><br>";	
 $synthese.=tab_synthese($compteur_periode);
 $synthese.="</td><td>";
-$synthese.="<br><br>Synthèse de l’activité depuis le 1er janvier ".$annee." :<br>";	
+$synthese.="<br><br>Synthèse de l’activité depuis le 1er janvier ".$annee." :<br><br>";	
 $synthese.=tab_synthese($compteur_annuel);
 $synthese.="</td></tr></table>";
 
@@ -199,7 +201,7 @@ $res.=$synthese;
 
 $page_2 = "
 <div style='page-break-before: always;'></div>
-<br>SUIVI DE LA CHARGE DE TRAVAIL, DE L’ORGANISATION DU TRAVAIL ET DE L’AMPLITUDE DES JOURNEES DE TRAVAIL:
+<br><h3>SUIVI DE LA CHARGE DE TRAVAIL, DE L’ORGANISATION DU TRAVAIL ET DE L’AMPLITUDE DES JOURNEES DE TRAVAIL :</h3>
 <br>- RAPPEL CONCERNANT LES TEMPS DE REPOS QUOTIDIEN ET HEBDOMADAIRE : Les salariés relevant du forfait annuel en jours doivent bénéficier d’un repos quotidien minimum de 11 heures consécutives et d’un repos hebdomadaire de 35 heures minimum consécutives. Ces limites n’ont pas pour but de définir une journée habituelle de travail de 13 heures mais une amplitude exceptionnelle maximale de la journée de travail.
 <br><br>Début et fin d’une période quotidienne et d’une période hebdomadaire au cours desquelles les durées minimales de repos quotidien et hebdomadaire doivent être respectées :
 <br>- Durée journalière : 8H – 21H
@@ -214,7 +216,7 @@ $page_2 = "
 <br>
 <br>Si OUI, merci de compléter le tableau ci-dessous. Un point avec la direction suivra dans les 8 jours. 
 <br>
-<div class='solid_table'><table style='width:20cm;'>
+<div class='solid_table'><table style='width:50cm;height:5cm; font-size:26px; text-align:center;'>
 <tr><td>#</td><td>Date :</td><td>Description :</td><td>Motifs :</td></tr>
 <tr><td>#1</td><td></td><td></td><td></td></tr>
 <tr><td>#2</td><td></td><td></td><td></td></tr>
@@ -223,8 +225,11 @@ $page_2 = "
 
 <br>
 <br>
-A Paris, le 												<div style='align:right;'>Signature du salarié</div>
+<table style='width:50cm;font-size:26px; text-align:center;'>
+<tr><td>À Paris, le</td><td>Signature du salarié</td></tr>
+</table>
 <div style='page-break-before: always;'></div>
+</div>
 ";
 
 	$res.=$page_2;
@@ -232,8 +237,19 @@ A Paris, le 												<div style='align:right;'>Signature du salarié</div>
 	return $res;
 }
 
-//echo $res;
+$res = "";
+foreach ($liste as $consultant){
+	$detail_consultant = $CONSULTANT->get_by_id($consultant['ID_CONSULTANT']);
+	$res.= get_content($DEMANDE,$consultant['ID_CONSULTANT'],strtotime($_POST['debut_periode']), strtotime($_POST['fin_periode']), $detail_consultant['NOM_CONSULTANT'], $detail_consultant['PRENOM_CONSULTANT']);
+}
 
-//echo get_content(2, strtotime($_POST['debut_periode']), strtotime($_POST['fin_periode']),$DEMANDE);
+echo '<form action="controller/gen_pdf.php" method="post"> 
+<input type="hidden" name="html_content" value="'.base64_encode($res).'"></input>
+<input type="submit" value="Récupérer PDF"></input>
+</form>';
+
+echo $res;
+
+
 ?>
 

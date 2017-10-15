@@ -293,20 +293,18 @@ table {
 }
 
 .solid_table table
-
 {
-
     border-collapse: collapse;
-
+    font-size:26px;
+    text-align:center;
 }
 
 .solid_table td, th /* Mettre une bordure sur les td ET les th */
-
 {
-
     border-collapse: collapse;
     border: 1px solid black;
-
+    font-size:26px;
+    text-align:center;
 }
 
 /*
