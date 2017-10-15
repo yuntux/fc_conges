@@ -49,7 +49,9 @@
 			echo '<input type="hidden" name="COid" value="'.$_POST['select_consultant'].'" />';
 			echo '<input type="submit" value="Enregistrer" name="update_consultant" style="float:right;" />';
 			echo '<input type="submit" value="Réintialiser Mot de passe" name="reinitialiser" style="floatleftt;" />';
-			echo '<input type="submit" value="Supprimer" name="delete_consultant" />';
+			if ($_SESSION['id'] != $_POST['select_consultant']){
+				echo '<input type="submit" value="Supprimer" name="delete_consultant" />';
+			}
 		} else {
 			echo '<input type="submit" value="Ajouter" name="add_consultant" style="float:right;" />';
 		}

@@ -202,6 +202,11 @@ class Consultant extends server_api_authentificated{
                        		throw new Exception('Droits insuffisants, seul un directeur peut effectuer cette action.');
                         	return False;
 			}
+			if ($_SESSION['id'] == $id_consultant)
+			{
+                       		throw new Exception('Impossible de supprimer son propre compte.');
+                        	return False;
+			}
                 }
 		catch(Exception $e)
 		{
