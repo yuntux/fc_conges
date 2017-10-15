@@ -1,6 +1,4 @@
 <?php
-
-
 class REST_client{
 	public $host;
 	public $api_version;
@@ -13,7 +11,6 @@ class REST_client{
 		$this->host = $API_HOST;
 		$this->object = $object;
         }
-
 
 	/*
 	public function auth_sso($sso_token){
@@ -74,42 +71,5 @@ echo '<br>MODE DEBUG / URL appelée par le client PHP - endPoint de l\'API => '.
 	}
 */
 }
-
-/*
-class Auth extends REST_client
-{
-        public function __construct() {        
-                $this->object = "auth";
-		parent::__construct();
-        }
-
-        public function __call($method_name, $args) {
-                $res = $this->post($method_name,$args);
-                return $res;
-        }
-}
-class Consultant extends REST_client{
-        public function __construct() {        
-                $this->object = "Consultant";
-		parent::__construct();
-        }	
-
-        public function __call($method_name, $args) {
-		$res = $this->post($method_name,$args);
-		return $res;
-        }
-}
-class Demande extends REST_client{
-        public function __construct() {
-                $this->object = "Demande";
-                parent::__construct();
-        }
-
-        public function __call($method_name, $args) {
-                $res = $this->post($method_name,$args);
-                return $res;
-        }
-}
-*/
 
 ?>

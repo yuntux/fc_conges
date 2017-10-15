@@ -8,9 +8,6 @@ $REST_CLIENT = new REST_client("helpers");
 $auth = new REST_client("auth");
 $CONSULTANT = new REST_client("Consultant"); 
 $DEMANDE = new REST_client("Demande"); 
-//$auth = new Auth();
-//$CONSULTANT = new Consultant(); 
-//$DEMANDE = new Demande(); 
 
 function get_action(){
 	$action = null;
