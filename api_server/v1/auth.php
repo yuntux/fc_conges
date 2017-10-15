@@ -3,17 +3,31 @@ class auth extends server_api {
 
         public $CONSULTANT;
         public $DEMANDE;
+	public $bdd;
 
         public function __construct($bdd) {
                 parent::__construct($bdd);
 		$this->CONSULTANT = new Consultant($bdd);
 		$this->DEMANDE = new Demande($bdd);
+		$this->bdd = $bdd;
         }
 
 	public function init_consultant_pass_from_login($login){
 		$id=$this->CONSULTANT->get_id_from_login($login);	
 		return $this->CONSULTANT->init_password($id);
 	} 
+
+	public function deconnect(){
+		$protected_object = new server_api_authentificated($this->bdd);
+	        $auth_ok = $protected_object->check_token_validity();
+                if ($auth_ok==False) {
+                        return "Error auth";
+                } else {
+			unset($_SESSION);
+			session_destroy();	
+			return True;
+		}
+	}
 
 	public function login_password($login,$password_given){
 

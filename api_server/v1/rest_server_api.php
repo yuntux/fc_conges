@@ -47,5 +47,4 @@ class server_api_authentificated extends server_api{
 	}
 }
 
-
 ?>

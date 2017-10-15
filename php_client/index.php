@@ -1,11 +1,16 @@
 <?php 
 session_start();
+//echo "Session id local auprès du client php : ".session_id();
 $EMAIL_CDG = 'validation_conges_cdg@fontaine-consultants.fr';
 include("model/rest_client.php");
 
-$REST_CLIENT = new REST_client(); 
-$CONSULTANT = new Consultant(); 
-$DEMANDE = new Demande(); 
+$REST_CLIENT = new REST_client("helpers"); 
+$auth = new REST_client("auth");
+$CONSULTANT = new REST_client("Consultant"); 
+$DEMANDE = new REST_client("Demande"); 
+//$auth = new Auth();
+//$CONSULTANT = new Consultant(); 
+//$DEMANDE = new Demande(); 
 
 function get_action(){
 	$action = null;

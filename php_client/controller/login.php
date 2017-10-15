@@ -3,7 +3,6 @@
 if(!empty($_SESSION['id']))
 	header("Location: ?action=home");
 
-$auth = new Auth();
 
 if (isset($_POST['bouton_login'])){
 	if(!empty($_POST['login']) && !empty($_POST['password']))

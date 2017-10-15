@@ -90,7 +90,7 @@ function nombre_jours_a_poser(){
 			return false;
 		}
 		var req = new XMLHttpRequest();
-		var url =  "<?php echo $REST_CLIENT->get_url("nbJoursAPoser","helpers");?>";
+		var url =  "<?php echo $REST_CLIENT->get_url_auth("nbJoursAPoser","helpers");?>";
 		var args = Array(d1,d2,demidebut,demifin);
 		url=url+"&args_array="+encodeURI(btoa(JSON.stringify(args)));
 		//alert(url);
