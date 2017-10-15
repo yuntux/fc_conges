@@ -1,92 +1,7 @@
 <?php
 
-function generate_pdf($html_input,$id_pdf,$nom_fichier){
-	require_once('../tcpdf/config/lang/fra.php');
-	require_once('../tcpdf/tcpdf.php');
-
-
-
-	//$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-	$pdf = new TCPDF("LANDSCAPE", PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-	// set header and footer fonts
-	//$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-	//$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-	$pdf->setPrintHeader(false);
-	$pdf->setPrintFooter(false);
-
-	// set default monospaced font
-	$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-	//set margins
-	$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-	$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-	$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-	//set auto page breaks
-	$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-	//set image scale factor
-	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-	//set some language-dependent strings
-	$pdf->setLanguageArray($l);
-
-	// ---------------------------------------------------------
-
-	// add a page
-	$pdf->AddPage();
-
-	$pdf->SetFont('helvetica', '', 8);
-	// -----------------------------------------------------------------------------
-
-	// Set some content to print
-	$css = file_get_contents('../view/Style.css');
-	$contenu_html = '<html lang="fr">
-        <head>
-		<meta charset="utf-8">
-                <title>FC congès</title>
-                <link rel="stylesheet" media="screen" type="text/css" href="../view/Style.css" />
-<style>.solid_table table
-
-{
-
-    border-collapse: collapse;
-
-}
-
-.solid_table td, th /* Mettre une bordure sur les td ET les th */
-
-{
-
-    border-collapse: collapse;
-    border: 1px solid black;
-
-}
-</style>
-        </head>
-        <body>'.$contenu_html.'
-	</body>
-	</html>';
-
-	$contenu_html= explode( '<---- TDPDF_PAGE_BREAK ---->', $html_input);
-
-	foreach ($contenu_html as $page){
-		$pdf->writeHTML($page, true, false, false, false, '');
-		$pdf->AddPage();
-	}
-	// Print text using writeHTMLCell()
-	//$pdf->writeHTML($contenu_html, true, false, false, false, '');
-
-	// This method has several options, check the source code documentation for more information.
-	$pdf->Output($nom_fichier.'.pdf', 'I');
-}
-
-//echo base64_decode($_POST['html_content']);
-//generate_pdf(base64_decode($_POST['html_content']),"1","Fiches mensuelles");
-
-
-	$css = file_get_contents('../view/Style.css');
-	$contenu_html = '<html lang="fr">
+$css = file_get_contents('../view/Style.css');
+$contenu_html = '<html lang="fr">
         <head>
 		<meta charset="utf-8">
                 <title>FC congès</title>
@@ -113,8 +28,29 @@ function generate_pdf($html_input,$id_pdf,$nom_fichier){
 	</body>
 	</html>';
 
-	//$contenu_html= explode( '<---- TDPDF_PAGE_BREAK ---->', $html_input);
 
+function deleteDirectory($dir) {
+    if (!file_exists($dir)) {
+        return true;
+    }
+
+    if (!is_dir($dir)) {
+        return unlink($dir);
+    }
+
+    foreach (scandir($dir) as $item) {
+        if ($item == '.' || $item == '..') {
+            continue;
+        }
+
+        if (!deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) {
+            return false;
+        }
+
+    }
+
+    return rmdir($dir);
+}
 
 $id = uniqid();
 $path = '/tmp/'.$id;
@@ -138,6 +74,6 @@ ob_clean();
 flush(); 
 echo $pdf;
 
-rmdir($path);
+deleteDirectory($path);
 
 ?>

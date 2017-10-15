@@ -15,7 +15,7 @@
 		$nbjrsCP=$_POST['nbjrsCP'];
 		
 		$res = $DEMANDE->enregistrer_demande($dateFromDu,$dateFromAu,$thelistMM,$thelistMS,$thelistDM,$commentaire,$nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP);
-		if ($res == True){
+		if ($res === True){
 			$message_succes = "Demande de congés enregistrée.";
 			$view_to_display='home.php';
 		} else {

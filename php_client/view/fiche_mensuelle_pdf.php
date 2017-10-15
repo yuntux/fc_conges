@@ -42,7 +42,6 @@ function tab_periode($debut_periode,$fin_periode_str,$tab_annuel){
 		{
 			$jour_fr = date('d/m',strtotime($jour));
 			$tab.='<td colspan=2>'.$jour_fr.'</td>';
-		//	$tab.='<td>'.$jour.'</td>'; //TODO : fusionner les deux
 			$jour = lendemain($jour);
 		}
 	$tab.=  '</tr>';
@@ -121,7 +120,6 @@ foreach ($liste_conges as $conges){
 	$sans_solde_restant = $conges['SS_CONGES'];
 	$autre_restant = $conges['AUTRE_CONGES'];
 
-//TODO : contrôler qu'on a bien des multiples de 0.5 lors de la saisie des demandes
 
 	while ($jour <= $conges['FIN_CONGES'] && $jour<= $fin_periode_str)
 	{	

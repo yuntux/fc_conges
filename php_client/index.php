@@ -34,11 +34,17 @@ include("view/".$view_to_display);
 include("view/foot.php");
 
 /*TODO 
+Technique : 
 - gestion des erreurs stricte : systématiser l'usage des exception. Remonter au client un status en erreur par le code de retour HTTP / 200 / 403(droits) /etc 
+- encapsulation dans des transactions ACID
+- revue des droits
+- contrôler qu'on a bien des multiples de 0.5 jour par catégorie lors de la saisie des demandes
 
+Fonctionnel :
 - gestion des CP et RTT n-2
 - bouton re RAZ des compteur au 31/12 et 31/05
-- validation automatique des demandes des membres du CDG
+- visualisation des soldes projetés au mois le mois, ou au moins au 31/12 pour les CP et au 31/05 pour les RTT => revoir le MDD pour les soldes et acquis
+- validation automatique des demandes des membres du CDG / masquer le champ "dm" pour eux dans le formulaire
 - annulation automatique des demandes nont traitée le jour du démarrage du congés ?
 - dissocier l'annulation par le consultant d'une demande envoyée au DM mais pas encore validée par le DM d'une demande supprimée par le consultant avant envoie au DM ?
 	=> inutile s'il on supprimer l'étape d'envoie au DM (on ne laisse qu'un bouton Enregistrer et envoyer au DM" au bas du formulaire de saisie

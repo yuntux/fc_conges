@@ -13,18 +13,19 @@ function return_isset($post_name){
 		return "";
 }
 ?>
-					<p style="width:90%;margin-bottom:20px;"><label for="du">Du : </label><input type="text" class="widget_calendar" name="dateFromDu" id ="dateFromDu" onchange="nombre_jours_a_poser()" value="<?php return_isset('dateFromDu') ?>" />
+					<p style="width:90%;margin-bottom:20px;"><label for="du">Du : </label><input type="text" class="widget_calendar" name="dateFromDu" id ="dateFromDu" onchange="nombre_jours_a_poser()" value="<?php echo return_isset('dateFromDu'); ?>" />
 					<select name="thelistMM" id ="thelistMM" onchange="nombre_jours_a_poser()">
 						<option<?php if (return_isset('thelistMM')=='Matin') echo 'selected';?>>Matin</option>
 						<option<?php if (return_isset('thelistMM')=='Midi') echo 'selected';?>>Midi</option>
 					</select></p>
-					<p style="margin-bottom:20px;"><label for="du">Au :  </label><input type="text" class="widget_calendar" name="dateFromAu" id ="dateFromAu" onchange="nombre_jours_a_poser()" value="<?php return_isset('dateFromAu') ?>" />
+					<p style="margin-bottom:20px;"><label for="du">Au :  </label><input type="text" class="widget_calendar" name="dateFromAu" id ="dateFromAu" onchange="nombre_jours_a_poser()" value="<?php echo return_isset('dateFromAu'); ?>" />
 					<select name="thelistMS" id ="thelistMS" onchange="nombre_jours_a_poser()">
 						<option<?php if (return_isset('thelistMS')=='Soir') echo 'selected';?>>Soir</option>						  
 						<option<?php if (return_isset('thelistMS')=='Midi') echo 'selected';?>>Midi</option>						  
 					</select></p>
 					<b>Attention : contrairement à  l'ancien système, indiquer ici le dernier jour de congès et non pas le jour de la reprise.</b>
-					<p id="nbJrs"></p><input type="hidden" name="nbJrs_hidden" id="nbJrs_hidden" value="<?php return_isset('nbJrs_hidden');?>"/>
+					<br>Nombre de jours de repos à répartir : <div style="display: inline-block;" id="nbJrs"><?php if (return_isset('nbJrs_hidden') != "") echo return_isset('nbJrs_hidden'); else echo "0";?></div><br>
+					<input type="hidden" name="nbJrs_hidden" id="nbJrs_hidden" value="<?php if (return_isset('nbJrs_hidden') != "") echo return_isset('nbJrs_hidden'); else echo "0";?>"/>
 					<p style="width:90%;margin-bottom:20px;"><label for="au" style="margin-right:38px";>Directeur de mission : </label>
 					<select name="thelistDM">
 						<?php 
@@ -53,15 +54,15 @@ function return_isset($post_name){
 							<td style="width:20%;">Jours Autres</td>
 						</tr>
 						<tr>
-							<td><input type="text" name="nbjrsCP" id="nbjrsCP" style="width:50%;" value="<?php return_isset('nbjrsCP');?>"/></td>
-							<td><input type="text" name="nbjrsRTT" id="nbjrsRTT" style="width:50%;" value="<?php return_isset('nbjrsRTT');?>"/></td>
-							<td><input type="text" name="nbjrsConv" id="nbjrsConv" style="width:50%;" value="<?php return_isset('nbjrsConv');?>"/></td>
-							<td><input type="text" name="nbjrsSS" id="nbjrsSS" style="width:50%;" value="<?php return_isset('nbjrsSS');?>"/></td>
-							<td><input type="text" name="nbjrsAutres"  id="nbjrsAutres" style="width:50%;" value="<?php return_isset('nbjrsAutres');?>"/></td>
+							<td><input type="text" name="nbjrsCP" id="nbjrsCP" style="width:50%;" value="<?php echo return_isset('nbjrsCP');?>"/></td>
+							<td><input type="text" name="nbjrsRTT" id="nbjrsRTT" style="width:50%;" value="<?php echo return_isset('nbjrsRTT');?>"/></td>
+							<td><input type="text" name="nbjrsConv" id="nbjrsConv" style="width:50%;" value="<?php echo return_isset('nbjrsConv');?>"/></td>
+							<td><input type="text" name="nbjrsSS" id="nbjrsSS" style="width:50%;" value="<?php echo return_isset('nbjrsSS');?>"/></td>
+							<td><input type="text" name="nbjrsAutres"  id="nbjrsAutres" style="width:50%;" value="<?php echo return_isset('nbjrsAutres');?>"/></td>
 						</tr>
 					</table>
 					<p style="margin-top: 50px;">Commentaire</p>
-					<p><textarea name="commentaire" id="commentaire" style="width: 100%;height:50px;"><?php return_isset('commentaire');?></textarea>
+					<p><textarea name="commentaire" id="commentaire" style="width: 100%;height:50px;"><?php echo return_isset('commentaire');?></textarea>
 					<p style="float:right">
 						<input type="submit" value="Valider" name="Envoyer" style=""/>
 					</p>	
@@ -99,7 +100,7 @@ function nombre_jours_a_poser(){
 				var diffj = req.responseText;
 				//diffj = JSON.parse(diffj);
 				//alert(diffj);
-				document.getElementById('nbJrs').innerHTML = 'Nombre de jours de repos à répartir : '+diffj+' jours.';
+				document.getElementById('nbJrs').innerHTML = diffj;
 				document.getElementById('nbJrs_hidden').value = diffj;
 			}
 		}
