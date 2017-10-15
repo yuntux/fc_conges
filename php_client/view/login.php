@@ -19,8 +19,8 @@
 						<td><input type="checkbox" name="auto_connect" value="Y"/></td>
 					</tr>
 					<tr>
-						<td><input type="submit" value="submit" /></td>
-						<td><input type="submit" name="mdp_oublie" value="mdp_oublie" /></td>
+						<td><input type="submit" value="Login" /></td>
+						<td><input type="submit" name="mdp_oublie" value="Mot de passe oublié." /></td>
 					</tr>
 				</tbody>
 			</table>
