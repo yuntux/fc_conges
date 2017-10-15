@@ -51,7 +51,6 @@ echo $url.'<br>';
 			$message_erreur = 'Session inactive.';
 			include("controller/deconnexion.php"); 	
 		} else {
-echo "=>".$result."<=";
 			return $result;
 		}
 	}

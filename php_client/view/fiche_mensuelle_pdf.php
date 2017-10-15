@@ -2,10 +2,21 @@
 
 include_once("../api_server/v1/lib_date.php");
 
+$color = array();
+$color['RH']="#c0c0c0";
+$color['F']="grey";
+$color['CP']="yellow";
+$color['RTT']="green";
+$color['CONV']="orange";
+$color['SS']="brown";
+$color['AA']="pink";
+$color['TRA']="white";
+
 function tab_synthese($compteur_periode){
+	global $color;
 	$s = '<div class="solid_table"><table style="width:10cm; height:3cm;font-size:26px; text-align:center; ">';
 	$s.= "<tr><td>RH</td><td>F</td><td>CP</td><td>JR</td><td>JC</td><td>JSS</td><td>AA</td></tr>";
-	$s.= "<tr><td>".$compteur_periode['RH']."</td><td>".$compteur_periode['F']."</td><td>".$compteur_periode['CP']."</td><td>".$compteur_periode['RTT']."</td><td>".$compteur_periode['CONV']."</td><td>".$compteur_periode['SS']."</td><td>".$compteur_periode['AUTRE']."</td></tr>";
+	$s.= "<tr><td style='background-color : ".$color['RH']."'>".$compteur_periode['RH']."</td><td style='background-color : ".$color['F']."'>".$compteur_periode['F']."</td><td style='background-color : ".$color['CP']."'>".$compteur_periode['CP']."</td><td style='background-color : ".$color['RTT']."'>".$compteur_periode['RTT']."</td><td style='background-color : ".$color['CONV']."'>".$compteur_periode['CONV']."</td><td style='background-color : ".$color['SS']."'>".$compteur_periode['SS']."</td><td style='background-color : ".$color['AA']."'>".$compteur_periode['AUTRE']."</td></tr>";
 	$s.= "</table></div>";
 	return $s;
 }
@@ -23,17 +34,7 @@ while ($jour <= $date_fin){
 }
 
 function tab_periode($debut_periode,$fin_periode_str,$tab_annuel){
-$color = array();
-$color['RH']="#c0c0c0";
-$color['F']="grey";
-$color['CP']="yellow";
-$color['JR']="green";
-$color['JC']="orange";
-$color['JSS']="pink";
-$color['AA']="white";
-$color['TRA']="white";
-
-
+	global $color;
 	$tab = '<div class="solid_table"><table style="width:50cm; height:3cm;font-size:26px; text-align:center;">';
 	$tab.=  '<tr>';
 		$jour = $debut_periode;
@@ -56,14 +57,14 @@ $color['TRA']="white";
 		}
 	$tab.=  '</tr>';
 
-	$tab.=  '<tr>';
+	$tab.=  '<tr style="height:100%;">';
 		$jour = $debut_periode;
 		while ($jour <= $fin_periode_str)
 		{
-			$tab.='<td bgcolor="'.$color[$tab_annuel[$jour]['Matin']].'" style="background-color : '.$color[$tab_annuel[$jour]['Matin']].';">'.$tab_annuel[$jour]['Matin'].'</td>';
-			$tab.='<td bgcolor="'.$color[$tab_annuel[$jour]['Matin']].'" style="background-color : '.$color[$tab_annuel[$jour]['Matin']].';">'.$tab_annuel[$jour]['Soir'].'</td>';
-			//$tab.='<td bgcolor="'.$color[$tab_annuel[$jour]['Matin']].'" align="center">'.$tab_annuel[$jour]['Matin'].'</td>';
-			//$tab.='<td bgcolor="'.$color[$tab_annuel[$jour]['Matin']].'" align="center">'.$tab_annuel[$jour]['Soir'].'</td>';
+			//$tab.='<td bgcolor="'.$color[$tab_annuel[$jour]['Matin']].'" style="background-color : '.$color[$tab_annuel[$jour]['Matin']].';">'.$tab_annuel[$jour]['Matin'].'</td>';
+			//$tab.='<td bgcolor="'.$color[$tab_annuel[$jour]['Matin']].'" style="background-color : '.$color[$tab_annuel[$jour]['Matin']].';">'.$tab_annuel[$jour]['Soir'].'</td>';
+			$tab.='<td bgcolor="'.$color[$tab_annuel[$jour]['Matin']].'" style="background-color : '.$color[$tab_annuel[$jour]['Matin']].';"></td>';
+			$tab.='<td bgcolor="'.$color[$tab_annuel[$jour]['Matin']].'" style="background-color : '.$color[$tab_annuel[$jour]['Matin']].';"></td>';
 			$jour = lendemain($jour);
 		}
 	$tab.=  '</tr>';
@@ -109,7 +110,8 @@ while ($jour <= $fin_periode_str){
 	$jour = lendemain($jour);
 }
 
-$liste_conges = $DEMANDE->get_list('*', "(CONSULTANT_CONGES = ".$id_consultant." AND DEBUT_CONGES >= ".$debut_annee." AND DEBUT_CONGES <= ".$fin_periode_str.") OR (FIN_CONGES>= ".$debut_annee." AND FIN_CONGES <= ".$fin_periode_str.")",False);
+$filter = "CONSULTANT_CONGES = ".$id_consultant." AND ((DEBUT_CONGES >= '".$debut_annee."' AND DEBUT_CONGES <= '".$fin_periode_str."') OR (FIN_CONGES>= '".$debut_annee."' AND FIN_CONGES <= '".$fin_periode_str."'))"; 
+$liste_conges = $DEMANDE->get_list('*',$filter,False);
 foreach ($liste_conges as $conges){
 	$jour = $conges['DEBUT_CONGES'];
 	$am_pm = $conges['DEBUTMM_CONGES'];
@@ -150,7 +152,7 @@ foreach ($liste_conges as $conges){
 			echo "erreur";
 		}
 
-		if ($am_pm = "Matin") {
+		if ($am_pm == "Matin") {
 			$am_pm = "Soir";
 		} else {
 			$am_pm = "Matin";
@@ -158,7 +160,6 @@ foreach ($liste_conges as $conges){
 		}
 	} 	
 }
-
 $jour = $debut_annee;
 $am_pm = "Matin";
 while ($jour <= $fin_periode_str){
@@ -167,7 +168,9 @@ while ($jour <= $fin_periode_str){
 	}elseif (jrWeekend($jour)==True){
 		$tab_annuel[$jour][$am_pm]="RH";
 	} else {
-		$tab_annuel[$jour][$am_pm]="TRA";
+		if ($tab_annuel[$jour][$am_pm]==""){
+			$tab_annuel[$jour][$am_pm]="TRA";
+		}
 	}
 
 	if ($am_pm == "Matin") {
@@ -240,7 +243,9 @@ $page_2 = "
 $res = "";
 foreach ($liste as $consultant){
 	$detail_consultant = $CONSULTANT->get_by_id($consultant['ID_CONSULTANT']);
-	$res.= get_content($DEMANDE,$consultant['ID_CONSULTANT'],strtotime($_POST['debut_periode']), strtotime($_POST['fin_periode']), $detail_consultant['NOM_CONSULTANT'], $detail_consultant['PRENOM_CONSULTANT']);
+//	if ($consultant['ID_CONSULTANT']==2){
+		$res.= get_content($DEMANDE,$consultant['ID_CONSULTANT'],strtotime($_POST['debut_periode']), strtotime($_POST['fin_periode']), $detail_consultant['NOM_CONSULTANT'], $detail_consultant['PRENOM_CONSULTANT']);
+//	}
 }
 
 echo '<form action="controller/gen_pdf.php" method="post"> 
