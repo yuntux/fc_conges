@@ -22,8 +22,7 @@ if (isset($_POST['bouton_login'])){
 			$_SESSION['mon_token'] = $res['token'];
 
 			$CONSULTANT->trigger_login_solde_conges($res['id']);
-			$message_succes = "Bonjour ".$_SESSION['id'];
-	//		header("Location: index.php?action=home");
+			header("Location: index.php?action=home");
 		}
 	}
 }elseif (isset($_POST['mdp_oublie'])){

@@ -14,13 +14,15 @@
 						<td>Password : </td>
 						<td><input type="password" name="password" /></td>
 					</tr>
+<!--
 					<tr>
 						<td>Connexion automatique</td>
 						<td><input type="checkbox" name="auto_connect" value="Y"/></td>
 					</tr>
+-->
 					<tr>
-						<td><input type="submit" name="bouton_login" value="Login" /></td>
-						<td><input type="submit" name="mdp_oublie" value="Mot de passe oublié." /></td>
+						<td><input type="submit" name="mdp_oublie" value="Mot de passe oublié" style="margin-left: 0em;"/></td>
+						<td><input type="submit" name="bouton_login" value="Connexion" style="margin-left: 0em;"/></td>
 					</tr>
 				</tbody>
 			</table>
