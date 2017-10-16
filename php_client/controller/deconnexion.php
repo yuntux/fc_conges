@@ -1,5 +1,5 @@
 <?php
-  $auth->deconnect();
+//  $auth->deconnect();
   unset($_SESSION);
   session_destroy();
 

@@ -1,5 +1,5 @@
 <?php
-$GUERANDE = "";
+//$GUERANDE = "";
 $DB_TYPE = "mysql";
 $DB_HOST = "localhost";
 $DB_NAME = "fc_conges";

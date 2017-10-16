@@ -77,7 +77,7 @@ class Demande extends server_api_authentificated{
 
 		if($_SESSION['role'] == "DIRECTEUR")
 		{
-			$status = "'ValidÃ©e'"; 
+			$status = "'Validée'"; 
 			$mailtoCOfromDir_ok = True;
 		}
 		elseif ($_SESSION['role'] == "DM")

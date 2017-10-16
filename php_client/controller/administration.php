@@ -1,6 +1,5 @@
 <?php
 
-$liste_consultants = $CONSULTANT->get_list();
 
 if(isset($_POST['search']))
 {
@@ -65,6 +64,7 @@ if(isset($_POST['reinitialiser']))
 	$CONSULTANT->init_password($_POST['COid']);
 }
 
+$liste_consultants = $CONSULTANT->get_list();
 $view_to_display="administration.php";
 
 ?>

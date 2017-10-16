@@ -246,10 +246,10 @@ class Consultant extends server_api_authentificated{
 		#trigramme and email unicity are verified at DB level. Prenom, nom, profil not null too
 		try
 		{
-			$req = $this->bdd->prepare('INSERT INTO `consultant`(`NOM_CONSULTANT`, `PRENOM_CONSULTANT`, `EMAIL_CONSULTANT`, `PROFIL_CONSULTANT`, `TRIGRAMME_CONSULTANT`, `STATUT_CONSULTANT`) VALUES (?,?,?,?,?,?,?)');
+			$req = $this->bdd->prepare('INSERT INTO `consultant`(`NOM_CONSULTANT`, `PRENOM_CONSULTANT`, `EMAIL_CONSULTANT`, `PROFIL_CONSULTANT`, `TRIGRAMME_CONSULTANT`, `STATUT_CONSULTANT`) VALUES (?,?,?,?,?,?)');
 			$req->execute(array($CONom,$COprenom,$COmail,$COprofil,$COTri,1));
 			$max_ID = $this->bdd->lastInsertId();
-			$req = $thi->bdd->prepare('INSERT INTO `acquis`(`ID_ACQUIS`, `CPn_ACQUIS`, `CPn1_ACQUIS`, `RTTn_ACQUIS`, `RTTn1_ACQUIS`, `CONSULTANT_ACQUIS`, `INDICE_ACQUIS`, `DATE_ACQUIS`) VALUES (DEFAULT,?,?,?,?,?,?,CURRENT_DATE)');
+			$req = $this->bdd->prepare('INSERT INTO `acquis`(`ID_ACQUIS`, `CPn_ACQUIS`, `CPn1_ACQUIS`, `RTTn_ACQUIS`, `RTTn1_ACQUIS`, `CONSULTANT_ACQUIS`, `INDICE_ACQUIS`, `DATE_ACQUIS`) VALUES (DEFAULT,?,?,?,?,?,?,CURRENT_DATE)');
 			$req->execute(array(0,0,0,0,$max_ID,1));
 			$req = $this->bdd->prepare('INSERT INTO `solde`(`ID_Solde`, `CPn_SOLDE`, `CPn1_SOLDE`, `RTTn_SOLDE`, `RTTn1_SOLDE`, `CONSULTANT_SOLDE`, `DATE_SOLDE`) VALUES (DEFAULT,?,?,?,?,?,CURRENT_DATE)');
 			$req->execute(array(0,0,0,0,$max_ID));
@@ -257,7 +257,8 @@ class Consultant extends server_api_authentificated{
 		}
 		catch(Exception $e)
 		{
-			die('Erreur : '.$e->POSTMessage());
+echo $e;
+			die('Erreur : '.$e);
 		}
 		return True;
 /*		TODO : catch SLQ error
