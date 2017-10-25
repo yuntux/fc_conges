@@ -1,4 +1,10 @@
 <?php
+	function get_date_french_str($date){
+                if (is_string($date)){
+                        $date = strtotime($date);
+                }
+		return date('d/m/Y', $date);
+	}
 
 	function middle_between_date($date_debut, $date_fin){
 	    $nbjours = round((($date_fin - $date_debut)/(60*60*24)-1)/2,0); //nb jours entres les deux dates

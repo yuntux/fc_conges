@@ -46,10 +46,10 @@
 						?>
 							<tr>
 								<td><?php echo $donnees1['ID_CONGES']; ?></td>
-								<td><?php echo $donnees1['DATEDEM_CONGES']; ?></td>
+								<td><?php echo get_date_french_str($donnees1['DATEDEM_CONGES']); ?></td>
 								<td><?php echo $donnees1['NOM_CONSULTANT']; ?> <?php echo $donnees1['PRENOM_CONSULTANT']; ?></td>
-								<td><?php echo $donnees1['DEBUT_CONGES']; ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
-								<td><?php echo $donnees1['FIN_CONGES']; ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
+								<td><?php echo get_date_french_str($donnees1['DEBUT_CONGES']); ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
+								<td><?php echo get_date_french_str($donnees1['FIN_CONGES']); ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
 								<td><?php echo $type; ?></td>
 								<td><?php echo $donnees1['COMMENTAIRE']; ?></td>
 								<td>
@@ -119,10 +119,10 @@
 						?>
 							<tr>
 								<td><?php echo $donnees1['ID_CONGES']; ?></td>
-								<td><?php echo $donnees1['DATEDEM_CONGES']; ?></td>
+								<td><?php echo get_date_french_str($donnees1['DATEDEM_CONGES']); ?></td>
 								<td><?php echo $donnees1['NOM_CONSULTANT']; ?> <?php echo $donnees1['PRENOM_CONSULTANT']; ?></td>
-								<td><?php echo $donnees1['DEBUT_CONGES']; ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
-								<td><?php echo $donnees1['FIN_CONGES']; ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
+								<td><?php echo get_date_french_str($donnees1['DEBUT_CONGES']); ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
+								<td><?php echo get_date_french_str($donnees1['FIN_CONGES']); ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
 								<td><?php echo $type; ?></td>
 								<td><?php echo $donnees1['COMMENTAIRE']; ?></td>
 								<td><?php echo $donnees1['STATUT_CONGES']; ?></td>

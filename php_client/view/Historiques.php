@@ -24,9 +24,9 @@
 					{
 					?>
 						<tr>
-							<td><?php echo $donnees1['DATEDEM_CONGES']; ?></td>
-							<td><?php echo $donnees1['DEBUT_CONGES']; ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
-							<td><?php echo $donnees1['FIN_CONGES']; ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
+							<td><?php echo get_date_french_str($donnees1['DATEDEM_CONGES']); ?></td>
+							<td><?php echo get_date_french_str($donnees1['DEBUT_CONGES']); ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
+							<td><?php echo get_date_french_str($donnees1['FIN_CONGES']); ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
 							<td><?php echo $donnees1['NBJRS_CONGES']." jour(s)"; ?></td>
 							<?php
 								$cp = $donnees1['CP_CONGES'];
@@ -99,9 +99,9 @@
 					{
 					?>
 						<tr>
-							<td><?php echo $donnees1['DATEDEM_CONGES']; ?></td>
-							<td><?php echo $donnees1['DEBUT_CONGES']; ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
-							<td><?php echo $donnees1['FIN_CONGES']; ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
+							<td><?php echo get_date_french_str($donnees1['DATEDEM_CONGES']); ?></td>
+							<td><?php echo get_date_french_str($donnees1['DEBUT_CONGES']); ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
+							<td><?php echo get_date_french_str($donnees1['FIN_CONGES']); ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
 							<td><?php echo $donnees1['NBJRS_CONGES']." jour(s)"; ?></td>
 							<?php
 								$cp = $donnees1['CP_CONGES'];

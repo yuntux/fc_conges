@@ -226,7 +226,8 @@ table {
   font-weight: 400;
   color: #5f6062;
   font-size: 13px;
-  padding-left: 20px;
+  text-align:center;
+  /*padding-left: 20px;*/
   border-bottom: 1px solid #e0e0e0;
 }
 

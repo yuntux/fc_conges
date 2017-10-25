@@ -1,4 +1,9 @@
-<h2>Vision générale</h2>
+                        <div id="bloc_donnees">
+                                <div id="entete_bloc_donnees">
+					<h2>Vision générale</h2>
+                                </div>
+                                <div id="bloc_donnees1" style="width: 100%">
+                                        <h2>Calendrier</h2>
 	<table style="font-size:10px;">
 		<tr  style=" width: 620px;">
 			<td style=" width: 100px;text-align:left;">Consultant</td>
@@ -79,3 +84,4 @@
 		}
 			?>
 	</table>
+</div>

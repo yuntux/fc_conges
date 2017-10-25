@@ -1,7 +1,4 @@
 <?php
-
-include_once("../api_server/v1/lib_date.php");
-
 $color = array();
 $color['RH']="#c0c0c0";
 $color['F']="grey";
