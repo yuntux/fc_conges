@@ -124,35 +124,30 @@ foreach ($liste_conges as $conges){
 
 	while ($jour <= $conges['FIN_CONGES'] && $jour<= $fin_periode_str)
 	{	
-		if ($jour < $debut_annee){
-			continue;
-		}
+		if (($jour >= $debut_annee) and !($jour == $conges['FIN_CONGES'] && $conges['FINMS_CONGES'] == "Matin")){
 
-		if ($jour == $conges['FIN_CONGES'] && $conges['FINMM_CONGES'] == "Matin"){
-			continue;
-		}
-
-		if (jrFerie($jour)==True){
-			//$jours_ferie.append($jour)
-		}elseif (jrWeekend($jour)==True){
-			//$jours_rh.append($jour);
-		}elseif ($cp_restant>0){
-			$tab_annuel[$jour][$am_pm]="CP";
-			$cp_restant = $cp_restant-0.5;
-		}elseif ($rtt_restant>0){
-			$tab_annuel[$jour][$am_pm]="RTT";
-			$rtt_restant = $rtt_restant-0.5;
-		}elseif ($conventionnel_restant>0){
-			$tab_annuel[$jour][$am_pm]="CONV";
-			$conventionnel_restant = $conventionnel_restant-0.5;
-		}elseif ($sans_solde_restant>0){
-			$tab_annuel[$jour][$am_pm]="SS";
-			$sans_solde_restant = $sans_solde_restant-0.5;
-		}elseif ($autre_restant>0){
-			$tab_annuel[$jour][$am_pm]="AUTRE";
-			$autre_restant = $autre_restant-0.5;
-		} else {
-			echo "erreur";
+			if (jrFerie($jour)==True){
+				//$jours_ferie.append($jour)
+			}elseif (jrWeekend($jour)==True){
+				//$jours_rh.append($jour);
+			}elseif ($cp_restant>0){
+				$tab_annuel[$jour][$am_pm]="CP";
+				$cp_restant = $cp_restant-0.5;
+			}elseif ($rtt_restant>0){
+				$tab_annuel[$jour][$am_pm]="RTT";
+				$rtt_restant = $rtt_restant-0.5;
+			}elseif ($conventionnel_restant>0){
+				$tab_annuel[$jour][$am_pm]="CONV";
+				$conventionnel_restant = $conventionnel_restant-0.5;
+			}elseif ($sans_solde_restant>0){
+				$tab_annuel[$jour][$am_pm]="SS";
+				$sans_solde_restant = $sans_solde_restant-0.5;
+			}elseif ($autre_restant>0){
+				$tab_annuel[$jour][$am_pm]="AUTRE";
+				$autre_restant = $autre_restant-0.5;
+			} else {
+				echo "erreur";
+			}
 		}
 
 		if ($am_pm == "Matin") {
