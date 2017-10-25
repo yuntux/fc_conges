@@ -275,6 +275,12 @@ class Demande extends server_api_authentificated{
 		$nbjrsTotal = $nbjrsCP + $nbjrsRTT + $nbjrsSS + $nbjrsConv + $nbjrsAutres;
 		$nb_jours_a_poser = $this->nbJoursAPoser($dateFromDu,$dateFromAu,$thelistMM,$thelistMS);
 
+		$filter = "CONSULTANT_CONGES = ".$consultant." AND (STATUT_CONGES NOT IN ('Annulée DM','Annulée Direction','Annulée')) AND (FIN_CONGES >= '".$dateFromDu."' AND DEBUT_CONGES <= '".$dateFromAu."')";
+		$overlap_list = $this->get_list('*',$filter,False);
+		if (count($overlap_list)>0){
+			$message_erreur = "Il y a un chevauchement entre la demande à enregistrer et une autre demande non annulée.";
+		}
+
 		$multiple_05 = True;
 		foreach (Array($nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP) as $nb_jour_cat){
 			if ((10*$nb_jour_cat) % 5 != 0){
@@ -283,7 +289,7 @@ class Demande extends server_api_authentificated{
 		}
 //TODO : check overlape with other vacation periods
 		if ($dateFromDu > $dateFromAu) {
-			$message_erreur = "La date de fin ne doit pas etre anterieure Ã  la date de dÃ©bt";
+			$message_erreur = "La date de fin ne doit pas etre anterieure à la date de début";
 		}else if ($nbjrsTotal != $nb_jours_a_poser) {
 			$message_erreur = "Le nombre de jours ventilÃ© n'est pas Ã©gal au nombre de jours ouvrÃ©s.";
 		}else if ($multiple_05!=True) {
