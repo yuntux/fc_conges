@@ -41,12 +41,11 @@ Technique :
 - debug du module d'envoie de mail => fonction vers Gmail mais pas fontaine-consultants.fr => pb antispam ?
 - revue des droits
 - supprimer les trigrammes
-- gestion des erreurs stricte : systématiser l'usage des exception. Remonter au client un status en erreur par le code de retour HTTP / 200 / 403(droits) /etc 
+- gestion des erreurs strictes : systématiser l'usage des exception. Remonter au client un status en erreur par le code de retour HTTP / 200 / 403(droits) /etc 
 - encapsulation dans des transactions ACID
 - vérifier les try/catch et les close cursor pour chaque requete dans les modeles
 
 Fonctionnel :
-- vérifier le non chevauchement de deux zones de congès 
 - gestion en dur des 2 jours de repos imposés chez FC / y compris à l'arrivée de nouveaux consultants en cours d'année.
 - bouton re RAZ des compteur au 31/12 et 31/05
 - gestion des CP et RTT n-2

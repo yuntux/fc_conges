@@ -32,53 +32,53 @@ class Demande extends server_api_authentificated{
 		return $req->fetch()['VALIDEUR_CONGES'];
 	}
 
-	public function mail_statut($id_demande, $mailtoDMfromCO=False, $mailtoCOfromDir_ok=False, $mailtoCOfromDM_ok=False, $mailtoDirfromDM=False, $mailtoCOfromDM_ko=False, $mailtoCOfromDir_ko=False)
-	{
-		global $EMAIL_CDC;
+	public function get_data_notification_mail($id_demande){
 		$q ='SELECT b.NOM_CONSULTANT, b.PRENOM_CONSULTANT, b.EMAIL_CONSULTANT, a.VALIDEUR_CONGES, a.DEBUT_CONGES, a.FIN_CONGES, a.DEBUTMM_CONGES, a.FINMS_CONGES  FROM conges a, consultant b WHERE a.CONSULTANT_CONGES = b.ID_CONSULTANT and a.ID_CONGES = '.$id_demande.';';
 //		error_log("TEST => ".$q, 3,"/tmp/test.log");
 		$reponse1 = $this->bdd->query($q);
 		$donnees1 = $reponse1->fetch();
-			$NOM_CONSULTANT = $donnees1['NOM_CONSULTANT'];
-			$PRENOM_CONSULTANT = $donnees1['PRENOM_CONSULTANT'];
-			$EMAIL_CONSULTANT = $donnees1['EMAIL_CONSULTANT'];
-			$FIN_CONGES = $donnees1['FIN_CONGES'];
-			$DEBUT_CONGES = $donnees1['DEBUT_CONGES'];
-			$FINMS_CONGES = $donnees1['FINMS_CONGES'];
-			$DEBUTMM_CONGES = $donnees1['DEBUTMM_CONGES'];
-			$VALIDEUR_CONGES = $donnees1['VALIDEUR_CONGES'];
+		return $donnees1;
+	}
 
-		if ($mailtoCOfromDir_ok)
-			mailtoCOfromDir_ok($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-		if ($mailtoCOfromDM_ok)
-                        mailtoCOfromDM_ok($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-		if ($mailtoDirfromDM)
-			mailtoDirfromDM($EMAIL_CDG, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $TRI_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-		if ($mailtoDMfromCO)
-		{
-			$EMAIL_DM = $this->bdd->query('SELECT * FROM consultant WHERE ID_CONSULTANT = '.$VALIDEUR_CONGES)->fetch();
-			$EMAIL_DM = $EMAIL_DM['EMAIL_CONSULTANT'];
-			mailtoDMfromCO($EMAIL_DM, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
+	public function notification_mail_demande_a_valider($id_demande, $target_role){
+		global $EMAIL_CDC;
+		$demande = $this->get_data_notification_mail($id_demande);
+		$message_html = '<html>
+					<body>
+						<p style="margin-bottom:10px;">Bonjour,</p>
+						<p style="margin-bottom:10px;">Vous avez reçu une demande de congés à valider de la part de '.$demande['NOM_CONSULTANT']." ".$demande['PRENOM_CONSULTANT'].'. Cette demande de congés est du '.$demande['DEBUT_CONGES']." ".$demande['DEBUTMM_CONGES'].' au '.$demande['FIN_CONGES']." ".$demande['FINMS_CONGES'].'.</p>
+						<p style="margin-bottom:20px;">Cordialement</p>
+					</body>
+				</html>';
+
+		if ($target_role == "DM"){
+			$EMAIL_DM = $this->bdd->query('SELECT * FROM consultant WHERE ID_CONSULTANT = '.$demande['VALIDEUR_CONGES'])->fetch();
+                        $email = $EMAIL_DM['EMAIL_CONSULTANT'];
+		} elseif ($target_role == "CDG"){
+			$email = $EMAIL_CDC;
 		}
-		if ($mailtoCOfromDM_ko)
-                        mailtoCOfromDM_ko($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
-		if ($mailtoCOfromDir_ko)
-                        mailtoCOfromDir_ko($EMAIL_CONSULTANT, $NOM_CONSULTANT, $PRENOM_CONSULTANT, $DEBUT_CONGES, $DEBUTMM_CONGES, $FIN_CONGES, $FINMS_CONGES);
+		mail_gateway($email,"Nouvelle demande de congés à valider",$message_html);
+	}
 
+	public function notification_mail_demande_change_status($id_demande){
+		$demande = $this->get_data_notification_mail($id_demande);
+//		error_log("TEST => ".$q, 3,"/tmp/test.log");
+
+		$message_html = '<html>
+					<body>
+						<p style="margin-bottom:10px;">Bonjour '.$demande['NOM_CONSULTANT']." ".$demande['PRENOM_CONSULTANT'].',</p>
+						<p style="margin-bottom:10px;">Votre demande de congés numéro '.$demande['ID_CONGES'].' du '.$demande['DEBUT_CONGES']." ".$demande['DEBUTMM_CONGES'].' au '.$demande['FIN_CONGES']." ".$demande['FINMS_CONGES'].' passe au statut '.$demande['STATUT_CONGES'].'.</p>
+						<p style="margin-bottom:20px;">Cordialement</p>
+					</body>
+				</html>';
+
+		mail_gateway($demande['EMAIL_CONSULTANT'],"Évolution de votre demande de congés",$message_html);
 	}
 
         public function valider($id_demande){
-		$mailtoDMfromCO = False;
-		$mailtoCOfromDir_ok = False;
-		$mailtoGCOfromDM_ok = False;
-		$mailtoDirfromDM = False;
-		$mailtoCOfromDM_ko = False;
-		$mailtoCOfromDir_ko = False;
-
 		if($_SESSION['role'] == "DIRECTEUR")
 		{
 			$status = "'Validée'"; 
-			$mailtoCOfromDir_ok = True;
 		}
 		elseif ($_SESSION['role'] == "DM")
 		{
@@ -90,7 +90,6 @@ class Demande extends server_api_authentificated{
 			else
 			{
 				$status = "'En cours de validation Direction'"; 
-				$mailtoCOfromDM_ok = True;
 				$mailtoDirfromDM = True;
 			}		
 		}
@@ -115,7 +114,7 @@ class Demande extends server_api_authentificated{
                 {
                         die('Erreur : '.$e->POSTMessage());
                 }
-		$this->mail_statut($id_demande, $mailtoDMfromCO, $mailtoCOfromDir_ok, $mailtoCOfromDM_ok, $mailtoDirfromDM, $mailtoCOfromDM_ko, $mailtoCOfromDir_ko);
+		notification_mail_demande_change_status($id_demande);
 		return True;
         }
 	

@@ -14,7 +14,6 @@
 								<th>Jours posés</th>
 								<th>Statut</th>
 								<th>Valideur</th>
-								<th>Envoyer</th>
 								<th>Annuler</th>
 							</tr>
 						</thead>
@@ -54,16 +53,6 @@
 							<td><?php echo $type; ?></td>
 							<td><?php echo $donnees1['STATUT_CONGES']; ?></td>
 							<td><?php echo $donnees1[27].' '.$donnees1[26]; ?></td>
-							<td>
-								<form action="?action=Historiques" method="post">
-									<?php 
-									if($donnees1['STATUT_CONGES'] == "Attente envoie"){
-										echo '<input type="submit" value="Envoyer" name="send" />' ;
-										echo '<input type="hidden" name="id_conges" value="'.$donnees1['ID_CONGES'].'" />' ;
-									}	
-									?>
-								</form>
-							</td>
 							<td>
 								<form action="?action=Historiques" method="post">
 									<?php 
