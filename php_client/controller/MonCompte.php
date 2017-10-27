@@ -18,6 +18,8 @@ if (isset($_POST['bouton_nouveauMdP']))
 }
 
 
+/*
+Demande de Denis du 27 octobre 2017 : les consultants ne doivent pas pouvoir ajuster eux-même leur solde.
 if(isset($_POST['bouton_soldes']))
 {
 	$AcquisCPn1=$_POST['AcquisCPn1'];
@@ -33,6 +35,7 @@ if(isset($_POST['bouton_soldes']))
 	$CONSULTANT->set_solde($id_consultant,$SoldeCPn,$SoldeCPn1,$SoldeRTTn,$SoldeRTTn1);
 	$CONSULTANT->set_acquis($id_consultant,$AcquisCPn,$AcquisCPn1,$AcquisRTTn,$AcquisRTTn1);
 }
+*/
 
 $acquis = $CONSULTANT->get_acquis($_SESSION['id']);
 $ACQUIS_RTTn1 = $acquis['RTTn1_ACQUIS']; 

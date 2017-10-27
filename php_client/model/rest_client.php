@@ -38,7 +38,9 @@ class REST_client{
 		    )
 		);
 		$context  = stream_context_create($options);
-echo '<br>MODE DEBUG / URL appelée par le client PHP - endPoint de l\'API => '.$url;
+if ($_SESSION['login']=='adumaine@fontaine-consultants.fr'){
+	echo '<br>MODE DEBUG / URL appelée par le client PHP - endPoint de l\'API => '.$url;
+}
 		$result = file_get_contents($url, false, $context);
 		$result = json_decode($result,True);
 		if ($result === "Error auth"){ //ATTENTION : la tiple égalité est primmordiale !!

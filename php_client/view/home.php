@@ -8,7 +8,7 @@
 					?>	
 					<br><br>
 					<h2>Tableau des soldes</h2>
-					Ces soldes sont le reflet d'une estimation limitée et donnés à titre indicatifs. Vous pouvez ajuster manuellement cette estimation via le menu "Mon compte".  <b>Vos soldes réels ne sont disponibles que sur vos bulletins de paie, avec un mois de décalage.</b>
+					Ces soldes sont le reflet d'une estimation limitée et donnés à titre indicatif. <b>Vos soldes réels ne sont disponibles que sur vos bulletins de paie, avec un mois de décalage.</b>
 					<table id="background-image" class="styletab">
 						<thead>
 							<tr>

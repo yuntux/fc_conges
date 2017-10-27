@@ -37,7 +37,18 @@ include("view/".$view_to_display);
 include("view/foot.php");
 
 /*TODO 
+
+Besoins Denis
+- envoyer les varibales de paye en fin de mois
+- générer la fiche de fin de moins
+- forecast
+- avoir le nb de jour au 31/12
+- Le profil directeur (et uniquement lui) doit pouvoir ajuster en masse les soldes
+- Le profil directeur doit pouvoir voir les congés de tout le monde / lien avec la vision globale
+
+
 Technique : 
+- documenter l'API
 - debug du module d'envoie de mail => fonction vers Gmail mais pas fontaine-consultants.fr => pb antispam ?
 - revue des droits
 - supprimer les trigrammes

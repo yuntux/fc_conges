@@ -289,11 +289,16 @@ class Demande extends server_api_authentificated{
 //TODO : check overlape with other vacation periods
 		if ($dateFromDu > $dateFromAu) {
 			$message_erreur = "La date de fin ne doit pas etre anterieure à la date de début";
-		}else if ($nbjrsTotal != $nb_jours_a_poser) {
+		}
+		if ($nbjrsTotal != $nb_jours_a_poser) {
 			$message_erreur = "Le nombre de jours ventilÃ© n'est pas Ã©gal au nombre de jours ouvrÃ©s.";
-		}else if ($multiple_05!=True) {
+		}
+		if ($multiple_05!=True) {
 			$message_erreur = "La ventilation des congès doit se faire par demie journée. Vous avez saisi un nombre qui n'est pas un multiple de 0.5 pour l'une des catégories.";
-		}else{
+		}
+
+
+		if ($message_erreur==True){
 					try
 					{  
 						$reponse1 = $this->bdd->query('SELECT * FROM solde WHERE ID_Solde = (SELECT MAX(ID_Solde) id FROM solde WHERE CONSULTANT_SOLDE ='.$consultant.') AND CONSULTANT_SOLDE ='.$consultant);  

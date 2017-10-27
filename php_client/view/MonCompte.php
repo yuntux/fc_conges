@@ -14,6 +14,7 @@
 						</form>
 					</div>
 				</div>
+<!--
 				<div id="bloc_donnees1">
 					<h2>Mise à jour du solde</h2>
 					<form action="?action=MonCompte" method="post">
@@ -47,4 +48,5 @@
 						<p style="float:right"><input type="submit" value="Enregistrer" name="bouton_soldes"/></p>	
 					</form>
 				</div>
+-->
 			</div>
