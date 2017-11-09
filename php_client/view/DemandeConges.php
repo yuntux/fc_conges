@@ -33,10 +33,13 @@ function return_isset($post_name){
 						{  
 							foreach ($reponse1 as $donnees1)
 							{
-								echo "<option value=\"".$donnees1['ID_CONSULTANT']."\" ";
-								if (return_isset('thelistDM') == $donnees1['ID_CONSULTANT'])
-									echo " selected";
-								echo">".$donnees1['PRENOM_CONSULTANT']." ".$donnees1['NOM_CONSULTANT']."</option>";
+								//TODO : cacher ce IF que je ne saurais voir
+								if ($donnees1['NOM_CONSULTANT'] != "DUMAINE" && $donnees1['NOM_CONSULTANT'] != "COQ" &&  $donnees1['NOM_CONSULTANT'] != "ZADMIN3"){
+									echo "<option value=\"".$donnees1['ID_CONSULTANT']."\" ";
+									if (return_isset('thelistDM') == $donnees1['ID_CONSULTANT'])
+										echo " selected";
+									echo">".$donnees1['PRENOM_CONSULTANT']." ".$donnees1['NOM_CONSULTANT']."</option>";
+								}
 							}
 						}
 						catch(Exception $e)
