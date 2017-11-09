@@ -27,5 +27,7 @@ if(isset($_POST["cancel"]))
 $reponse1 = $CONSULTANT->get_demandes_en_cours($_SESSION['id']);
 $reponse2 = $CONSULTANT->get_historique($_SESSION['id']);
 
+//var_dump($reponse2);
+
 $view_to_display='Historiques.php';
 ?>

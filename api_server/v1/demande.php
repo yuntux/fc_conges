@@ -275,6 +275,7 @@ class Demande extends server_api_authentificated{
 		$nb_jours_a_poser = $this->nbJoursAPoser($dateFromDu,$dateFromAu,$thelistMM,$thelistMS);
 
 		$filter = "CONSULTANT_CONGES = ".$consultant." AND (STATUT_CONGES NOT IN ('Annulée DM','Annulée Direction','Annulée')) AND (FIN_CONGES >= '".$dateFromDu."' AND DEBUT_CONGES <= '".$dateFromAu."')";
+
 		$overlap_list = $this->get_list('*',$filter,False);
 		if (count($overlap_list)>0){
 			$message_erreur = "Il y a un chevauchement entre la demande à enregistrer et une autre demande non annulée.";
@@ -297,8 +298,7 @@ class Demande extends server_api_authentificated{
 			$message_erreur = "La ventilation des congès doit se faire par demie journée. Vous avez saisi un nombre qui n'est pas un multiple de 0.5 pour l'une des catégories.";
 		}
 
-
-		if ($message_erreur==True){
+		if ($message_erreur===True){ //ATTENTION : la triple egalite est indispensable
 					try
 					{  
 						$reponse1 = $this->bdd->query('SELECT * FROM solde WHERE ID_Solde = (SELECT MAX(ID_Solde) id FROM solde WHERE CONSULTANT_SOLDE ='.$consultant.') AND CONSULTANT_SOLDE ='.$consultant);  
@@ -378,7 +378,7 @@ class Demande extends server_api_authentificated{
 					$mailtoDirfromDM = False;
 					$mailtoCOfromDM_ko = False;
 					$mailtoCOfromDir_ko = False;
-					$this->mail_statut($id_demande, $mailtoDMfromCO, $mailtoCOfromDir_ok, $mailtoCOfromDM_ok, $mailtoDirfromDM, $mailtoCOfromDM_ko, $mailtoCOfromDir_ko);
+			//		$this->mail_statut($id_demande, $mailtoDMfromCO, $mailtoCOfromDir_ok, $mailtoCOfromDM_ok, $mailtoDirfromDM, $mailtoCOfromDM_ko, $mailtoCOfromDir_ko);
 		}
 		return $message_erreur;	
 	}
