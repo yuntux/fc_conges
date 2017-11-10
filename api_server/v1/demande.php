@@ -281,10 +281,12 @@ class Demande extends server_api_authentificated{
 			$message_erreur = "Il y a un chevauchement entre la demande à enregistrer et une autre demande non annulée.";
 		}
 
-		$multiple_05 = True;
 		foreach (Array($nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP) as $nb_jour_cat){
 			if ((10*$nb_jour_cat) % 5 != 0){
-				$multiple_05 = False;
+				$message_erreur = "La ventilation des congès doit se faire par demie journée. Vous avez saisi un nombre qui n'est pas un multiple de 0.5 pour l'une des catégories.";
+			}
+			if ($nb_jour_cat<0) {
+				$message_erreur = "Le nombre de jours posés doit être positif (impossible de chbsculer des jours entre catégories).";
 			}
 		}
 //TODO : check overlape with other vacation periods
@@ -295,7 +297,6 @@ class Demande extends server_api_authentificated{
 			$message_erreur = "Le nombre de jours ventilÃ© n'est pas Ã©gal au nombre de jours ouvrÃ©s.";
 		}
 		if ($multiple_05!=True) {
-			$message_erreur = "La ventilation des congès doit se faire par demie journée. Vous avez saisi un nombre qui n'est pas un multiple de 0.5 pour l'une des catégories.";
 		}
 
 		if ($message_erreur===True){ //ATTENTION : la triple egalite est indispensable

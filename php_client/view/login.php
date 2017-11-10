@@ -21,9 +21,13 @@
 					</tr>
 -->
 					<tr>
-						<td><input type="submit" name="mdp_oublie" value="Mot de passe oublié" style="margin-left: 0em;"/></td>
+						<td></td>
 						<td><input type="submit" name="bouton_login" value="Connexion" style="margin-left: 0em;"/></td>
+					</tr>
+					<tr>
+						<td><br><br><br><td><a href="?action=mot_passe_oublie">Mot de passe oublié</a></td>
 					</tr>
 				</tbody>
 			</table>
 		</form>			
+

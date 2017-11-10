@@ -17,13 +17,13 @@ function get_action(){
 	return $action;
 }
 
-if(empty($_SESSION['id']))
+$action = get_action();
+if(empty($_SESSION['id']) && $action!='mot_passe_oublie')
 {
 	$action="login";
 }
 else 
 {
-	$action = get_action();
 	if ($action==null)
         	$action="home";
 }
