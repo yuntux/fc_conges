@@ -5,6 +5,7 @@ require_once 'PHPMailer/PHPMailerAutoload.php';
 function mail_gateway($mail,$sujet,$message_html)
 {
 
+/*
 	if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)) // On filtre les serveurs qui rencontrent des bogues.
 	{
 		$passage_ligne = "\r\n";
@@ -42,13 +43,14 @@ function mail_gateway($mail,$sujet,$message_html)
 	//==========
 	$message.= $passage_ligne."--".$boundary."--".$passage_ligne;
 	$message.= $passage_ligne."--".$boundary."--".$passage_ligne;
+*/
 
 	//$mail="yuntux@gmail.com";//pour les tests uniquement
-	send_mail("yuntux@gmail.com",$sujet,$message,$header);
-	return send_mail($mail,$sujet,$message,$header);
+	send_mail("yuntux@gmail.com",$sujet,$message_html,$header);
+	return send_mail($mail,$sujet,$message_html);
 }
 
-function send_mail($mail,$subject,$message,$header){
+function send_mail($mail,$subject,$message){
 	//return mail($to,$sujet,$message,$header);
 	global $_SMTP_HOST;
 	global $_SMTP_PORT;
@@ -64,7 +66,7 @@ function send_mail($mail,$subject,$message,$header){
 	$mail->Username = $_SMTP_USERNAME;                 // SMTP username
 	$mail->Password = $_SMTP_PASSWORD;                           // SMTP password
 	$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-	$mail->Port = $_SMTP_PORT; //587;                                    // TCP port to connect to
+	$mail->Port = $_SMTP_PORT;                                    // TCP port to connect to
 	$mail->setFrom('no-reply@fontaine-consultants.fr', 'FC Congés');
 	$mail->addAddress($mail, $mail);     // Add a recipient
 	$mail->isHTML(true);                                  // Set email format to HTML
