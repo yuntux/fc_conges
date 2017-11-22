@@ -38,7 +38,7 @@ class REST_client{
 		    )
 		);
 		$context  = stream_context_create($options);
-if ($_SESSION['login']=='adumaine@fontaine-consultants.fr'){
+if (isset($_SESSION['login']) && $_SESSION['login']=='adumaine@fontaine-consultants.fr'){
 	echo '<br>MODE DEBUG / URL appelée par le client PHP - endPoint de l\'API => '.$url;
 }
 		$result = file_get_contents($url, false, $context);

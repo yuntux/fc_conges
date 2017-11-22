@@ -7,7 +7,7 @@
 				</thead>
 				<tbody style="position: fixed;border-radius : 5px ;">
 					<tr>
-						<td>Login : </td>
+						<td>E-mail : </td>
 						<td><input type="text" name="login" /></td>
 					</tr>
 					<tr>
