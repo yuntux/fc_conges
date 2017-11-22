@@ -40,8 +40,7 @@ class Demande extends server_api_authentificated{
 		return $donnees1;
 	}
 
-	public function notification_mail_demande_a_valider($id_demande, $target_role){
-		global $EMAIL_CDC;
+	public function notification_mail_demande_a_valider($id_demande,$email){
 		$demande = $this->get_data_notification_mail($id_demande);
 		$message_html = '<html>
 					<body>
@@ -51,16 +50,11 @@ class Demande extends server_api_authentificated{
 					</body>
 				</html>';
 
-		if ($target_role == "DM"){
-			$EMAIL_DM = $this->bdd->query('SELECT * FROM consultant WHERE ID_CONSULTANT = '.$demande['VALIDEUR_CONGES'])->fetch();
-                        $email = $EMAIL_DM['EMAIL_CONSULTANT'];
-		} elseif ($target_role == "CDG"){
-			$email = $EMAIL_CDC;
-		}
 		mail_gateway($email,"Nouvelle demande de congés à valider",$message_html);
 	}
 
 	public function notification_mail_demande_change_status($id_demande){
+		global $EMAIL_DIRECTION; 
 		$demande = $this->get_data_notification_mail($id_demande);
 //		error_log("TEST => ".$q, 3,"/tmp/test.log");
 
@@ -71,6 +65,13 @@ class Demande extends server_api_authentificated{
 						<p style="margin-bottom:20px;">Cordialement</p>
 					</body>
 				</html>';
+
+		if ($demande['STATUT_CONGES']=='En cours de validation DM'){
+			$DM = $this->bdd->query('SELECT * FROM consultant WHERE ID_CONSULTANT = '.$demande['VALIDEUR_CONGES'])->fetch();
+                        $this->notification_mail_demande_a_valider($id_demande, $DM['EMAIL_CONSULTANT']);
+		} elseif ($demande['STATUT_CONGES']=='En cours de validation Direction'){
+			$this->notification_mail_demande_a_valider($id_demande, $EMAIL_DIRECTION);
+		}
 
 		mail_gateway($demande['EMAIL_CONSULTANT'],"Évolution de votre demande de congés",$message_html);
 	}
@@ -90,7 +91,6 @@ class Demande extends server_api_authentificated{
 			else
 			{
 				$status = "'En cours de validation Direction'"; 
-				$mailtoDirfromDM = True;
 			}		
 		}
 		else
@@ -103,29 +103,22 @@ class Demande extends server_api_authentificated{
 			else
 			{
 				$status = "'En cours de validation DM'";
-				$mailtoDMfromCO = True;
 			}
 		}
                 try
                 {
 			$this->bdd->exec('UPDATE `conges` SET `STATUT_CONGES`='.$status.' WHERE `ID_CONGES`=\''.$id_demande.'\'');
+			$this->notification_mail_demande_change_status($id_demande);
                 }
                 catch(Exception $e)
                 {
                         die('Erreur : '.$e->POSTMessage());
+			return False;
                 }
-		notification_mail_demande_change_status($id_demande);
 		return True;
         }
 	
         public function cloturer($id_demande){
-		$mailtoDMfromCO = False;
-		$mailtoCOfromDir_ok = False;
-		$mailtoCOfromDM_ok = False;
-		$mailtoDirfromDM = False;
-		$mailtoCOfromDM_ko = False;
-		$mailtoCOfromDir_ko = False;
-
 		if($_SESSION['role'] == "DIRECTEUR")
 		{
 			$status = "'Annulée Direction'"; 
@@ -160,12 +153,13 @@ class Demande extends server_api_authentificated{
                 {
 			$this->bdd->exec('UPDATE `conges` SET `STATUT_CONGES`='.$status.' WHERE `ID_CONGES`=\''.$id_demande.'\'');
 			$this->bdd->exec('DELETE FROM `solde` WHERE ID_Solde = (SELECT SOLDE_CONGES FROM conges WHERE `ID_CONGES` = '.$id_demande.')');
+			$this->notification_mail_demande_change_status($id_demande);
                 }
                 catch(Exception $e)
                 {
                         die('Erreur : '.$e->POSTMessage());
+			return False;
                 }
-		$this->mail_statut($id_demande, $mailtoDMfromCO, $mailtoCOfromDir_ok, $mailtoCOfromDM_ok, $mailtoDirfromDM, $mailtoCOfromDM_ko, $mailtoCOfromDir_ko);
 		return True;
         }
 
@@ -373,13 +367,7 @@ class Demande extends server_api_authentificated{
 						die('Erreur : '.$e->POSTMessage());
 					}
 
-					$mailtoDMfromCO = True;
-					$mailtoCOfromDir_ok = False;
-					$mailtoCOfromDM_ok = False;
-					$mailtoDirfromDM = False;
-					$mailtoCOfromDM_ko = False;
-					$mailtoCOfromDir_ko = False;
-			//		$this->mail_statut($id_demande, $mailtoDMfromCO, $mailtoCOfromDir_ok, $mailtoCOfromDM_ok, $mailtoDirfromDM, $mailtoCOfromDM_ko, $mailtoCOfromDir_ko);
+					$this->notification_mail_demande_change_status($id_demande);
 		}
 		return $message_erreur;	
 	}

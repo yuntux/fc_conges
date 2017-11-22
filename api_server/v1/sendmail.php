@@ -1,5 +1,6 @@
 <?php
 include_once("lib_date.php");
+require_once 'PHPMailer/PHPMailerAutoload.php';
 
 function mail_gateway($mail,$sujet,$message_html)
 {
@@ -43,8 +44,41 @@ function mail_gateway($mail,$sujet,$message_html)
 	$message.= $passage_ligne."--".$boundary."--".$passage_ligne;
 
 	//$mail="yuntux@gmail.com";//pour les tests uniquement
-	mail("yuntux@gmail.com",$sujet,$message,$header);
-	return mail($mail,$sujet,$message,$header);
+	send_mail("yuntux@gmail.com",$sujet,$message,$header);
+	return send_mail($mail,$sujet,$message,$header);
+}
+
+function send_mail($mail,$subject,$message,$header){
+	//return mail($to,$sujet,$message,$header);
+	global $_SMTP_HOST;
+	global $_SMTP_PORT;
+	global $_SMTP_USERNAME;
+	global $_SMTP_PASSWORD;
+
+	//$mail="yuntux@gmail.com";//pour les tests uniquement
+	$mail = new PHPMailer;
+	//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+	$mail->isSMTP();                                      // Set mailer to use SMTP
+	$mail->Host = $_SMTP_HOST;  // Specify main and backup SMTP servers
+	$mail->SMTPAuth = true;                               // Enable SMTP authentication
+	$mail->Username = $_SMTP_USERNAME;                 // SMTP username
+	$mail->Password = $_SMTP_PASSWORD;                           // SMTP password
+	$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+	$mail->Port = $_SMTP_PORT; //587;                                    // TCP port to connect to
+	$mail->setFrom('no-reply@fontaine-consultants.fr', 'FC Congés');
+	$mail->addAddress($mail, $mail);     // Add a recipient
+	$mail->isHTML(true);                                  // Set email format to HTML
+	$mail->Subject = $subject;
+	$mail->Body    = $message;
+	$mail->SMTPOptions = array(
+		'ssl' => array(
+			'verify_peer' => false,
+			'verify_peer_name' => false,
+			'allow_self_signed' => true
+		)
+	);
+	return $mail->send();
+
 }
 
 function new_password($EMAIL_CONSULTANT, $PASSWORD){	
