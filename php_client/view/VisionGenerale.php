@@ -29,7 +29,13 @@
 		foreach ($reponse1 as $donnees1)
 		{
 			$ID_CONSULTANT_Conges = $donnees1['ID_CONSULTANT'];
-			echo '<tr style=" width: 620px;"><td style=" width: 100px;">'.$donnees1['PRENOM_CONSULTANT'].' '.$donnees1['NOM_CONSULTANT'].'</td>';
+			echo '<tr style=" width: 620px;"><td style=" width: 100px;">';
+				echo "<form action='?action=Historiques' method='post'>";
+				echo "<input type='hidden' name='id_consultant' value='".$donnees1['ID_CONSULTANT']."'/>";
+				echo "<div onclick='this.form.submit()'>".$donnees1['PRENOM_CONSULTANT']." ".$donnees1['NOM_CONSULTANT']."</div>";
+				echo "<button type='submit' value='Détail'>-></button>";
+				echo "</form>";
+			echo '</td>';
 			$semaine_conges =array($ID_CONSULTANT_Conges);
 			$semaine_conges_pasvalide =array($ID_CONSULTANT_Conges);								
 				echo '<td colspan=12>';

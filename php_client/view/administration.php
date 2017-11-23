@@ -3,8 +3,8 @@
 	<div id="bloc_donnees1">
 	<h2>Consultants</h2>
 	<form action="?action=administration" method="post">
-		<select name="select_consultant">
-			<option>Sélectionner consultant</option>
+		<select name="select_consultant" onchange="this.form.submit()">
+		<option value="-1">Sélectionner un consultant</option>
 		<?php 
 			try
 			{  
@@ -20,13 +20,12 @@
 		?>
 		</select>
 		
-		<input type="submit" value="Chercher" name="search" style="margin-left:50px;"/>
 	</form>
 
 	<?php 
 	$option ='<option selected="selected">CONSULTANT</option><option >DM</option><option>DIRECTEUR</option>';
 
-	if(isset($_POST['search'])){
+	if(isset($_POST['select_consultant'])){
 		if($COprofil == "DM"){
 			$option ='<option>CONSULTANT</option><option selected="selected">DM</option><option>DIRECTEUR</option>';
 		}
@@ -44,18 +43,51 @@
 		<tr><td>Profil * </td><td><select name="COprofil"><?php echo $option;?></select></td></tr>
 		</table>
 
+
+
 		<?php 
-		if(isset($_POST['search'])) {
+		if(isset($_POST['select_consultant'])) {
+			echo '<table id="background-image" class="styletab">
+				<thead>
+					<tr>
+						<th></th>
+						<th style="text-align:center;">CP n-1</th>
+						<th style="text-align:center;">CP n</th>
+						<th style="text-align:center;">RTT n-1</th>
+						<th style="text-align:center;">RTT n</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="text-align:center;">
+						<td style="text-align:left;">Acquis</td>
+						<td><input type="text" value="'.$ACQUIS_CPn1.'" name="AcquisCPn1" id="AcquisCPn1" style="width:60px;"/></td>
+						<td><input type="text" value="'.$ACQUIS_CPn.'" name="AcquisCPn" id="AcquisCPn" style="width:60px;"/></td>
+						<td><input type="text" value="'.$ACQUIS_RTTn1.'" name="AcquisRTTn1" id="AcquisRTTn1" style="width:60px;"/></td>
+						<td><input type="text" value="'.$ACQUIS_RTTn.'" name="AcquisRTTn" id="AcquisRTTn" style="width:60px;"/></td>
+					</tr>
+					<tr style="text-align:center;">
+						<td style="text-align:left;">Solde</td>
+						<td><input type="text" value="'.$NBJRS_CPn1.'" name="SoldeCPn1" id="SoldeCPn1" style="width:60px;"/></td>
+						<td><input type="text" value="'.$NBJRS_CPn.'" name="SoldeCPn" id="SoldeCPn" style="width:60px;"/></td>
+						<td><input type="text" value="'.$NBJRS_RTTn1.'" name="SoldeRTTn1" id="SoldeRTTn1" style="width:60px;"/></td>
+						<td><input type="text" value="'.$NBJRS_RTTn.'" name="SoldeRTTn" id="SoldeRTTn"style="width:60px;"/></td>
+					</tr>
+				</tbody>
+			</table>';
 			echo '<input type="hidden" name="COid" value="'.$_POST['select_consultant'].'" />';
 			echo '<input type="submit" value="Enregistrer" name="update_consultant" style="float:right;" />';
 			echo '<input type="submit" value="Réintialiser Mot de passe" name="reinitialiser" style="floatleftt;" />';
 			if ($_SESSION['id'] != $_POST['select_consultant']){
 				echo '<input type="submit" value="Supprimer" name="delete_consultant" />';
+
 			}
 		} else {
 			echo '<input type="submit" value="Ajouter" name="add_consultant" style="float:right;" />';
 		}
+
 		?>
+
+
 	</form>
 	</div>
 </div>

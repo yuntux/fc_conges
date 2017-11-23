@@ -40,11 +40,8 @@ include("view/foot.php");
 
 Besoins Denis
 - envoyer les varibales de paye en fin de mois
-- générer la fiche de fin de moins
-- forecast
+- forecast => avoir l'excel de Denis
 - avoir le nb de jour au 31/12
-- Le profil directeur (et uniquement lui) doit pouvoir ajuster en masse les soldes
-- Le profil directeur doit pouvoir voir les congés de tout le monde / lien avec la vision globale
 
 
 Technique : 
@@ -65,5 +62,6 @@ Fonctionnel :
 - annulation automatique des demandes nont traitée le jour du démarrage du congés ?
 - dissocier l'annulation par le consultant d'une demande envoyée au DM mais pas encore validée par le DM d'une demande supprimée par le consultant avant envoie au DM ?
 	=> inutile s'il on supprimer l'étape d'envoie au DM (on ne laisse qu'un bouton Enregistrer et envoyer au DM" au bas du formulaire de saisie
+- permettre d'ajouter les solde dès l'inscription d'un consultant
 */	
 ?>

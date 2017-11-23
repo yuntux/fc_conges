@@ -33,7 +33,7 @@ class Demande extends server_api_authentificated{
 	}
 
 	public function get_data_notification_mail($id_demande){
-		$q ='SELECT b.NOM_CONSULTANT, b.PRENOM_CONSULTANT, b.EMAIL_CONSULTANT, a.VALIDEUR_CONGES, a.DEBUT_CONGES, a.FIN_CONGES, a.DEBUTMM_CONGES, a.FINMS_CONGES  FROM conges a, consultant b WHERE a.CONSULTANT_CONGES = b.ID_CONSULTANT and a.ID_CONGES = '.$id_demande.';';
+		$q ='SELECT b.NOM_CONSULTANT, b.PRENOM_CONSULTANT, b.EMAIL_CONSULTANT, a.VALIDEUR_CONGES, a.DEBUT_CONGES, a.FIN_CONGES, a.DEBUTMM_CONGES, a.FINMS_CONGES,a.ID_CONGES,a.STATUT_CONGES  FROM conges a, consultant b WHERE a.CONSULTANT_CONGES = b.ID_CONSULTANT and a.ID_CONGES = '.$id_demande.';';
 //		error_log("TEST => ".$q, 3,"/tmp/test.log");
 		$reponse1 = $this->bdd->query($q);
 		$donnees1 = $reponse1->fetch();
@@ -46,7 +46,7 @@ class Demande extends server_api_authentificated{
 					<body>
 						<p style="margin-bottom:10px;">Bonjour,</p>
 						<p style="margin-bottom:10px;">Vous avez reçu une demande de congés à valider de la part de '.$demande['NOM_CONSULTANT']." ".$demande['PRENOM_CONSULTANT'].'. Cette demande de congés est du '.$demande['DEBUT_CONGES']." ".$demande['DEBUTMM_CONGES'].' au '.$demande['FIN_CONGES']." ".$demande['FINMS_CONGES'].'.</p>
-						<p style="margin-bottom:20px;">Cordialement</p>
+						<p style="margin-bottom:20px;">Cordialement.</p>
 					</body>
 				</html>';
 
@@ -60,9 +60,9 @@ class Demande extends server_api_authentificated{
 
 		$message_html = '<html>
 					<body>
-						<p style="margin-bottom:10px;">Bonjour '.$demande['NOM_CONSULTANT']." ".$demande['PRENOM_CONSULTANT'].',</p>
-						<p style="margin-bottom:10px;">Votre demande de congés numéro '.$demande['ID_CONGES'].' du '.$demande['DEBUT_CONGES']." ".$demande['DEBUTMM_CONGES'].' au '.$demande['FIN_CONGES']." ".$demande['FINMS_CONGES'].' passe au statut '.$demande['STATUT_CONGES'].'.</p>
-						<p style="margin-bottom:20px;">Cordialement</p>
+						<p style="margin-bottom:10px;">Bonjour '.$demande['PRENOM_CONSULTANT'].',</p>
+						<p style="margin-bottom:10px;">Votre demande de congés numéro '.$demande['ID_CONGES'].' du '.$demande['DEBUT_CONGES']." ".$demande['DEBUTMM_CONGES'].' au '.$demande['FIN_CONGES']." ".$demande['FINMS_CONGES'].' est passée au statut '.$demande['STATUT_CONGES'].'.</p>
+						<p style="margin-bottom:20px;">Cordialement.</p>
 					</body>
 				</html>';
 
@@ -280,10 +280,9 @@ class Demande extends server_api_authentificated{
 				$message_erreur = "La ventilation des congès doit se faire par demie journée. Vous avez saisi un nombre qui n'est pas un multiple de 0.5 pour l'une des catégories.";
 			}
 			if ($nb_jour_cat<0) {
-				$message_erreur = "Le nombre de jours posés doit être positif (impossible de chbsculer des jours entre catégories).";
+				$message_erreur = "Le nombre de jours posés doit être positif (impossible de basculer des jours entre catégories).";
 			}
 		}
-//TODO : check overlape with other vacation periods
 		if ($dateFromDu > $dateFromAu) {
 			$message_erreur = "La date de fin ne doit pas etre anterieure à la date de début";
 		}

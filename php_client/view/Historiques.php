@@ -1,6 +1,21 @@
 			<div id="bloc_donnees">
 				<div id="entete_bloc_donnees">
-					<h2>Historique des demandes</h2>
+					<h2>Historique des demandes de <?php echo $detail_consultant['PRENOM_CONSULTANT']." ".$detail_consultant['NOM_CONSULTANT'];?></h2>
+					<?php
+					if($_SESSION['role'] == "DIRECTEUR"){
+						echo "<form action='?action=Historiques' method='post'>";
+						echo "<select name='id_consultant' onchange='this.form.submit()'>";
+						echo "<option>Sélectionner un consultant</option>";
+						foreach ($liste as $consultant)
+						{
+							echo "<option value=\"".$consultant['ID_CONSULTANT']."\" ";
+                                                        if (isset($_POST['id_consultant']) && $_POST['id_consultant'] == $consultant['ID_CONSULTANT'])
+                                                        	echo " selected";
+                                                        echo ">".$consultant['PRENOM_CONSULTANT']." ".$consultant['NOM_CONSULTANT']."</option>";
+						}
+						echo "</select>";
+					}
+					?>
 				</div>
 				<div id="entete_bloc_donnees">
 					<h2>Demandes en cours</h2>
@@ -56,9 +71,11 @@
 							<td>
 								<form action="?action=Historiques" method="post">
 									<?php 
-									if($donnees1['STATUT_CONGES'] == "En cours de validation DM" || $donnees1['STATUT_CONGES'] == "Attente envoie"){
-										echo '<input type="submit" value="Annuler" name="cancel" />' ;
-										echo '<input type="hidden" name="id_conges" value="'.$donnees1['ID_CONGES'].'" />' ;
+									if ($detail_consultant['ID_CONSULTANT'] == $_SESSION['id']) {
+										if($donnees1['STATUT_CONGES'] == "En cours de validation DM" || $donnees1['STATUT_CONGES'] == "Attente envoie"){
+											echo '<input type="submit" value="Annuler" name="cancel" />' ;
+											echo '<input type="hidden" name="id_conges" value="'.$donnees1['ID_CONGES'].'" />' ;
+										}
 									}
 								 	?>
 								</form>

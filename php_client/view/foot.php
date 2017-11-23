@@ -2,7 +2,7 @@
                         </div>
                 </div>
 
-                <script src="view/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+               <!-- <script src="view/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
                 <script src="view/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
                 <script>
                    (function() {
@@ -16,6 +16,6 @@
                         $(".nbr").number(true, 2);
                    })();
                 */
-                </script>
+                </script>-->
         </body>
 </html>

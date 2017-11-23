@@ -13,12 +13,12 @@ function return_isset($post_name){
 		return "";
 }
 ?>
-					<p style="width:90%;margin-bottom:20px;"><label for="du">Du : </label><input type="text" class="widget_calendar" name="dateFromDu" id ="dateFromDu" onchange="nombre_jours_a_poser()" value="<?php echo return_isset('dateFromDu'); ?>" />
+					<p style="width:90%;margin-bottom:20px;"><label for="du">Du : </label><input type="date" name="dateFromDu" id ="dateFromDu" onchange="nombre_jours_a_poser()" value="<?php echo return_isset('dateFromDu'); ?>" />
 					<select name="thelistMM" id ="thelistMM" onchange="nombre_jours_a_poser()">
 						<option<?php if (return_isset('thelistMM')=='Matin') echo 'selected';?>>Matin</option>
 						<option<?php if (return_isset('thelistMM')=='Midi') echo 'selected';?>>Midi</option>
 					</select></p>
-					<p style="margin-bottom:20px;"><label for="du">Au :  </label><input type="text" class="widget_calendar" name="dateFromAu" id ="dateFromAu" onchange="nombre_jours_a_poser()" value="<?php echo return_isset('dateFromAu'); ?>" />
+					<p style="margin-bottom:20px;"><label for="du">Au :  </label><input type="date" name="dateFromAu" id ="dateFromAu" onchange="nombre_jours_a_poser()" value="<?php echo return_isset('dateFromAu'); ?>" />
 					<select name="thelistMS" id ="thelistMS" onchange="nombre_jours_a_poser()">
 						<option<?php if (return_isset('thelistMS')=='Soir') echo 'selected';?>>Soir</option>						  
 						<option<?php if (return_isset('thelistMS')=='Midi') echo 'selected';?>>Midi</option>						  

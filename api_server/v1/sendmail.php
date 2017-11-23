@@ -6,7 +6,7 @@ function mail_gateway($mail,$sujet,$message_html)
 {
 	//$mail="yuntux@gmail.com";//pour les tests uniquement
 	send_mail("adumaine@fontaine-consultants.fr",$sujet,$message_html);
-	return send_mail($mail,$sujet,$message_html);
+	//return send_mail($mail,$sujet,$message_html);
 }
 
 function send_mail($to,$subject,$message){
