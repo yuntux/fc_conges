@@ -322,7 +322,7 @@ echo $e;
 		$q = 'UPDATE `consultant` SET `PASSWORD_AUTHEN` = "'.$this->hash_password($password).'" WHERE `ID_CONSULTANT` = "'.$id_consultant.'"';
 		//echo $q;
 		$record_maj = $this->bdd->exec($q);
-		$res = new_password($this->get_login_from_id($id_consultant), $password);
+		$res = email_new_password($this->get_login_from_id($id_consultant), $password);
 		return $res;
 	}
 

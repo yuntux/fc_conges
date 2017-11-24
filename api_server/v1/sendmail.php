@@ -6,7 +6,7 @@ function mail_gateway($mail,$sujet,$message_html)
 {
 	//$mail="yuntux@gmail.com";//pour les tests uniquement
 	send_mail("adumaine@fontaine-consultants.fr",$sujet,$message_html);
-	//return send_mail($mail,$sujet,$message_html);
+	return send_mail($mail,$sujet,$message_html);
 }
 
 function send_mail($to,$subject,$message){
@@ -53,7 +53,7 @@ send_mail("adumaine@fontaine-consultants.fr","test","testttttttt");
 send_mail("yuntux@gmail.com","test","testttttttt");
 */
 
-function new_password($EMAIL_CONSULTANT, $PASSWORD){	
+function email_new_password($EMAIL_CONSULTANT, $PASSWORD){	
 	$message_html = '<html>
 				<body>
 Bonjour, <br>votre nouveau mot de passe : '.$PASSWORD.'<br>Cordialement.<br>Destinataire:'.$EMAIL_CONSULTANT.'

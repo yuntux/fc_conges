@@ -24,30 +24,10 @@ function return_isset($post_name){
 						<option<?php if (return_isset('thelistMS')=='Midi') echo 'selected';?>>Midi</option>						  
 					</select></p>
 					<b>Attention : contrairement à  l'ancien système, indiquer ici le dernier jour de congès et non pas le jour de la reprise.</b>
-					<br>Nombre de jours de repos à répartir : <div style="display: inline-block;" id="nbJrs"><?php if (return_isset('nbJrs_hidden') != "") echo return_isset('nbJrs_hidden'); else echo "0";?></div><br>
+					<br>Nombre de jours de repos à répartir (par multiple de 0.5 jours) : <div style="display: inline-block;" id="nbJrs"><?php if (return_isset('nbJrs_hidden') != "") echo return_isset('nbJrs_hidden'); else echo "0";?></div><br>
 					<input type="hidden" name="nbJrs_hidden" id="nbJrs_hidden" value="<?php if (return_isset('nbJrs_hidden') != "") echo return_isset('nbJrs_hidden'); else echo "0";?>"/>
-					<p style="width:90%;margin-bottom:20px;"><label for="au" style="margin-right:38px";>Directeur de mission : </label>
-					<select name="thelistDM">
-						<?php 
-						try
-						{  
-							foreach ($reponse1 as $donnees1)
-							{
-								//TODO : cacher ce IF que je ne saurais voir
-								if ($donnees1['NOM_CONSULTANT'] != "DUMAINE" && $donnees1['NOM_CONSULTANT'] != "COQ" &&  $donnees1['NOM_CONSULTANT'] != "ZADMIN3"){
-									echo "<option value=\"".$donnees1['ID_CONSULTANT']."\" ";
-									if (return_isset('thelistDM') == $donnees1['ID_CONSULTANT'])
-										echo " selected";
-									echo">".$donnees1['PRENOM_CONSULTANT']." ".$donnees1['NOM_CONSULTANT']."</option>";
-								}
-							}
-						}
-						catch(Exception $e)
-						{
-							die('Erreur : '.$e->getMessage());
-						}
-						?>
-					</select></p>
+<br>
+
 					<table class="reinitialise" style="text-align:center;width:80%;font-size: 10px;">
 						<tr style="text-align:center;width:80%;">
 							<td style="width:20%;">Jours de Congés Payés</td>
@@ -64,6 +44,34 @@ function return_isset($post_name){
 							<td><input type="text" name="nbjrsAutres"  id="nbjrsAutres" style="width:50%;" value="<?php echo return_isset('nbjrsAutres');?>"/></td>
 						</tr>
 					</table>
+
+<br>
+<br>
+<br>
+					<p style="width:90%;margin-bottom:20px;"><label for="au" style="margin-right:38px";>Directeur de mission : </label>
+					<select name="thelistDM">
+						<?php 
+						try
+						{  
+							foreach ($reponse1 as $donnees1)
+							{
+								//TODO : cacher ce IF que je ne saurais voir
+								if ($donnees1['NOM_CONSULTANT'] != "DUMAINE" && $donnees1['NOM_CONSULTANT'] != "COQ" &&  $donnees1['NOM_CONSULTANT'] != "ZADMIN3"){
+								//if ($donnees1['NOM_CONSULTANT'] != "COQ" &&  $donnees1['NOM_CONSULTANT'] != "ZADMIN3"){
+									echo "<option value=\"".$donnees1['ID_CONSULTANT']."\" ";
+									if (return_isset('thelistDM') == $donnees1['ID_CONSULTANT'])
+										echo " selected";
+									echo">".$donnees1['PRENOM_CONSULTANT']." ".$donnees1['NOM_CONSULTANT']."</option>";
+								}
+							}
+						}
+						catch(Exception $e)
+						{
+							die('Erreur : '.$e->getMessage());
+						}
+						?>
+					</select></p>
+
 					<p style="margin-top: 50px;">Commentaire</p>
 					<p><textarea name="commentaire" id="commentaire" style="width: 100%;height:50px;"><?php echo return_isset('commentaire');?></textarea>
 					<p style="float:right">

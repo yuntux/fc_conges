@@ -41,9 +41,15 @@ Besoins Denis
 - envoyer les varibales de paye en fin de mois
 - forecast => avoir l'excel de Denis
 - avoir le nb de jour au 31/12
+- pouvoir annuler une demande après validation direction => quel processus ? Double vérif ?
+- pouvoir modifier la ventilation des congés ?
+- bloquer la pose de congés si induit des soldes négatifs => nécessite de gérer la projection
+- gestion des temps partie (Audrey)
 
 
 Technique : 
+- booléen consultant actif / inactif
+- sécurité API => filtre clause WHERE
 - documenter l'API
 - debug du module d'envoie de mail => fonction vers Gmail mais pas fontaine-consultants.fr => pb antispam ?
 - revue des droits
