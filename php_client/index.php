@@ -2,7 +2,6 @@
 include_once("../api_server/v1/lib_date.php");
 session_start();
 //echo "Session id local auprès du client php : ".session_id();
-$EMAIL_CDG = 'validation_conges_cdg@fontaine-consultants.fr';
 include("model/rest_client.php");
 
 $REST_CLIENT = new REST_client("helpers"); 

@@ -55,13 +55,14 @@ class Demande extends server_api_authentificated{
 
 	public function notification_mail_demande_change_status($id_demande){
 		global $EMAIL_DIRECTION; 
+		global $EMAIL_OFFICE_MANAGER;
 		$demande = $this->get_data_notification_mail($id_demande);
 //		error_log("TEST => ".$q, 3,"/tmp/test.log");
 
 		$message_html = '<html>
 					<body>
-						<p style="margin-bottom:10px;">Bonjour '.$demande['PRENOM_CONSULTANT'].',</p>
-						<p style="margin-bottom:10px;">Votre demande de congés numéro '.$demande['ID_CONGES'].' du '.$demande['DEBUT_CONGES']." ".$demande['DEBUTMM_CONGES'].' au '.$demande['FIN_CONGES']." ".$demande['FINMS_CONGES'].' est passée au statut '.$demande['STATUT_CONGES'].'.</p>
+						<p style="margin-bottom:10px;">Bonjour '.$demande['PRENOM_CONSULTANT'].' '.$demande['NOM_CONSULTANT'].',</p>
+						<p style="margin-bottom:10px;">La demande de congés numéro '.$demande['ID_CONGES'].' du '.$demande['DEBUT_CONGES']." ".$demande['DEBUTMM_CONGES'].' au '.$demande['FIN_CONGES']." ".$demande['FINMS_CONGES'].' est passée au statut '.$demande['STATUT_CONGES'].'.</p>
 						<p style="margin-bottom:20px;">Cordialement.</p>
 					</body>
 				</html>';
@@ -71,6 +72,10 @@ class Demande extends server_api_authentificated{
                         $this->notification_mail_demande_a_valider($id_demande, $DM['EMAIL_CONSULTANT']);
 		} elseif ($demande['STATUT_CONGES']=='En cours de validation Direction'){
 			$this->notification_mail_demande_a_valider($id_demande, $EMAIL_DIRECTION);
+		}
+
+		if ($demande['STATUT_CONGES']=='Validée'){
+			mail_gateway($EMAIL_OFFICE_MANAGER,"Demande de congés validée",$message_html);
 		}
 
 		mail_gateway($demande['EMAIL_CONSULTANT'],"Évolution de votre demande de congés",$message_html);
