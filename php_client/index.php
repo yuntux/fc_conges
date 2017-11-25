@@ -37,14 +37,24 @@ include("view/foot.php");
 
 /*TODO 
 
-Besoins Denis
-- envoyer les varibales de paye en fin de mois
+Fonctionnel :
+=> vérifier coté serveur que le DM est bien DM
+- date limite de saisie dans le passé ?
 - forecast => avoir l'excel de Denis
 - avoir le nb de jour au 31/12
 - pouvoir annuler une demande après validation direction => quel processus ? Double vérif ?
 - pouvoir modifier la ventilation des congés ?
 - bloquer la pose de congés si induit des soldes négatifs => nécessite de gérer la projection
-- gestion des temps partie (Audrey)
+- gestion des temps partiel (Audrey)
+- gestion en dur des 2 jours de repos imposés chez FC / y compris à l'arrivée de nouveaux consultants en cours d'année.
+- bouton re RAZ des compteur au 31/12 et 31/05
+- gestion des CP n-2 et RTT n-2 avec leur date d'échéance
+- visualisation des soldes projetés au mois le mois, ou au moins au 31/12 pour les CP et au 31/05 pour les RTT => revoir le MDD pour les soldes et acquis
+- validation automatique des demandes des membres du CDG / masquer le champ "dm" pour eux dans le formulaire
+- annulation automatique des demandes nont traitée le jour du démarrage du congés ?
+- dissocier l'annulation par le consultant d'une demande envoyée au DM mais pas encore validée par le DM d'une demande supprimée par le consultant avant envoie au DM ?
+	=> inutile s'il on supprimer l'étape d'envoie au DM (on ne laisse qu'un bouton Enregistrer et envoyer au DM" au bas du formulaire de saisie
+- permettre d'ajouter les solde sur l'écran d'inscription d'un consultant
 
 
 Technique : 
@@ -58,15 +68,5 @@ Technique :
 - encapsulation dans des transactions ACID
 - vérifier les try/catch et les close cursor pour chaque requete dans les modeles
 
-Fonctionnel :
-- gestion en dur des 2 jours de repos imposés chez FC / y compris à l'arrivée de nouveaux consultants en cours d'année.
-- bouton re RAZ des compteur au 31/12 et 31/05
-- gestion des CP et RTT n-2
-- visualisation des soldes projetés au mois le mois, ou au moins au 31/12 pour les CP et au 31/05 pour les RTT => revoir le MDD pour les soldes et acquis
-- validation automatique des demandes des membres du CDG / masquer le champ "dm" pour eux dans le formulaire
-- annulation automatique des demandes nont traitée le jour du démarrage du congés ?
-- dissocier l'annulation par le consultant d'une demande envoyée au DM mais pas encore validée par le DM d'une demande supprimée par le consultant avant envoie au DM ?
-	=> inutile s'il on supprimer l'étape d'envoie au DM (on ne laisse qu'un bouton Enregistrer et envoyer au DM" au bas du formulaire de saisie
-- permettre d'ajouter les solde dès l'inscription d'un consultant
 */	
 ?>

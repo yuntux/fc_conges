@@ -9,6 +9,9 @@ $color['SS']="brown";
 $color['AA']="pink";
 $color['TRA']="white";
 
+$synthese_entreprise_periode = array();
+$synthese_entreprise_annuelle = array();
+
 function tab_synthese($compteur_periode){
 	global $color;
 	$s = '<div class="solid_table"><table style="width:10cm; height:3cm;font-size:26px; text-align:center; ">';
@@ -71,6 +74,9 @@ function tab_periode($debut_periode,$fin_periode_str,$tab_annuel){
 
 
 function get_content($DEMANDE,$id_consultant,$debut_periode, $fin_periode,$nom, $prenom){
+global $synthese_entreprise_periode;
+global $synthese_entreprise_annuelle;
+ 
 $fin_periode_str = date('Y-m-d',$fin_periode);
 $fin_periode_fr = date('d/m/Y',$fin_periode);
 $debut_periode_str = date('Y-m-d',$debut_periode);
@@ -181,6 +187,9 @@ while ($jour <= $fin_periode_str){
 $compteur_annuel = count_cat($debut_annee_str, $fin_periode_str,$tab_annuel);
 $compteur_periode = count_cat($debut_periode_str,$fin_periode_str,$tab_annuel);
 
+$synthese_entreprise_periode[$id_consultant] = $compteur_periode;
+$synthese_entreprise_annuelle[$id_consultant] = $compteur_annuel;
+
 $res.=tab_periode($debut_periode_str,$mi_periode,$tab_annuel);
 $res.="<br><br>";
 $res.=tab_periode(lendemain($mi_periode),$fin_periode_str,$tab_annuel);
@@ -235,13 +244,54 @@ $page_2 = "
 	return $res;
 }
 
+function page_cumuls($liste_consultants,$debut_periode,$fin_periode){
+	global $synthese_entreprise_periode;
+	global $synthese_entreprise_annuelle;
+
+	$page_cumuls = "<h1>Consommé sur la période du ".$debut_periode." au ".$fin_periode."</h1>";
+	$page_cumuls.= "<div class='solid_table'><table style='width:50cm; height:3cm;font-size:26px; text-align:center;'>";
+	$page_cumuls.= "<tr><td rawspan='2'>Nom</td><td colspan='8'>Consommé sur la période</td><td colspan='8'>Consommé depuis le 1er janvier</td></tr>";
+	$page_cumuls.= "<tr><td></td><td>RH</td><td>F</td><td>CP</td><td>JR</td><td>JC</td><td>JSS</td><td>AA</td><td>Total période</td><td>RH</td><td>F</td><td>CP</td><td>JR</td><td>JC</td><td>JSS</td><td>AA</td><td>Total 1er janvier</td></tr>";
+
+	foreach ($liste_consultants as $consultant){
+		$p = $synthese_entreprise_periode[$consultant['ID_CONSULTANT']];
+		$cumul_periode = $p['RH']+$p['F']+$p['CP']+$p['RTT']+$p['CONV']+$p['SS']+$p['AUTRE'];
+		$a = $synthese_entreprise_annuelle[$consultant['ID_CONSULTANT']];
+                $cumul_annuel= $a['RH']+$a['F']+$a['CP']+$a['RTT']+$a['CONV']+$a['SS']+$a['AUTRE'];
+		$page_cumuls.= "<tr>";
+		$page_cumuls.= "<td>".$consultant['PRENOM_CONSULTANT']." ".$consultant['NOM_CONSULTANT']."</td>";
+                $page_cumuls.= "<td>".$p['RH']."</td>";
+                $page_cumuls.= "<td>".$p['F']."</td>";
+                $page_cumuls.= "<td>".$p['CP']."</td>";
+                $page_cumuls.= "<td>".$p['RTT']."</td>";
+                $page_cumuls.= "<td>".$p['CONV']."</td>";
+                $page_cumuls.= "<td>".$p['SS']."</td>";
+                $page_cumuls.= "<td>".$p['AUTRE']."</td>";
+                $page_cumuls.= "<td>".$cumul_periode."</td>";
+
+                $page_cumuls.= "<td>".$a['RH']."</td>";
+                $page_cumuls.= "<td>".$a['F']."</td>";
+                $page_cumuls.= "<td>".$a['CP']."</td>";
+                $page_cumuls.= "<td>".$a['RTT']."</td>";
+                $page_cumuls.= "<td>".$a['CONV']."</td>";
+                $page_cumuls.= "<td>".$a['SS']."</td>";
+                $page_cumuls.= "<td>".$a['AUTRE']."</td>";
+                $page_cumuls.= "<td>".$cumul_annuel."</td>";
+		$page_cumuls.= "</tr>";	
+	}
+
+	$page_cumuls.= "</table></div>";
+	return $page_cumuls;
+}
+
 $res = "";
 foreach ($liste as $consultant){
-	$detail_consultant = $CONSULTANT->get_by_id($consultant['ID_CONSULTANT']);
 //	if ($consultant['ID_CONSULTANT']==2){
-		$res.= get_content($DEMANDE,$consultant['ID_CONSULTANT'],strtotime($_POST['debut_periode']), strtotime($_POST['fin_periode']), $detail_consultant['NOM_CONSULTANT'], $detail_consultant['PRENOM_CONSULTANT']);
+		$res.= get_content($DEMANDE,$consultant['ID_CONSULTANT'],strtotime($_POST['debut_periode']), strtotime($_POST['fin_periode']), $consultant['NOM_CONSULTANT'], $consultant['PRENOM_CONSULTANT']);
 //	}
 }
+
+$res.= page_cumuls($liste,$_POST['debut_periode'],$_POST['fin_periode']);
 
 echo '<form action="controller/gen_pdf.php" method="post"> 
 <input type="hidden" name="html_content" value="'.base64_encode($res).'"></input>
