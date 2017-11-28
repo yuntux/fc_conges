@@ -38,16 +38,16 @@
 					{
 					?>
 						<tr>
-							<td><?php echo get_date_french_str($donnees1['DATEDEM_CONGES']); ?></td>
-							<td><?php echo get_date_french_str($donnees1['DEBUT_CONGES']); ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
-							<td><?php echo get_date_french_str($donnees1['FIN_CONGES']); ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
-							<td><?php echo $donnees1['NBJRS_CONGES']." jour(s)"; ?></td>
+							<td><?php echo get_date_french_str($donnees1['demande.DATEDEM_CONGES']); ?></td>
+							<td><?php echo get_date_french_str($donnees1['demande.DEBUT_CONGES']); ?> <?php echo $donnees1['demande.DEBUTMM_CONGES']; ?></td>
+							<td><?php echo get_date_french_str($donnees1['demande.FIN_CONGES']); ?> <?php echo $donnees1['demande.FINMS_CONGES']; ?></td>
+							<td><?php echo $donnees1['demande.NBJRS_CONGES']." jour(s)"; ?></td>
 							<?php
-								$cp = $donnees1['CP_CONGES'];
-								$rtt = $donnees1['RTT_CONGES'];
-								$ss = $donnees1['SS_CONGES'];
-								$conv = $donnees1['CONV_CONGES'];
-								$autres = $donnees1['AUTRE_CONGES'];
+								$cp = $donnees1['demande.CP_CONGES'];
+								$rtt = $donnees1['demande.RTT_CONGES'];
+								$ss = $donnees1['demande.SS_CONGES'];
+								$conv = $donnees1['demande.CONV_CONGES'];
+								$autres = $donnees1['demande.AUTRE_CONGES'];
 								$type  = "";
 								if($cp != 0){
 									$type = $type. $cp. " CP ";
@@ -66,15 +66,15 @@
 								}
 							?>
 							<td><?php echo $type; ?></td>
-							<td><?php echo $donnees1['STATUT_CONGES']; ?></td>
-							<td><?php echo $donnees1[27].' '.$donnees1[26]; ?></td>
+							<td><?php echo $donnees1['demande.STATUT_CONGES']; ?></td>
+							<td><?php echo $donnees1['dm.PRENOM_CONSULTANT'].' '.$donnees1['dm.NOM_CONSULTANT']; ?></td>
 							<td>
 								<form action="?action=Historiques" method="post">
 									<?php 
-									if ($detail_consultant['ID_CONSULTANT'] == $_SESSION['id']) {
-										if($donnees1['STATUT_CONGES'] == "En cours de validation DM" || $donnees1['STATUT_CONGES'] == "Attente envoie"){
+									if ($detail_consultant['consultant.ID_CONSULTANT'] == $_SESSION['id']) {
+										if($donnees1['demande.STATUT_CONGES'] == "En cours de validation DM" || $donnees1['demande.STATUT_CONGES'] == "Attente envoie"){
 											echo '<input type="submit" value="Annuler" name="cancel" />' ;
-											echo '<input type="hidden" name="id_conges" value="'.$donnees1['ID_CONGES'].'" />' ;
+											echo '<input type="hidden" name="id_conges" value="'.$donnees1['demande.ID_CONGES'].'" />' ;
 										}
 									}
 								 	?>
@@ -105,16 +105,16 @@
 					{
 					?>
 						<tr>
-							<td><?php echo get_date_french_str($donnees1['DATEDEM_CONGES']); ?></td>
-							<td><?php echo get_date_french_str($donnees1['DEBUT_CONGES']); ?> <?php echo $donnees1['DEBUTMM_CONGES']; ?></td>
-							<td><?php echo get_date_french_str($donnees1['FIN_CONGES']); ?> <?php echo $donnees1['FINMS_CONGES']; ?></td>
-							<td><?php echo $donnees1['NBJRS_CONGES']." jour(s)"; ?></td>
+							<td><?php echo get_date_french_str($donnees1['demande.DATEDEM_CONGES']); ?></td>
+							<td><?php echo get_date_french_str($donnees1['demande.DEBUT_CONGES']); ?> <?php echo $donnees1['demande.DEBUTMM_CONGES']; ?></td>
+							<td><?php echo get_date_french_str($donnees1['demande.FIN_CONGES']); ?> <?php echo $donnees1['demande.FINMS_CONGES']; ?></td>
+							<td><?php echo $donnees1['demande.NBJRS_CONGES']." jour(s)"; ?></td>
 							<?php
-								$cp = $donnees1['CP_CONGES'];
-								$rtt = $donnees1['RTT_CONGES'];
-								$ss = $donnees1['SS_CONGES'];
-								$conv = $donnees1['CONV_CONGES'];
-								$autres = $donnees1['AUTRE_CONGES'];
+								$cp = $donnees1['demande.CP_CONGES'];
+								$rtt = $donnees1['demande.RTT_CONGES'];
+								$ss = $donnees1['demande.SS_CONGES'];
+								$conv = $donnees1['demande.CONV_CONGES'];
+								$autres = $donnees1['demande.AUTRE_CONGES'];
 								$type  = "";
 								if($cp != 0){
 									$type = $type. $cp. " CP ";
@@ -133,8 +133,8 @@
 								}
 							?>
 							<td><?php echo $type; ?></td>
-							<td><?php echo $donnees1['STATUT_CONGES']; ?></td>
-							<td><?php echo $donnees1[27].' '.$donnees1[26]; ?></td>
+							<td><?php echo $donnees1['demande.STATUT_CONGES']; ?></td>
+							<td><?php echo $donnees1['dm.PRENOM_CONSULTANT'].' '.$donnees1['dm.NOM_CONSULTANT']; ?></td>
 						</tr>
 					<?php
 					}

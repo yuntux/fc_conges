@@ -170,12 +170,12 @@ class Demande extends server_api_authentificated{
 
         public function get_historique($id_consultant = False){
 		// TODO : appeler get_list de cette classe ?
-		$q = 'SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.ID_CONSULTANT = a.VALIDEUR_CONGES AND (`STATUT_CONGES` = "Annulée" OR `STATUT_CONGES` = "Annulée Direction" OR `STATUT_CONGES` = "Annulée DM" OR `STATUT_CONGES` = "Validée")';
+		$q = 'SELECT * FROM conges demande, consultant consultant, consultant dm  WHERE consultant.ID_CONSULTANT = demande.CONSULTANT_CONGES and dm.ID_CONSULTANT = demande.VALIDEUR_CONGES AND (`STATUT_CONGES` = "Annulée" OR `STATUT_CONGES` = "Annulée Direction" OR `STATUT_CONGES` = "Annulée DM" OR `STATUT_CONGES` = "Validée")';
 
 
 		if ($id_consultant != False)
 		{
-			$q.= " AND a.CONSULTANT_CONGES = '".$id_consultant."'";
+			$q.= " AND demande.CONSULTANT_CONGES = '".$id_consultant."'";
 		} else {
 			if($_SESSION['role'] == "DIRECTEUR")
 			{
@@ -187,10 +187,11 @@ class Demande extends server_api_authentificated{
 			}
 			else
 			{
-				$q.= " AND a.CONSULTANT_CONGES = '".$_SESSION['id']."'";
+				$q.= " AND demande.CONSULTANT_CONGES = '".$_SESSION['id']."'";
 			}
 		}
 
+		$this->bdd->setAttribute(PDO::ATTR_FETCH_TABLE_NAMES, true);
                 $reponse = $this->bdd->query($q);
                 return $reponse->fetchAll();
         }
@@ -200,29 +201,36 @@ class Demande extends server_api_authentificated{
 
 		if ($id_consultant != False)
 		{
-			$restriction = " AND a.CONSULTANT_CONGES = '".$id_consultant."'";
+			$restriction = " AND demande.CONSULTANT_CONGES = '".$id_consultant."'";
 			$status = 'AND (`STATUT_CONGES` = "Attente envoie" OR `STATUT_CONGES` = "En cours de validation DM" OR `STATUT_CONGES` = "En cours de validation Direction")';
 		} else {
 			if($_SESSION['role'] == "DIRECTEUR")
 			{
 				$restriction = "";
 				$status = 'AND (`STATUT_CONGES` = "En cours de validation Direction" OR (`STATUT_CONGES` = "En cours de validation DM" AND  dm.ID_CONSULTANT = \''.$_SESSION['id'].'\'))';
+//				$status = 'AND (`STATUT_CONGES` = "En cours de validation Direction" OR (`STATUT_CONGES` = "En cours de validation DM" AND  dm.ID_CONSULTANT = \'6\'))';
 			} 
 			elseif ($_SESSION['role'] == "DM")
 			{
 				$restriction = "AND dm.ID_CONSULTANT = '".$_SESSION['id']."'";
+//				$restriction = "AND dm.ID_CONSULTANT = '6'";
 				$status = 'AND (`STATUT_CONGES` = "En cours de validation DM")';
 			}
 			else
 			{
-				$restriction = " AND a.CONSULTANT_CONGES = '".$_SESSION['id']."'";
+				$restriction = " AND demande.CONSULTANT_CONGES = '".$_SESSION['id']."'";
 				//seul le consultant peut voir les demande non encore envoyÃ©es au DM(status = "Attente envoie")
 				$status = 'AND (`STATUT_CONGES` = "Attente envoie" OR `STATUT_CONGES` = "En cours de validation DM" OR `STATUT_CONGES` = "En cours de validation Direction")';
 			}
 		}
-		$q = 'SELECT * FROM conges a, consultant c, consultant dm  WHERE c.ID_CONSULTANT = a.CONSULTANT_CONGES and dm.ID_CONSULTANT = a.VALIDEUR_CONGES '.$status.' '.$restriction;
+		$q = 'SELECT * FROM conges demande, consultant consultant, consultant dm  WHERE consultant.ID_CONSULTANT = demande.CONSULTANT_CONGES and dm.ID_CONSULTANT = demande.VALIDEUR_CONGES '.$status.' '.$restriction;
+//echo $q;
+//TODO : généraliser ce paramètre PDO
+		$this->bdd->setAttribute(PDO::ATTR_FETCH_TABLE_NAMES, true);
                 $reponse = $this->bdd->query($q);
-                return $reponse->fetchAll();
+		$res = $reponse->fetchAll();
+//echo var_dump($res);
+                return $res;
         }
 
 	public function get_nb_open_days($dateFromDu, $dateFromAu) {	
