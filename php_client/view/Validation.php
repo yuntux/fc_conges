@@ -12,7 +12,7 @@
 					<th>Consultant</th>
 					<th>Début</th>
 					<th>Fin</th>
-					<th>Nombre de jour</th>
+					<th>Nombre de jours</th>
 					<th>Commentaire</th>
 					<th>Valider</th>
 					<th>Refuser</th>
@@ -85,7 +85,7 @@
 					<th>Consultant</th>
 					<th>Début</th>
 					<th>Fin</th>
-					<th>Nombre de jour</th>
+					<th>Nombre de jours</th>
 					<th>Commentaire</th>
 					<th>Statut</th>
 				</tr>

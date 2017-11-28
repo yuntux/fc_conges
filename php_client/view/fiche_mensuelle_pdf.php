@@ -11,6 +11,7 @@ $color['TRA']="white";
 
 $synthese_entreprise_periode = array();
 $synthese_entreprise_annuelle = array();
+$synthese_conges_consultant = array();
 
 function tab_synthese($compteur_periode){
 	global $color;
@@ -33,10 +34,12 @@ while ($jour <= $date_fin){
 	return $count;
 }
 
-function tab_periode($debut_periode,$fin_periode_str,$tab_annuel){
-	global $color;
-	$tab = '<div class="solid_table"><table style="width:50cm; height:3cm;font-size:26px; text-align:center;">';
-	$tab.=  '<tr>';
+function header_tab_periode($debut_periode,$fin_periode_str,$tab_annuel,$colonne_nom_consultant=False){
+	$tab=  '<tr>';
+	if ($colonne_nom_consultant === True)
+	{
+		$tab.='<td>Consultant</td>';
+	}	
 		$jour = $debut_periode;
 		while ($jour <= $fin_periode_str)
 		{
@@ -47,6 +50,10 @@ function tab_periode($debut_periode,$fin_periode_str,$tab_annuel){
 	$tab.=  '</tr>';
 
 	$tab.=  '<tr>';
+	if ($colonne_nom_consultant === True)
+	{
+		$tab.='<td></td>';
+	}	
 		$jour = $debut_periode;
 		while ($jour <= $fin_periode_str)
 		{
@@ -55,8 +62,16 @@ function tab_periode($debut_periode,$fin_periode_str,$tab_annuel){
 			$jour = lendemain($jour);
 		}
 	$tab.=  '</tr>';
+	return $tab;
+}
 
-	$tab.=  '<tr style="height:100%;">';
+function row_tab_periode($debut_periode,$fin_periode_str,$tab_annuel,$colonne_nom_consultant=False){
+	global $color;
+	$tab=  '<tr style="height:100%;">';
+        if ($colonne_nom_consultant != False)
+        {
+                $tab.='<td>'.$colonne_nom_consultant.'</td>';
+        }
 		$jour = $debut_periode;
 		while ($jour <= $fin_periode_str)
 		{
@@ -67,6 +82,13 @@ function tab_periode($debut_periode,$fin_periode_str,$tab_annuel){
 			$jour = lendemain($jour);
 		}
 	$tab.=  '</tr>';
+	return $tab;
+}
+
+function tab_periode($debut_periode,$fin_periode_str,$tab_annuel){
+	$tab = '<div class="solid_table"><table style="width:50cm; height:3cm;font-size:26px; text-align:center;">';
+	$tab.= header_tab_periode($debut_periode,$fin_periode_str,$tab_annuel);
+	$tab.= row_tab_periode($debut_periode,$fin_periode_str,$tab_annuel);
 	$tab.="</table></div>";
 	return $tab;
 }
@@ -76,6 +98,7 @@ function tab_periode($debut_periode,$fin_periode_str,$tab_annuel){
 function get_content($DEMANDE,$id_consultant,$debut_periode, $fin_periode,$nom, $prenom){
 global $synthese_entreprise_periode;
 global $synthese_entreprise_annuelle;
+global $synthese_conges_consultant;
  
 $fin_periode_str = date('Y-m-d',$fin_periode);
 $fin_periode_fr = date('d/m/Y',$fin_periode);
@@ -189,6 +212,7 @@ $compteur_periode = count_cat($debut_periode_str,$fin_periode_str,$tab_annuel);
 
 $synthese_entreprise_periode[$id_consultant] = $compteur_periode;
 $synthese_entreprise_annuelle[$id_consultant] = $compteur_annuel;
+$synthese_conges_consultant[$id_consultant] = $tab_annuel;
 
 $res.=tab_periode($debut_periode_str,$mi_periode,$tab_annuel);
 $res.="<br><br>";
@@ -284,6 +308,38 @@ function page_cumuls($liste_consultants,$debut_periode,$fin_periode){
 	return $page_cumuls;
 }
 
+
+function page_recap_demandes($liste_consultants,$debut_periode,$fin_periode){
+	global $synthese_conges_consultant;
+	$mi_periode = middle_between_date($debut_periode, $fin_periode);
+	$debut_periode_str = date('Y-m-d',$debut_periode);
+	$fin_periode_str = date('Y-m-d',$fin_periode);
+	$tab_annuel = $synthese_conges_consultant[0];
+
+	$page.= "<h1>Récapitulatif des demandes sur la période du ".$debut_periode_str." au ".$fin_periode_str."</h1>";
+        $page.= '<div class="solid_table"><table style="width:50cm; height:3cm;font-size:26px; text-align:center;">';
+        $page.= header_tab_periode($debut_periode_str,$mi_periode,$tab_annuel,True);
+        foreach ($liste_consultants as $consultant){
+		$tab_annuel = $synthese_conges_consultant[$consultant['ID_CONSULTANT']];
+       		$page.= row_tab_periode($debut_periode_str,$mi_periode,$tab_annuel,$consultant['PRENOM_CONSULTANT']." ".$consultant['NOM_CONSULTANT']);
+	}
+        $page.= "</table></div>";
+	$page.= "<div style='page-break-before: always;'></div>";
+
+
+	$page.= "<h1>Récapitulatif des demandes sur la période du ".$debut_periode_str." au ".$fin_periode_str."(suite) </h1>";
+        $page.= '<div class="solid_table"><table style="width:50cm; height:3cm;font-size:26px; text-align:center;">';
+        $page.= header_tab_periode(lendemain($mi_periode),$fin_periode_str,$tab_annuel,True);
+        foreach ($liste_consultants as $consultant){
+		$tab_annuel = $synthese_conges_consultant[$consultant['ID_CONSULTANT']];
+       		$page.= row_tab_periode(lendemain($mi_periode),$fin_periode_str,$tab_annuel,$consultant['PRENOM_CONSULTANT']." ".$consultant['NOM_CONSULTANT']);
+	}
+        $page.= "</table></div>";
+	$page.= "<div style='page-break-before: always;'></div>";
+        return $page;
+}
+
+
 $res = "";
 foreach ($liste as $consultant){
 //	if ($consultant['ID_CONSULTANT']==2){
@@ -291,6 +347,7 @@ foreach ($liste as $consultant){
 //	}
 }
 
+$res.= page_recap_demandes($liste,strtotime($_POST['debut_periode']),strtotime($_POST['fin_periode']));
 $res.= page_cumuls($liste,$_POST['debut_periode'],$_POST['fin_periode']);
 
 echo '<form action="controller/gen_pdf.php" method="post"> 

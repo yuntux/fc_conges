@@ -207,13 +207,13 @@ class Demande extends server_api_authentificated{
 			if($_SESSION['role'] == "DIRECTEUR")
 			{
 				$restriction = "";
-				$status = 'AND (`STATUT_CONGES` = "En cours de validation Direction" OR (`STATUT_CONGES` = "En cours de validation DM" AND  dm.ID_CONSULTANT = \''.$_SESSION['id'].'\'))';
 //				$status = 'AND (`STATUT_CONGES` = "En cours de validation Direction" OR (`STATUT_CONGES` = "En cours de validation DM" AND  dm.ID_CONSULTANT = \'6\'))';
+				$status = 'AND (`STATUT_CONGES` = "En cours de validation Direction" OR (`STATUT_CONGES` = "En cours de validation DM" AND  dm.ID_CONSULTANT = \''.$_SESSION['id'].'\'))';
 			} 
 			elseif ($_SESSION['role'] == "DM")
 			{
-				$restriction = "AND dm.ID_CONSULTANT = '".$_SESSION['id']."'";
 //				$restriction = "AND dm.ID_CONSULTANT = '6'";
+				$restriction = "AND dm.ID_CONSULTANT = '".$_SESSION['id']."'";
 				$status = 'AND (`STATUT_CONGES` = "En cours de validation DM")';
 			}
 			else
