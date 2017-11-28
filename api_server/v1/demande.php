@@ -300,7 +300,7 @@ class Demande extends server_api_authentificated{
 			$message_erreur = "La date de fin ne doit pas etre anterieure à la date de début";
 		}
 		if ($nbjrsTotal != $nb_jours_a_poser) {
-			$message_erreur = "Le nombre de jours ventilÃ© n'est pas Ã©gal au nombre de jours ouvrÃ©s.";
+			$message_erreur = "Le nombre de jours ventilés n'est pas égal au nombre de jours ouvrés.";
 		}
 		if ($multiple_05!=True) {
 		}
@@ -361,7 +361,14 @@ class Demande extends server_api_authentificated{
 						//$this->bdd->beginTransaction(); 
 						//TODO : ne plus stocker le nombre total de jours de congÃs NBJRS_CONGES
 						$req = $this->bdd->prepare('INSERT INTO  conges (`ID_CONGES`, `DATEDEM_CONGES`, `DEBUT_CONGES`, `DEBUTMM_CONGES`, `FIN_CONGES`, `FINMS_CONGES`, `NBJRS_CONGES`, `CP_CONGES`, `RTT_CONGES`, `SS_CONGES`, `CONV_CONGES`, `AUTRE_CONGES`, `COMMENTAIRE`, `STATUT_CONGES`, `VALIDEUR_CONGES`, `CONSULTANT_CONGES`, `SOLDE_CONGES`) VALUES (DEFAULT,CURRENT_DATE,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
-						$req->execute(array($dateFromDu,$thelistMM,$dateFromAu,$thelistMS,$nbjrsTotal,$nbjrsCP, $nbjrsRTT, $nbjrsSS, $nbjrsConv,$nbjrsAutres,$commentaire,'En cours de validation DM',$thelistDM,$consultant,$max_ID+1));
+						$statut = 'En cours de validation DM';
+						if($_SESSION['role'] == "DIRECTEUR") {
+							$statut = "Validée";
+						}
+                                                if($_SESSION['role'] == "DM") {
+                                                        $statut = "En cours de validation Direction";
+                                                }
+						$req->execute(array($dateFromDu,$thelistMM,$dateFromAu,$thelistMS,$nbjrsTotal,$nbjrsCP, $nbjrsRTT, $nbjrsSS, $nbjrsConv,$nbjrsAutres,$commentaire,$statut,$thelistDM,$consultant,$max_ID+1));
 						//$this->bdd->commit(); 
 						$id_demande = $this->bdd->lastInsertId();
 					}
