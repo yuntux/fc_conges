@@ -8,7 +8,7 @@
 		{
 			$values = '';
 
-			$filter = "CONSULTANT_CONGES = ".$donnees1['ID_CONSULTANT']." AND (STATUT_CONGES NOT IN ('Annulée DM','Annulée Direction','Annulée')) AND (DEBUT_CONGES >= '".$debut_scope."' AND DEBUT_CONGES <= '".$fin_scope."')";
+			$filter = "CONSULTANT_CONGES = ".$donnees1['ID_CONSULTANT']." AND (STATUT_CONGES NOT IN ('Annulée DM','Annulée Direction','Annulée')) AND (FIN_CONGES >= '".$debut_scope."' AND DEBUT_CONGES <= '".$fin_scope."')";
 			$conges_consultants = $DEMANDE->get_list('*',$filter,False);
 
 			foreach ($conges_consultants as $conges) {
@@ -50,6 +50,7 @@
 En orange les demandes en attente / en rose les demandes validées par la direction.
 <br>Cliquer sur le rectangle représentant la demande pour voir le détail de la demande.
 <br>Cliquer sur les bouton "<" ou ">" pour passer d'une page à l'autre (25 consultants par page);
+<br>Cliquer sur le bouton '-' pour visualiser à plsu grosse maille temporelle (semaine, mois) ou '+' pour visualiser à une maille plus fine (au mieux le jour).
 						<div class="gantt"></div>
 				</div>
 
