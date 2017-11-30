@@ -45,7 +45,7 @@ class Demande extends server_api_authentificated{
 		$message_html = '<html>
 					<body>
 						<p style="margin-bottom:10px;">Bonjour,</p>
-						<p style="margin-bottom:10px;">Vous avez reçu une demande de congés à valider de la part de '.$demande['NOM_CONSULTANT']." ".$demande['PRENOM_CONSULTANT'].'. Cette demande de congés est du '.$demande['DEBUT_CONGES']." ".$demande['DEBUTMM_CONGES'].' au '.$demande['FIN_CONGES']." ".$demande['FINMS_CONGES'].'.</p>
+						<p style="margin-bottom:10px;">Vous avez reçu une demande de congés à valider de la part de '.$demande['NOM_CONSULTANT']." ".$demande['PRENOM_CONSULTANT'].'. Cette demande de congés est du '.get_date_french_str($demande['DEBUT_CONGES'])." ".$demande['DEBUTMM_CONGES'].' au '.get_date_french_str($demande['FIN_CONGES'])." ".$demande['FINMS_CONGES'].'.</p>
 						<p style="margin-bottom:20px;">Cordialement.</p>
 					</body>
 				</html>';
@@ -62,7 +62,7 @@ class Demande extends server_api_authentificated{
 		$message_html = '<html>
 					<body>
 						<p style="margin-bottom:10px;">Bonjour '.$demande['PRENOM_CONSULTANT'].' '.$demande['NOM_CONSULTANT'].',</p>
-						<p style="margin-bottom:10px;">La demande de congés numéro '.$demande['ID_CONGES'].' du '.$demande['DEBUT_CONGES']." ".$demande['DEBUTMM_CONGES'].' au '.$demande['FIN_CONGES']." ".$demande['FINMS_CONGES'].' est passée au statut '.$demande['STATUT_CONGES'].'.</p>
+						<p style="margin-bottom:10px;">La demande de congés numéro '.$demande['ID_CONGES'].' du '.get_date_french_str($demande['DEBUT_CONGES'])." ".$demande['DEBUTMM_CONGES'].' au '.get_date_french_str($demande['FIN_CONGES'])." ".$demande['FINMS_CONGES'].' est passée au statut '.$demande['STATUT_CONGES'].'.</p>
 						<p style="margin-bottom:20px;">Cordialement.</p>
 					</body>
 				</html>';

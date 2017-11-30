@@ -38,11 +38,11 @@ include("view/foot.php");
 /*TODO 
 
 Fonctionnel :
-- mettre au format Français la date dans les mails
 - le DM doit pouvoir saisir un commentaire notamment pour indiquer la prise en compte de OK du DM "secondaire" (demande de David) => plutot un process de validation multi-DM ?
 - mémoriser les dates de pose et dates de validation des demande ? + ajouter "validée le XXX" dans les IHM
 - BUG or FEATURE : dans la section Historique de la page "validation" apparaissent toutes les demandes validée en profil DIRECTEUR ?
 
+- visualisation des soldes projetés au mois le mois, ou au moins au 31/12 pour les CP et au 31/05 pour les RTT => revoir le MDD pour les soldes et acquis
 - pouvoir annuler une demande après validation direction => quel processus ? Double vérif ?
 - date limite de saisie dans le passé ? 1er du mois en cours ? du mois précédent
 - ne pas compter les jours RH et F dans la synthèse annuelle avant l'arrivée du consultant (si le consultant est arrivé en cours d'année)
@@ -55,12 +55,11 @@ Fonctionnel :
 - gestion des 2 jours de repos imposés chez FC / y compris à l'arrivée de nouveaux consultants en cours d'année.
 - bouton re RAZ des compteur au 31/12 et 31/05
 - gestion des CP n-2 et RTT n-2 avec leur date d'échéance
-- visualisation des soldes projetés au mois le mois, ou au moins au 31/12 pour les CP et au 31/05 pour les RTT => revoir le MDD pour les soldes et acquis
 - masquer le champ "dm" pour eux dans le formulaire pour les directeurs et les DM
 - annulation automatique des demandes nont traitée le jour du démarrage du congés ?
 - dissocier l'annulation par le consultant d'une demande envoyée au DM mais pas encore validée par le DM d'une demande supprimée par le consultant avant envoie au DM ?
 	=> inutile s'il on supprimer l'étape d'envoie au DM (on ne laisse qu'un bouton Enregistrer et envoyer au DM" au bas du formulaire de saisie => Solution retenue
-- permettre d'ajouter les solde sur l'écran d'inscription d'un consultant
+- permettre d'ajouter les soldes sur l'écran d'inscription d'un consultant
 - booléen consultant actif / inactif
 
 
