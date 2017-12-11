@@ -38,11 +38,13 @@ include("view/foot.php");
 /*TODO 
 
 Fonctionnel :
-- le DM doit pouvoir saisir un commentaire notamment pour indiquer la prise en compte de OK du DM "secondaire" (demande de David) => plutot un process de validation multi-DM ?
-- mémoriser les dates de pose et dates de validation des demande ? + ajouter "validée le XXX" dans les IHM
+- DEMANDE DENIS : Denis doit pouvoir saisir les arrêts de travail (catégorie de congés "AUTRE").
+- DEMANDE BERNARD : affichage dans l'hordre historique inverse les histroriques de demande => Demandes de précisions en cours 1/12/2017
 - BUG or FEATURE : dans la section Historique de la page "validation" apparaissent toutes les demandes validée en profil DIRECTEUR ?
-
+- DEMANDE DAVID : le DM doit pouvoir saisir un commentaire notamment pour indiquer la prise en compte de OK du DM "secondaire" (demande de David) => plutot un process de validation multi-DM ? À clarifier
 - visualisation des soldes projetés au mois le mois, ou au moins au 31/12 pour les CP et au 31/05 pour les RTT => revoir le MDD pour les soldes et acquis
+- OPPORTUNITE COMPTABLE : export CSV des congés
+- mémoriser les dates de pose et dates de validation des demande ? + ajouter "validée le XXX" dans les IHM
 - pouvoir annuler une demande après validation direction => quel processus ? Double vérif ?
 - date limite de saisie dans le passé ? 1er du mois en cours ? du mois précédent
 - ne pas compter les jours RH et F dans la synthèse annuelle avant l'arrivée du consultant (si le consultant est arrivé en cours d'année)

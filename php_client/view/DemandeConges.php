@@ -15,13 +15,13 @@ function return_isset($post_name){
 ?>
 					<p style="width:90%;margin-bottom:20px;"><label for="du">Du : </label><input type="date" name="dateFromDu" id ="dateFromDu" onchange="nombre_jours_a_poser()" value="<?php echo return_isset('dateFromDu'); ?>" />
 					<select name="thelistMM" id ="thelistMM" onchange="nombre_jours_a_poser()">
-						<option<?php if (return_isset('thelistMM')=='Matin') echo 'selected';?>>Matin</option>
-						<option<?php if (return_isset('thelistMM')=='Midi') echo 'selected';?>>Midi</option>
+						<option<?php if (return_isset('thelistMM')=='Matin') echo ' selected';?>>Matin</option>
+						<option<?php if (return_isset('thelistMM')=='Midi') echo ' selected';?>>Midi</option>
 					</select></p>
 					<p style="margin-bottom:20px;"><label for="du">Au :  </label><input type="date" name="dateFromAu" id ="dateFromAu" onchange="nombre_jours_a_poser()" value="<?php echo return_isset('dateFromAu'); ?>" />
 					<select name="thelistMS" id ="thelistMS" onchange="nombre_jours_a_poser()">
-						<option<?php if (return_isset('thelistMS')=='Soir') echo 'selected';?>>Soir</option>						  
-						<option<?php if (return_isset('thelistMS')=='Midi') echo 'selected';?>>Midi</option>						  
+						<option<?php if (return_isset('thelistMS')=='Soir') echo ' selected';?>>Soir</option>						  
+						<option<?php if (return_isset('thelistMS')=='Midi') echo ' selected';?>>Midi</option>						  
 					</select></p>
 					<b>Attention : contrairement à  l'ancien système, indiquer ici le dernier jour de congès et non pas le jour de la reprise.</b>
 					<br>Nombre de jours de repos à répartir (par multiple de 0.5 jours) : <div style="display: inline-block;" id="nbJrs"><?php if (return_isset('nbJrs_hidden') != "") echo return_isset('nbJrs_hidden'); else echo "0";?></div><br>
@@ -37,11 +37,11 @@ function return_isset($post_name){
 							<td style="width:20%;">Jours Autres</td>
 						</tr>
 						<tr>
-							<td><input type="text" name="nbjrsCP" id="nbjrsCP" style="width:50%;" value="<?php echo return_isset('nbjrsCP');?>"/></td>
-							<td><input type="text" name="nbjrsRTT" id="nbjrsRTT" style="width:50%;" value="<?php echo return_isset('nbjrsRTT');?>"/></td>
-							<td><input type="text" name="nbjrsConv" id="nbjrsConv" style="width:50%;" value="<?php echo return_isset('nbjrsConv');?>"/></td>
-							<td><input type="text" name="nbjrsSS" id="nbjrsSS" style="width:50%;" value="<?php echo return_isset('nbjrsSS');?>"/></td>
-							<td><input type="text" name="nbjrsAutres"  id="nbjrsAutres" style="width:50%;" value="<?php echo return_isset('nbjrsAutres');?>"/></td>
+							<td><input type="text" name="nbjrsCP" id="nbjrsCP" onkeyup="this.value=this.value.replace(',','\.');" style="width:50%;" value="<?php echo return_isset('nbjrsCP');?>"/></td>
+							<td><input type="text" name="nbjrsRTT" id="nbjrsRTT" onkeyup="this.value=this.value.replace(',','\.');" style="width:50%;" value="<?php echo return_isset('nbjrsRTT');?>"/></td>
+							<td><input type="text" name="nbjrsConv" id="nbjrsConv" onkeyup="this.value=this.value.replace(',','\.');" style="width:50%;" value="<?php echo return_isset('nbjrsConv');?>"/></td>
+							<td><input type="text" name="nbjrsSS" id="nbjrsSS" onkeyup="this.value=this.value.replace(',','\.');" style="width:50%;" value="<?php echo return_isset('nbjrsSS');?>"/></td>
+							<td><input type="text" name="nbjrsAutres"  id="nbjrsAutres" onkeyup="this.value=this.value.replace(',','\.');" style="width:50%;" value="<?php echo return_isset('nbjrsAutres');?>"/></td>
 						</tr>
 					</table>
 
