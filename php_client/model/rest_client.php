@@ -5,7 +5,8 @@ class REST_client{
 	public $object;
 
         public function __construct($object) {
-		$API_HOST = "http://conges.fcnet/api_server";
+		#$API_HOST = "http://conges.fcnet/api_server";
+		$API_HOST = "http://localhost/api_server";
 		$API_VERSION = "v1";
 		$this->api_version = $API_VERSION;
 		$this->host = $API_HOST;
