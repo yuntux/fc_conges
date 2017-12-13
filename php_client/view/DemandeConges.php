@@ -94,28 +94,33 @@ function nombre_jours_a_poser(){
 	if(date1>date2){	
 		document.getElementById('nbJrs_hidden').value=0; 
 		alert("La date de fin ne peut être antérieure à la date de début.");
-		document.getElementById("dateFromAu").value = "";
-	} else {
-		if (d1=="" || d2==""){
-			return false;
-		}
-		var req = new XMLHttpRequest();
-		var url =  "<?php echo $REST_CLIENT->get_url_auth("nbJoursAPoser","helpers");?>";
-		var args = Array(d1,d2,demidebut,demifin);
-		url=url+"&args_array="+encodeURI(btoa(JSON.stringify(args)));
-		//alert(url);
-		req.open("GET",url,true);
-		req.onreadystatechange = function () {
-			if (req.status==200){
-				var diffj = req.responseText;
-				//diffj = JSON.parse(diffj);
-				//alert(diffj);
-				document.getElementById('nbJrs').innerHTML = diffj;
-				document.getElementById('nbJrs_hidden').value = diffj;
-			}
-		}
-		req.send(null);
+		document.getElementById("dateFromAu").value = document.getElementById("dateFromDu").value;
+		date2 = date1;
+		d2 = d1;
 	}
+	
+	if (d1!="" && d2==""){
+		document.getElementById("dateFromAu").value = document.getElementById("dateFromDu").value;
+		date2 = date1;
+		d2 = d1;
+	}
+
+	var req = new XMLHttpRequest();
+	var url =  "<?php echo $REST_CLIENT->get_url_auth("nbJoursAPoser","helpers");?>";
+	var args = Array(d1,d2,demidebut,demifin);
+	url=url+"&args_array="+encodeURI(btoa(JSON.stringify(args)));
+	//alert(url);
+	req.open("GET",url,true);
+	req.onreadystatechange = function () {
+		if (req.status==200){
+			var diffj = req.responseText;
+			//diffj = JSON.parse(diffj);
+			//alert(diffj);
+			document.getElementById('nbJrs').innerHTML = diffj;
+			document.getElementById('nbJrs_hidden').value = diffj;
+		}
+	}
+	req.send(null);
 }
 
 	</script>
