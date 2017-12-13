@@ -54,6 +54,8 @@ class Demande extends server_api_authentificated{
 	}
 
 	public function notification_mail_demande_change_status($id_demande){
+		return True;
+
 		global $EMAIL_DIRECTION; 
 		global $EMAIL_OFFICE_MANAGER;
 		$demande = $this->get_data_notification_mail($id_demande);
@@ -293,7 +295,7 @@ class Demande extends server_api_authentificated{
 				$message_erreur = "La ventilation des congès doit se faire par demie journée. Vous avez saisi un nombre qui n'est pas un multiple de 0.5 pour l'une des catégories.";
 			}
 			if ($nb_jour_cat<0) {
-				$message_erreur = "Le nombre de jours posés doit être positif (impossible de basculer des jours entre catégories).";
+				$message_erreur = "Le nombre de jours posés dans les catégories ne peut pas être négatif (impossible de basculer des jours entre catégories).";
 			}
 		}
 		if ($dateFromDu > $dateFromAu) {
@@ -301,6 +303,9 @@ class Demande extends server_api_authentificated{
 		}
 		if ($nbjrsTotal != $nb_jours_a_poser) {
 			$message_erreur = "Le nombre de jours ventilés n'est pas égal au nombre de jours ouvrés.";
+		}
+		if ($nb_jours_a_poser <= 0) {
+			$message_erreur = "Le nombre de jours à poser doit être strictement positif (> 0).";
 		}
 		if ($multiple_05!=True) {
 		}

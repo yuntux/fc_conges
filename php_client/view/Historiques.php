@@ -71,7 +71,7 @@
 							<td>
 								<form action="?action=Historiques" method="post">
 									<?php 
-									if ($detail_consultant['consultant.ID_CONSULTANT'] == $_SESSION['id']) {
+									if ($detail_consultant['ID_CONSULTANT'] == $_SESSION['id']) {
 										if($donnees1['demande.STATUT_CONGES'] == "En cours de validation DM" || $donnees1['demande.STATUT_CONGES'] == "Attente envoie"){
 											echo '<input type="submit" value="Annuler" name="cancel" />' ;
 											echo '<input type="hidden" name="id_conges" value="'.$donnees1['demande.ID_CONGES'].'" />' ;

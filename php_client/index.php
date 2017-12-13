@@ -10,7 +10,7 @@ $CONSULTANT = new REST_client("Consultant");
 $DEMANDE = new REST_client("Demande"); 
 
 function get_action(){
-	$action = null;
+	$action = "home";
 	if (isset($_GET["action"]))
 		$action = $_GET["action"];
 	return $action;
@@ -20,11 +20,6 @@ $action = get_action();
 if(empty($_SESSION['id']) && $action!='mot_passe_oublie')
 {
 	$action="login";
-}
-else 
-{
-	if ($action==null)
-        	$action="home";
 }
 
 include_once("controller/".$action.".php");

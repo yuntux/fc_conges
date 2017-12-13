@@ -355,6 +355,7 @@ echo $e;
                                 die('Erreur : ' . $e->getMessage());
                 }
                 $datecurrent =date("Y-m-d");
+		$datemaj = null;
                 sscanf($datemaj, "%4s-%2s-%2s", $annee, $mois, $jour);
                 $a1 = $annee;
                 $m1 = $mois;
