@@ -54,8 +54,6 @@ class Demande extends server_api_authentificated{
 	}
 
 	public function notification_mail_demande_change_status($id_demande){
-		return True;
-
 		global $EMAIL_DIRECTION; 
 		global $EMAIL_OFFICE_MANAGER;
 		$demande = $this->get_data_notification_mail($id_demande);

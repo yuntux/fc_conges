@@ -17,7 +17,7 @@ function send_mail($to,$subject,$message){
         //$mail->SMTPDebug = 34;                               // Enable verbose debug output
         $mail->isSMTP();                                      // Set mailer to use SMTP
         $mail->Host = $_SMTP_HOST;  // Specify main and backup SMTP servers
-        $mail->Port = 25;                                    // TCP port to connect to
+        $mail->Port = $_SMTP_PORT;                                    // TCP port to connect to
         $mail->SMTPAuth = false;                               // Enable SMTP authentication
 	$mail->CharSet = 'UTF-8';
         $mail->setFrom('no-reply@fontaine-consultants.fr', 'FC Congés');
