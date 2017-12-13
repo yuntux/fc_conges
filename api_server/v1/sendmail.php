@@ -47,12 +47,6 @@ function send_mail($to,$subject,$message){
 
 }
 
-/*
-require_once("db_parameters_prod.php");
-send_mail("adumaine@fontaine-consultants.fr","test","testttttttt");
-send_mail("yuntux@gmail.com","test","testttttttt");
-*/
-
 function email_new_password($EMAIL_CONSULTANT, $PASSWORD){	
 	$message_html = '<html>
 				<body>
