@@ -84,7 +84,7 @@ class Demande extends server_api_authentificated{
         public function valider($id_demande){
 		if($_SESSION['role'] == "DIRECTEUR")
 		{
-			$status = "'Validée'"; 
+			$status = "'Validée'";
 		}
 		elseif ($_SESSION['role'] == "DM")
 		{
@@ -208,7 +208,8 @@ class Demande extends server_api_authentificated{
 			{
 				$restriction = "";
 //				$status = 'AND (`STATUT_CONGES` = "En cours de validation Direction" OR (`STATUT_CONGES` = "En cours de validation DM" AND  dm.ID_CONSULTANT = \'6\'))';
-				$status = 'AND (`STATUT_CONGES` = "En cours de validation Direction" OR (`STATUT_CONGES` = "En cours de validation DM" AND  dm.ID_CONSULTANT = \''.$_SESSION['id'].'\'))';
+				//$status = 'AND (`STATUT_CONGES` = "En cours de validation Direction" OR (`STATUT_CONGES` = "En cours de validation DM" AND  dm.ID_CONSULTANT = \''.$_SESSION['id'].'\'))';
+				$status = 'AND (`STATUT_CONGES` = "Attente envoie" OR `STATUT_CONGES` = "En cours de validation DM" OR `STATUT_CONGES` = "En cours de validation Direction")';
 			} 
 			elseif ($_SESSION['role'] == "DM")
 			{

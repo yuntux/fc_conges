@@ -14,6 +14,8 @@
 					<th>Fin</th>
 					<th>Nombre de jours</th>
 					<th>Commentaire</th>
+					<th>Statut</th>
+					<th>Valideur</th>
 					<th>Valider</th>
 					<th>Refuser</th>
 				</tr>
@@ -52,20 +54,26 @@
 								<td><?php echo get_date_french_str($donnees1['demande.FIN_CONGES']); ?> <?php echo $donnees1['demande.FINMS_CONGES']; ?></td>
 								<td><?php echo $type; ?></td>
 								<td><?php echo $donnees1['demande.COMMENTAIRE']; ?></td>
+								<td><?php echo $donnees1['demande.STATUT_CONGES']; ?></td>
+								<td><?php echo $donnees1['dm.PRENOM_CONSULTANT'].' '.$donnees1['dm.NOM_CONSULTANT']; ?></td>
 								<td>
 									<?php 
+										if (($donnees1['demande.VALIDEUR_CONGES']==$_SESSION['id']) || ($donnees1['demande.STATUT_CONGES']=="En cours de validation Direction" && $_SESSION['role']=="DIRECTEUR")){
 											echo '<form action="?action=Validation" method="post">';
 											echo '<input type="submit" value="Valider"/>';
 											echo '<input type="hidden" name="validation" value="'.$donnees1['demande.ID_CONGES'].'"/>';
 											echo '</form>';
+										}
 									 ?>
 								</td>
 								<td>
 									<?php
+										if (($donnees1['demande.VALIDEUR_CONGES']==$_SESSION['id']) || ($donnees1['demande.STATUT_CONGES']=="En cours de validation Direction" && $_SESSION['role']=="DIRECTEUR")){
 											echo '<form action="?action=Validation" method="post">';
 											echo '<input type="submit" value="Refuser"/>';
 											echo '<input type="hidden" name="refus" value="'.$donnees1['demande.ID_CONGES'].'"/>';
 											echo '</form>';
+										}
 									 ?>
 								</td>
 							</tr>
@@ -88,6 +96,7 @@
 					<th>Nombre de jours</th>
 					<th>Commentaire</th>
 					<th>Statut</th>
+					<th>Valideur</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -126,6 +135,7 @@
 								<td><?php echo $type; ?></td>
 								<td><?php echo $donnees1['demande.COMMENTAIRE']; ?></td>
 								<td><?php echo $donnees1['demande.STATUT_CONGES']; ?></td>
+								<td><?php echo $donnees1['dm.PRENOM_CONSULTANT'].' '.$donnees1['dm.NOM_CONSULTANT']; ?></td>
 							</tr>
 						<?php
 						}
