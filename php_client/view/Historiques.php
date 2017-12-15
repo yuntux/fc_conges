@@ -22,6 +22,7 @@
 					<table id="background-image" class="styletab">
 						<thead>
 							<tr>
+								<th>N° demande</th>
 								<th>Date de la demande</th>
 								<th>Début</th>
 								<th>Fin</th>
@@ -38,6 +39,7 @@
 					{
 					?>
 						<tr>
+							<td><?php echo $donnees1['demande.ID_CONGES']; ?></td>
 							<td><?php echo get_date_french_str($donnees1['demande.DATEDEM_CONGES']); ?></td>
 							<td><?php echo get_date_french_str($donnees1['demande.DEBUT_CONGES']); ?> <?php echo $donnees1['demande.DEBUTMM_CONGES']; ?></td>
 							<td><?php echo get_date_french_str($donnees1['demande.FIN_CONGES']); ?> <?php echo $donnees1['demande.FINMS_CONGES']; ?></td>
@@ -90,6 +92,7 @@
 					<table id="background-image" class="styletab">
 						<thead>
 							<tr>
+								<th>N° demande</th>
 								<th>Date de la demande</th>
 								<th>Début</th>
 								<th>Fin</th>
@@ -105,6 +108,7 @@
 					{
 					?>
 						<tr>
+							<td><?php echo $donnees1['demande.ID_CONGES']; ?></td>
 							<td><?php echo get_date_french_str($donnees1['demande.DATEDEM_CONGES']); ?></td>
 							<td><?php echo get_date_french_str($donnees1['demande.DEBUT_CONGES']); ?> <?php echo $donnees1['demande.DEBUTMM_CONGES']; ?></td>
 							<td><?php echo get_date_french_str($donnees1['demande.FIN_CONGES']); ?> <?php echo $donnees1['demande.FINMS_CONGES']; ?></td>

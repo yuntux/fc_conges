@@ -34,6 +34,7 @@ include("view/foot.php");
 
 Fonctionnel :
 - DEMANDE DENIS : Denis doit pouvoir saisir les arrêts de travail (catégorie de congés "AUTRE").
+- DEMANDE DENIS : qu'il puisse modifier la ventilation des jours (sauf si on bloque la pose suivant le solde)
 - DEMANDE DAVID : le DM doit pouvoir saisir un commentaire notamment pour indiquer la prise en compte de OK du DM "secondaire" (demande de David) => plutot un process de validation multi-DM ? À clarifier
 - visualisation des soldes projetés au mois le mois, ou au moins au 31/12 pour les CP et au 31/05 pour les RTT => revoir le MDD pour les soldes et acquis
 - OPPORTUNITE COMPTABLE : export CSV des congés
