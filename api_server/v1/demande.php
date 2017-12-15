@@ -192,7 +192,7 @@ class Demande extends server_api_authentificated{
 		}
 
 		$this->bdd->setAttribute(PDO::ATTR_FETCH_TABLE_NAMES, true);
-                $reponse = $this->bdd->query($q);
+                $reponse = $this->bdd->query($q.' ORDER BY demande.ID_CONGES DESC');
                 return $reponse->fetchAll();
         }
 
@@ -224,7 +224,7 @@ class Demande extends server_api_authentificated{
 				$status = 'AND (`STATUT_CONGES` = "Attente envoie" OR `STATUT_CONGES` = "En cours de validation DM" OR `STATUT_CONGES` = "En cours de validation Direction")';
 			}
 		}
-		$q = 'SELECT * FROM conges demande, consultant consultant, consultant dm  WHERE consultant.ID_CONSULTANT = demande.CONSULTANT_CONGES and dm.ID_CONSULTANT = demande.VALIDEUR_CONGES '.$status.' '.$restriction;
+		$q = 'SELECT * FROM conges demande, consultant consultant, consultant dm  WHERE consultant.ID_CONSULTANT = demande.CONSULTANT_CONGES and dm.ID_CONSULTANT = demande.VALIDEUR_CONGES '.$status.' '.$restriction.' ORDER BY demande.ID_CONGES DESC';
 //echo $q;
 //TODO : généraliser ce paramètre PDO
 		$this->bdd->setAttribute(PDO::ATTR_FETCH_TABLE_NAMES, true);
