@@ -151,7 +151,7 @@ class Demande extends server_api_authentificated{
 			}
 			else
 			{
-				$status = "'AnnulÃ©e'";
+				$status = "'Annulée'";
 			}
 		}
                 try
