@@ -7,9 +7,20 @@ include("demande.php");
 include("auth.php");
 include("helpers.php");
 
+include_once('model_singleton.php');
+
 //echo var_dump($_GET);
 //echo var_dump($_POST);
-$obj = new $_GET['object']($bdd);
+//$obj = new $_GET['object']($bdd);
+
+if ($_GET['object']=='Demande'){
+	$obj = get_demande_singleton($bdd);
+}elseif ($_GET['object']=='Consultant'){
+	$obj = get_consultant_singleton($bdd);
+}else{
+	$obj = new $_GET['object']($bdd);
+}
+
 
 error_log($_GET['object'], 3,"/tmp/test.log");
 if (isset($_GET['args_array'])) {

@@ -7,8 +7,11 @@ class Demande extends server_api_authentificated{
 
         public function __construct($bdd) {
 		parent::__construct($bdd);
-//                $this->CONSULTANT = new Consultant($bdd);
         }
+
+	public function add_consultant($consultant){
+                $this->CONSULTANT = $consultant;
+	}
 
         public function get_list($fields ='*', $filter=False, $order_by=False){
                 $q = 'SELECT '.$fields.' FROM conges';
@@ -117,7 +120,7 @@ class Demande extends server_api_authentificated{
                 }
                 catch(Exception $e)
                 {
-                        die('Erreur : '.$e->POSTMessage());
+                        die('Erreur : '.$e->getMessage());
 			return False;
                 }
 		return True;
@@ -162,7 +165,7 @@ class Demande extends server_api_authentificated{
                 }
                 catch(Exception $e)
                 {
-                        die('Erreur : '.$e->POSTMessage());
+                        die('Erreur : '.$e->getMessage());
 			return False;
                 }
 		return True;
@@ -276,8 +279,37 @@ class Demande extends server_api_authentificated{
 		return $nb_jours_a_poser;
 	}
 
-	public function enregistrer_demande($dateFromDu,$dateFromAu,$thelistMM,$thelistMS,$thelistDM,$commentaire,$nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP){
-		$consultant = $_SESSION['id'];
+	public function enregistrer_demande_multiple($consultant_tab,$dateFromDu,$dateFromAu,$thelistMM,$thelistMS,$thelistDM,$commentaire,$nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP){
+		if($_SESSION['role'] != "DIRECTEUR") {
+			throw new Exception('Droits insuffisants');
+			return False;
+		}
+		$res = "Résultats par consultant : <br>";
+		
+		foreach ($consultant_tab as $index => $id_consultant){
+			// TODO : check ID existence (sent by a director, so no a big deal)
+			$r = $this->enregistrer_demande($dateFromDu,$dateFromAu,$thelistMM,$thelistMS,$thelistDM,$commentaire,$nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP,$id_consultant);
+			if ($r===True){ //ATTENTION : le triple égal est indispensable
+				$r = "Demande enregistrée.";
+			}
+			$consult= $this->CONSULTANT->get_by_id($id_consultant);
+			$res.=$consult['PRENOM_CONSULTANT'].' '.$consult['NOM_CONSULTANT']."=>".$r.'<br>';
+		}
+		return $res;
+	}
+
+	public function enregistrer_demande($dateFromDu,$dateFromAu,$thelistMM,$thelistMS,$thelistDM,$commentaire,$nbjrsSS,$nbjrsAutres,$nbjrsConv,$nbjrsRTT,$nbjrsCP,$id_consultant=null){
+		if($id_consultant!=null && $_SESSION['role'] != "DIRECTEUR") {
+                        throw new Exception('Droits insuffisants');
+                        return False;
+                }
+
+		if ($id_consultant==null){
+			$consultant = $_SESSION['id'];
+		} else {
+			$consultant=$id_consultant;
+		}
+
 		$message_erreur = True;
 		$nbjrsTotal = $nbjrsCP + $nbjrsRTT + $nbjrsSS + $nbjrsConv + $nbjrsAutres;
 		$nb_jours_a_poser = $this->nbJoursAPoser($dateFromDu,$dateFromAu,$thelistMM,$thelistMS);
@@ -324,7 +356,7 @@ class Demande extends server_api_authentificated{
 					}
 					catch(Exception $e)
 					{
-						die('Erreur : '.$e->POSTMessage());
+						die('Erreur : '.$e->getMessage());
 					}
 					$newSoldeCPn = 0;
 					$newSoldeRTTn = 0;
@@ -357,7 +389,7 @@ class Demande extends server_api_authentificated{
 					}
 					catch(Exception $e)
 					{
-						die('Erreur : '.$e->POSTMessage());
+						die('Erreur : '.$e->getMessage());
 					}
 					try
 					{
@@ -378,16 +410,19 @@ class Demande extends server_api_authentificated{
 					}
 					catch(Exception $e)
 					{
-						die('Erreur : '.$e->POSTMessage());
+						die('Erreur : '.$e->getMessage());
 					}
 					try
 					{
 						$req = $this->bdd->prepare('INSERT INTO solde (`ID_Solde`, `CPn_SOLDE`, `CPn1_SOLDE`, `RTTn_SOLDE`, `RTTn1_SOLDE`, `CONSULTANT_SOLDE`, `DATE_SOLDE`) VALUES (?,?,?,?,?,?,CURRENT_DATE)');
-						$req->execute(array($max_ID+1,$newSoldeCPn,$newSoldeCPn1,$newSoldeRTTn,$newSoldeRTTn1,$consultant));
+						$p = array($max_ID+1,intval($newSoldeCPn),intval($newSoldeCPn1),intval($newSoldeRTTn),intval($newSoldeRTTn1),$consultant);
+//echo var_dump($p);
+						$req->execute($p);
+						//$req->execute(array($max_ID+1,$newSoldeCPn,$newSoldeCPn1,$newSoldeRTTn,$newSoldeRTTn1,$consultant));
 					}
 					catch(Exception $e)
 					{
-						die('Erreur : '.$e->POSTMessage());
+						die('Erreur : '.$e->getMessage());
 					}
 
 					$this->notification_mail_demande_change_status($id_demande);

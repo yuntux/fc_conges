@@ -13,6 +13,26 @@ function return_isset($post_name){
 		return "";
 }
 ?>
+
+<?php
+if($_SESSION['role'] == "DIRECTEUR"){
+	$i = 0;
+	echo "<table style='width:150%;'><tr><td>";
+	foreach ($consultants as $consultant){
+		$i++;
+		if ($i%10==0){
+			echo "</td><td>";	
+		}
+		$checked="";
+		if ($_SESSION['id']==$consultant["ID_CONSULTANT"]){
+			$checked=" checked";
+		}
+		echo '<input name="consultant_tab[]"  value="'.$consultant["ID_CONSULTANT"].'" type="checkbox" '.$checked.'>'.$consultant["PRENOM_CONSULTANT"].' '.$consultant["NOM_CONSULTANT"].'<br>';
+	}
+	echo "</td></tr></table>";
+}
+?>
+
 					<p style="width:90%;margin-bottom:20px;"><label for="du">Du : </label><input type="date" name="dateFromDu" id ="dateFromDu" onchange="nombre_jours_a_poser()" value="<?php echo return_isset('dateFromDu'); ?>" />
 					<select name="thelistMM" id ="thelistMM" onchange="nombre_jours_a_poser()">
 						<option<?php if (return_isset('thelistMM')=='Matin') echo ' selected';?>>Matin</option>
@@ -56,12 +76,12 @@ function return_isset($post_name){
 							foreach ($reponse1 as $donnees1)
 							{
 								//TODO : cacher ce IF que je ne saurais voir
-							//	if ($donnees1['NOM_CONSULTANT'] != "ADMIN"){
+								if ($donnees1['NOM_CONSULTANT'] != "ADMIN"){
 									echo "<option value=\"".$donnees1['ID_CONSULTANT']."\" ";
 									if (return_isset('thelistDM') == $donnees1['ID_CONSULTANT'])
 										echo " selected";
 									echo">".$donnees1['PRENOM_CONSULTANT']." ".$donnees1['NOM_CONSULTANT']."</option>";
-							//	}
+								}
 							}
 						}
 						catch(Exception $e)

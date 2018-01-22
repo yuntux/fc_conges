@@ -5,7 +5,10 @@ class Consultant extends server_api_authentificated{
 
 	public function __construct($bdd) {
 		parent::__construct($bdd);
-                $this->DEMANDE = new Demande($bdd);
+                //$this->DEMANDE = new Demande($bdd);
+	}
+	public function add_demande($demande){
+                $this->DEMANDE = $demande;
 	}
 
 	public function get(){
@@ -68,7 +71,7 @@ class Consultant extends server_api_authentificated{
                 }
                 catch(Exception $e)
                 {
-                        die('Erreur : '.$e->POSTMessage());
+                        die('Erreur : '.$e->getMessage());
                 }
 	}
 
@@ -108,7 +111,7 @@ class Consultant extends server_api_authentificated{
                 }
                 catch(Exception $e)
                 {
-                        die('Erreur : '.$e->POSTMessage());
+                        die('Erreur : '.$e->getMessage());
                 }
 	}
 
@@ -130,7 +133,7 @@ class Consultant extends server_api_authentificated{
 			}
 			catch(Exception $e)
 			{
-				die('Erreur : '.$e->POSTMessage());
+				die('Erreur : '.$e->getMessage());
 			}
 			return True;
 		} else {
@@ -144,7 +147,7 @@ class Consultant extends server_api_authentificated{
 		}
 		catch(Exception $e)
 		{
-			die('Erreur : '.$e->POSTMessage());
+			die('Erreur : '.$e->getMessage());
 		}
 
 //echo "<br>passed : ".$password;
@@ -170,7 +173,7 @@ class Consultant extends server_api_authentificated{
                 }
                 catch(Exception $e)
                 {
-                        die('Erreur : '.$e->POSTMessage());
+                        die('Erreur : '.$e->getMessage());
                 }
 		return $reponse['EMAIL_CONSULTANT'];
 	}
@@ -183,7 +186,7 @@ class Consultant extends server_api_authentificated{
                 }
                 catch(Exception $e)
                 {
-                        die('Erreur : '.$e->POSTMessage());
+                        die('Erreur : '.$e->getMessage());
                 }
 		return $reponse['ID_CONSULTANT'];
 	}
@@ -372,7 +375,7 @@ echo $e;
                 }
                 catch(Exception $e)
                 {
-                        die('Erreur : '.$e->POSTMessage());
+                        die('Erreur : '.$e->getMessage());
                 }
                 if($indice=1){
                         try
@@ -382,7 +385,7 @@ echo $e;
                         }
                         catch(Exception $e)
                         {
-                                die('Erreur : '.$e->POSTMessage());
+                                die('Erreur : '.$e->getMessage());
                         }
                 }
 

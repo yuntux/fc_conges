@@ -1,4 +1,7 @@
 <?php
+
+include_once('model_singleton.php');
+
 class auth extends server_api {
 
         public $CONSULTANT;
@@ -7,8 +10,8 @@ class auth extends server_api {
 
         public function __construct($bdd) {
                 parent::__construct($bdd);
-		$this->CONSULTANT = new Consultant($bdd);
-		$this->DEMANDE = new Demande($bdd);
+		$this->CONSULTANT =  get_consultant_singleton($bdd);
+		$this->DEMANDE =  get_demande_singleton($bdd);
 		$this->bdd = $bdd;
         }
 
