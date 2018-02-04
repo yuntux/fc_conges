@@ -66,9 +66,10 @@
 										}
 									 ?>
 								</td>
+
 								<td>
 									<?php
-										if (($donnees1['demande.VALIDEUR_CONGES']==$_SESSION['id']) || ($donnees1['demande.STATUT_CONGES']=="En cours de validation Direction" && $_SESSION['role']=="DIRECTEUR")){
+										if (($donnees1['demande.VALIDEUR_CONGES']==$_SESSION['id']) || ($_SESSION['role']=="DIRECTEUR" && ($donnees1['demande.STATUT_CONGES']=="En cours de validation Direction" || $donnees1['demande.STATUT_CONGES']=="Validée"))){
 											echo '<form action="?action=Validation" method="post">';
 											echo '<input type="submit" value="Refuser"/>';
 											echo '<input type="hidden" name="refus" value="'.$donnees1['demande.ID_CONGES'].'"/>';
@@ -97,6 +98,7 @@
 					<th>Commentaire</th>
 					<th>Statut</th>
 					<th>Valideur</th>
+					<th>Annulation</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -136,6 +138,18 @@
 								<td><?php echo $donnees1['demande.COMMENTAIRE']; ?></td>
 								<td><?php echo $donnees1['demande.STATUT_CONGES']; ?></td>
 								<td><?php echo $donnees1['dm.PRENOM_CONSULTANT'].' '.$donnees1['dm.NOM_CONSULTANT']; ?></td>
+
+								<td>
+									<?php
+										if ($_SESSION['role']=="DIRECTEUR")
+										{
+											echo '<form action="?action=Validation" method="post">';
+											echo '<input type="submit" value="Annuler a posteriori"/>';
+											echo '<input type="hidden" name="refus" value="'.$donnees1['demande.ID_CONGES'].'"/>';
+											echo '</form>';
+										}
+									 ?>
+								</td>
 							</tr>
 						<?php
 						}
