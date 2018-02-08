@@ -33,13 +33,12 @@ include("view/foot.php");
 /*TODO 
 
 Fonctionnel :
-- DEMANDE DENIS : Denis doit pouvoir saisir les arrêts de travail (catégorie de congés "AUTRE").
+- ANNULATION A POSTERIORI DE CONGES : Dans l'idéal il faudrait créer un nouveau status (différent de "Annulé direction" a priori) et logger précisément les passages de status (utilisateur / date), voire même avoir une double demande d'annulation par les salarié puis la direction... mais ça ne sera pas pour ce soir. Le mail de changement peut faire office de log pour le moment.
 - DEMANDE DENIS : qu'il puisse modifier la ventilation des jours (sauf si on bloque la pose suivant le solde)
 - DEMANDE DAVID : le DM doit pouvoir saisir un commentaire notamment pour indiquer la prise en compte de OK du DM "secondaire" (demande de David) => plutot un process de validation multi-DM ? À clarifier
 - visualisation des soldes projetés au mois le mois, ou au moins au 31/12 pour les CP et au 31/05 pour les RTT => revoir le MDD pour les soldes et acquis
 - OPPORTUNITE COMPTABLE : export CSV des congés
 - mémoriser les dates de pose et dates de validation des demande ? + ajouter "validée le XXX" dans les IHM
-- pouvoir annuler une demande après validation direction => quel processus ? Double vérif ?
 - date limite de saisie dans le passé ? 1er du mois en cours ? du mois précédent
 - ne pas compter les jours RH et F dans la synthèse annuelle avant l'arrivée du consultant (si le consultant est arrivé en cours d'année)
 - forecast => avoir l'excel de Denis

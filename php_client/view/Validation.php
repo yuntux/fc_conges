@@ -15,7 +15,7 @@
 					<th>Nombre de jours</th>
 					<th>Commentaire</th>
 					<th>Statut</th>
-					<th>Valideur</th>
+					<th>Directeur de mission (validation niveau 1)</th>
 					<th>Valider</th>
 					<th>Refuser</th>
 				</tr>
@@ -97,7 +97,7 @@
 					<th>Nombre de jours</th>
 					<th>Commentaire</th>
 					<th>Statut</th>
-					<th>Valideur</th>
+					<th>Directeur de mission (validation niveau 1)</th>
 					<th>Annulation</th>
 				</tr>
 			</thead>
@@ -141,7 +141,7 @@
 
 								<td>
 									<?php
-										if ($_SESSION['role']=="DIRECTEUR")
+										if ($_SESSION['role']=="DIRECTEUR" && $donnees1['demande.STATUT_CONGES']=="Validée")
 										{
 											echo '<form action="?action=Validation" method="post">';
 											echo '<input type="submit" value="Annuler a posteriori"/>';

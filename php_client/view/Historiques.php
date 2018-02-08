@@ -29,7 +29,7 @@
 								<th>Nombre de jour</th>
 								<th>Jours posés</th>
 								<th>Statut</th>
-								<th>Valideur</th>
+								<th>Directeur de mission (validation niveau 1)</th>
 								<th>Annuler</th>
 							</tr>
 						</thead>
@@ -99,7 +99,7 @@
 								<th>Nombre de jour</th>
 								<th>Jours posés</th>
 								<th>Statut</th>
-								<th>Valideur</th>
+								<th>Directeur de mission (validation niveau 1)</th>
 							</tr>
 						</thead>
 						<tbody>
