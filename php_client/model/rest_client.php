@@ -5,7 +5,6 @@ class REST_client{
 	public $object;
 
         public function __construct($object) {
-		#$API_HOST = "http://conges.fcnet/api_server";
 		$API_HOST = "https://conges.fontaine-consultants.fr/api_server";
 		$API_VERSION = "v1";
 		$this->api_version = $API_VERSION;
@@ -39,7 +38,8 @@ class REST_client{
 		    )
 		);
 		$context  = stream_context_create($options);
-if (isset($_SESSION['login']) && $_SESSION['login']=='adumaine@fontaine-consultants.fr'){
+//if (isset($_SESSION['login']) && $_SESSION['login']=='adumaine@fontaine-consultants.fr'){
+if (isset($_SESSION['login']) && $_SESSION['login']=='denis.coq@fontaine-consultants.fr'){
 	echo '<br>MODE DEBUG / URL appelée par le client PHP - endPoint de l\'API => '.$url;
 }
 		$result = file_get_contents($url, false, $context);
@@ -54,7 +54,7 @@ if (isset($_SESSION['login']) && $_SESSION['login']=='adumaine@fontaine-consulta
 
         public function __call($method_name, $args) {
 //echo $method_name;
-		//TODO : voir si ce ne peut pas être fait plu simplement
+		//TODO : voir si ce ne peut pas être fait plus simplement
 		if (in_array($method_name, Array("get_url_auth","post"))){
 			return call_user_func_array(array($this, $method_name), $args_array);	
 		} else {

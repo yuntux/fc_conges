@@ -4,8 +4,18 @@
 		<meta charset="utf-8">
                 <title>FC congés</title>
 		<link rel="icon" type="image/ico" href="view/favicon.ico"/>
-                <link rel="stylesheet" media="screen" type="text/css" href="view/Style.css?v=5" />
 		<!--<link href="view/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" />-->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write(decodeURIComponent('%3Cscript src="js/jquery.min.js"%3E%3C/script%3E'))</script>
+    <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/18.2.3/css/dx.common.css" />
+    <link rel="dx-theme" data-theme="generic.light" href="https://cdn3.devexpress.com/jslib/18.2.3/css/dx.light.css" />
+    <script src="https://cdn3.devexpress.com/jslib/18.2.3/js/dx.all.js"></script>
+    <link rel="stylesheet" type ="text/css" href ="view/datagrid.css" />
+
+                <link rel="stylesheet" media="screen" type="text/css" href="view/Style.css?v=5" />
+
         </head>
         <body>
                 <div id="main_wrapper">

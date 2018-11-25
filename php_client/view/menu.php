@@ -13,10 +13,14 @@
 					if ($action=="VisionGenerale")
 						echo ' style="background-color:#FFF;"';
 					echo '>Vision générale</a></li>';
-				echo '<li class="menu-1-5"><a href="?action=editions" class="menu-1-5"';
+				echo '<li class="menu-1-6"><a href="?action=editions" class="menu-1-6"';
 					if ($action=="editions")
 						echo ' style="background-color:#FFF;"';
 					echo '>Editions</a></li>';
+				echo '<li class="menu-1-7"><a href="?action=liste_projets" class="menu-1-7"';
+					if ($action=="liste_projets")
+						echo ' style="background-color:#FFF;"';
+					echo '>Liste projets</a></li>';
 			}
 		?>
 	</ul>

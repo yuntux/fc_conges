@@ -6,6 +6,7 @@ include("consultant.php");
 include("demande.php");
 include("auth.php");
 include("helpers.php");
+include("projet.php");
 
 include_once('model_singleton.php');
 
@@ -22,7 +23,7 @@ if ($_GET['object']=='Demande'){
 }
 
 
-error_log($_GET['object'], 3,"/tmp/test.log");
+error_log("\nAAAA=>".$_GET['object'], 3,"/tmp/test.log");
 if (isset($_GET['args_array'])) {
 	$args = json_decode(base64_decode($_GET['args_array']));
 }else{

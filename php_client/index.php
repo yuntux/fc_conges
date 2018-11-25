@@ -8,6 +8,7 @@ $REST_CLIENT = new REST_client("helpers");
 $auth = new REST_client("auth");
 $CONSULTANT = new REST_client("Consultant"); 
 $DEMANDE = new REST_client("Demande"); 
+$PROJET = new REST_client("Projet"); 
 
 function get_action(){
 	$action = "home";
