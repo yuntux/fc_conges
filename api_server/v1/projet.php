@@ -12,8 +12,12 @@ class Projet extends server_api_authentificated{
 	}
 
 
-	public function get_prochain_numero($type){
+	public function get_prochain_numero($is_accord_cadre){
 		// TODO : init le 1er projet de l'année après un numéro donné.
+		if ($is_accord_cadre == 1)
+			$type = "AC";
+		else
+			$type = "PR";
 		$current_year = date('y');
 		$projects = $this->get_list($fields ='*', $filter="NUM_PROJET LIKE '".$type.$current_year."%'", $order_by="NUM_PROJET");
 		if (count($projects) == 0){
@@ -30,7 +34,7 @@ class Projet extends server_api_authentificated{
 //	public function add($nom, $type, $statut, $id_dm, $id_client, $client_saisie_libre, $commanditaire, $ca, $proba, $commentaire, $nom_sous_traitant, $ca_sous_traitant)
 	public function add($crud_dict)
         {
-		$data = json_decode($crud_dict); 
+		$data = json_decode($crud_dict,true); 
 		$champs_lecture_seule = array("ID_PROJET","NUM_PROJET");
                 try
                 {
@@ -48,7 +52,11 @@ class Projet extends server_api_authentificated{
                 {
 			$prepa = array("`NUM_PROJET`");
 			$prepa2 = array("?");
-			$tab = array($this->get_prochain_numero($data['TYPE_PROJET']));
+			if (isset($data['IS_ACCORD_CADRE_PROJET'])){
+				$tab = array($this->get_prochain_numero($data['IS_ACCORD_CADRE_PROJET']));
+			} else {
+				$tab = array($this->get_prochain_numero(0));
+			}
 			foreach ($data as $key=>$val){
 				if (in_array($key, $champs_lecture_seule) == False){
 					array_push($prepa,"`".$key."`");
@@ -73,8 +81,8 @@ class Projet extends server_api_authentificated{
 
 	public function update ($id_projet, $crud_dict)
         {
-                $data = json_decode($crud_dict);
-                $champs_lecture_seule = array("ID_PROJET","NUM_PROJET");
+                $data = json_decode($crud_dict,true);
+                $champs_lecture_seule = array("ID_PROJET","NUM_PROJET","IS_ACCORD_CADRE_PROJET");
 
                 try
                 {
