@@ -11,11 +11,14 @@ class Partenaire extends server_api_authentificated{
 	public function remove(){
 	}
 
-	public function add($nom_partenaire,$secteur_partenaire)
+
+	public function add($crud_dict)
         {
+		$data = json_decode($crud_dict); 
+		$champs_lecture_seule = array("ID_PARTENAIRE");
                 try
                 {
-                        if ($_SESSION['role'] != "DIRECTEUR")
+                        if ($_SESSION['role'] != "DIRECTEUR" && $_SESSION['role'] != "DM")
                         {
                                 throw new Exception('Droits insuffisants, seul un directeur peut effectuer cette action.');
                                 return False;
@@ -27,9 +30,20 @@ class Partenaire extends server_api_authentificated{
                 }
                 try
                 {
-                        $req = $this->bdd->prepare('INSERT INTO `partenaire`(`NOM_PARTENAIRE`, `ID_SECTEUR_PARTENAIRE`) VALUES (?,?)');
-                        $req->execute(array($nom_partenaire,$secteur_partenaire));
-                        $max_ID = $this->bdd->lastInsertId();
+			$prepa = array();
+			$prepa2 = array();
+			foreach ($data as $key=>$val){
+				if (in_array($key, $champs_lecture_seule) == False){
+					array_push($prepa,"`".$key."`");
+					array_push($prepa2, "?");
+					array_push($tab,$val);
+				}
+			}
+			
+			$p= 'INSERT INTO `partenaire`('.implode(",",$prepa).') VALUES ('.implode(',',$prepa2).')';
+                        $req = $this->bdd->prepare($p);
+                        $req->execute($tab);
+             //           $ID_projet = $this->bdd->lastInsertId();
                 }
                 catch(Exception $e)
                 {
@@ -40,11 +54,14 @@ class Partenaire extends server_api_authentificated{
 	}
 
 
-	public function update($nom_partenaire,$secteur_partenaire)
-	{
+	public function update ($id, $crud_dict)
+        {
+                $data = json_decode($crud_dict);
+                $champs_lecture_seule = array("ID_PARTENAIRE");
+
                 try
                 {
-                        if ($_SESSION['role'] != "DIRECTEUR")
+                        if ($_SESSION['role'] != "DIRECTEUR" && $_SESSION['role'] != "DM")
                         {
                                 throw new Exception('Droits insuffisants, seul un directeur peut effectuer cette action.');
                                 return False;
@@ -57,7 +74,20 @@ class Partenaire extends server_api_authentificated{
 
                 try
                 {
-                        $record_maj = $this->bdd->exec('UPDATE `partenaire` SET `NOM_PARTENAIRE`= "'.$nom_partenaire.'", `SECTEUR_PARTENAIRE`= "'.$secteur_partenaire.'"');
+
+			$prepa = array();
+			$tab = array();
+			foreach ($data as $key=>$val){
+				if (in_array($key, $champs_lecture_seule) == False){
+					array_push($prepa,"`".$key."` = ?");
+					array_push($tab,$val);
+				}
+			}
+			
+			$p= 'UPDATE `partenaire` SET '.implode(",",$prepa).' WHERE ID_PARTENAIRE = '.$id;
+error_log('\n'.$p, 3,"/tmp/test.log");
+                        $req = $this->bdd->prepare($p);
+                        $req->execute($tab);
                 }
                 catch(Exception $e)
                 {
@@ -73,6 +103,7 @@ class Partenaire extends server_api_authentificated{
 			$q.= ' WHERE '.$filter;
 		if ($order_by)
 			$q.= ' ORDER BY '.$order_by;
+//error_log('\n'.$q, 3,"/tmp/test.log");
 //echo $q;
 		$reponse = $this->bdd->query($q);
 		return $reponse->fetchAll();

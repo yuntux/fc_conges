@@ -48,7 +48,7 @@ class Projet extends server_api_authentificated{
                 {
 			$prepa = array("`NUM_PROJET`");
 			$prepa2 = array("?");
-			$tab = array($this->get_prochain_numero("PR"));
+			$tab = array($this->get_prochain_numero($data['TYPE_PROJET']));
 			foreach ($data as $key=>$val){
 				if (in_array($key, $champs_lecture_seule) == False){
 					array_push($prepa,"`".$key."`");
