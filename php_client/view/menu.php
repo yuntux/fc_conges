@@ -21,6 +21,10 @@
 					if ($action=="liste_projets")
 						echo ' style="background-color:#FFF;"';
 					echo '>Liste projets</a></li>';
+				echo '<li class="menu-1-8"><a href="?action=staffing" class="menu-1-8"';
+					if ($action=="staffing")
+						echo ' style="background-color:#FFF;"';
+					echo '>Staffing</a></li>';
 			}
 		?>
 	</ul>

@@ -35,7 +35,7 @@ h2
 }
 /*Header*/
 #header-bar-wrapper {
-    	background: #386C4E url(Pictures/header-bg.png) no-repeat 0% 0%;
+    	background: rgb(38, 60, 90);
     	height: 50px;
 }
 div {

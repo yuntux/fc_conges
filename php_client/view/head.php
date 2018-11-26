@@ -2,8 +2,8 @@
 <html lang="fr">
         <head>
 		<meta charset="utf-8">
-                <title>FC congés</title>
-		<link rel="icon" type="image/ico" href="view/favicon.ico"/>
+                <title>TAZ congés</title>
+		<link rel="icon" type="image/ico" href="view/Pictures/mini-logo-tasmane-red.svg"/>
 		<!--<link href="view/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" />-->
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -39,7 +39,7 @@ echo'                                           <div class="links secondary-link
 						}
 					}
 ?>
-						<a class="logo" href="?action=home"><img src="view/Pictures/logo.png" class="logo" alt=""></a>
+						<a class="logo-pcp" href="?action=home"><img src="view/Pictures/logo-tasmane.svg"  alt="logo-tasmane" style="display: block;width: 180px; height: auto; padding:7px"></a>
 					</div>
 				</div>
                                 <?php

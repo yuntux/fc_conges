@@ -1,117 +1,7 @@
 			<div id="bloc_donnees">
 <script>
 $(function(){
-    var URL = " https://conges.fontaine-consultants.fr/api_server/v1/dispatcher.php?&auth_token=<?php echo $_SESSION['mon_token']?>";
-    var URL_PROJET = URL + "&object=Projet";
-    var URL_CONSULTANT = URL + "&object=Consultant";
-    var URL_PARTENAIRE = URL + "&object=Partenaire";
-    var URL_LIGNE_STAFFING = URL + "&object=LigneStaffing";
-
-    var projetStore = new DevExpress.data.CustomStore({
-        key: "ID_PROJET",
-	loadMode: "raw",
-        load: function() {
-            return sendRequest(URL_PROJET + "&method=get_list");
-        },
-       insert: function(values) {
-		var tab = JSON.stringify(Array(JSON.stringify(values)));
-		alert(tab);
-		target = URL_PROJET + "&method=add&args=" + "&args_array="+encodeURI(btoa(tab));
-		alert(target)
-            	res = sendRequest(target);
-		//alert(JSON.parse(res));
-		//return res;
-        },
-        update: function(key, values) {
-		var tab = JSON.stringify(Array(key, JSON.stringify(values)));
-		alert(tab);
-		target = URL_PROJET + "&method=update&args=" + "&args_array="+encodeURI(btoa(tab));
-		alert(target)
-            	res = sendRequest(target);
-        },/*
-        remove: function(key) {
-            return sendRequest(URL + "/DeleteOrder", "DELETE", {
-                key: key
-            });
-        }*/
-    });
-
-
-
-    var consultantStore = new DevExpress.data.CustomStore({
-        key: "ID_CONSULTANT",
-	loadMode: "raw",
-        load: function() {
-            return sendRequest(URL_CONSULTANT + "&method=get_list");
-        },
-    });
-
-    var partenaireStore = new DevExpress.data.CustomStore({
-        key: "ID_PARTENAIRE",
-	loadMode: "raw",
-        load: function() {
-            return sendRequest(URL_PARTENAIRE + "&method=get_list");
-        },
-    });
-
-    var forecastStore = new DevExpress.data.CustomStore({
-        key: "ID_LIGNE_STAFFING",
-	loadMode: "raw",
-        load: function() {
-            return sendRequest(URL_LIGNE_STAFFING + "&method=get_forecast");
-        },
-        insert: function(values) {
-                var tab = JSON.stringify(Array(JSON.stringify(values)));
-                alert(tab);
-                target = URL_LIGNE_STAFFING + "&method=add_staffing&args=" + "&args_array="+encodeURI(btoa(tab));
-                alert(target)
-                res = sendRequest(target);
-        },
-        update: function(key, values) {
-                var tab = JSON.stringify(Array(key, JSON.stringify(values)));
-                alert(tab);
-                target = URL_LIGNE_STAFFING + "&method=change_staffing&args=" + "&args_array="+encodeURI(btoa(tab));
-                alert(target)
-                res = sendRequest(target);
-        },
-    });
-
-var VAL_TYPE_PROJET = [{
-    "ID": "AC",
-    "Name": "Accord cadre"
-},{
-    "ID": "PR",
-    "Name": "Projet"
-}];
-
- 
-var VAL_STATUT_PROJET = [{
-    "ID": "01",
-    "Name": "01 - Projet identifié ou Proposition en cours de rédaction"
-},
-{
-    "ID": "02",
-    "Name": "02 - Proposition en closing"
-},
-{
-    "ID": "03",
-    "Name": "03 - Accord de principe"
-},
-{
-    "ID": "04",
-    "Name": "04 - Commandé"
-},
-{
-    "ID": "05",
-    "Name": "02 - Terminé"
-},
-{
-    "ID": "06",
-    "Name": "02 - Perdu"
-},
-
-];
-									
+    <?php include_once("model/data.php"); ?>					
 
     var dataGrid = $("#grid").dxDataGrid({     
         dataSource: projetStore,
@@ -240,6 +130,35 @@ refreshMode: "full",
         dataSource: forecastStore,
         //repaintChangesOnly: true,
         showBorders: true,
+	columnAutoWidth: true,
+	columnResizingMode: "nextColumn",
+        filterRow: {
+            visible: true,
+            applyFilter: "auto"
+        },
+        headerFilter: {
+            visible: true
+        },
+        columnChooser: {
+            enabled: true
+        },
+        columnFixing: { 
+            enabled: true
+        },
+        stateStoring: {
+            enabled: true,
+            type: "localStorage",
+            storageKey: "storage_staffing"
+        },
+	grouping: {
+            autoExpandAll: true,
+        },
+        groupPanel: {
+            visible: true
+        },
+        searchPanel: {
+            visible: true
+        },
         editing: {
             mode: "cell",
 refreshMode: "full",
@@ -266,7 +185,8 @@ refreshMode: "full",
         columns: [
 	    {
                 dataField: "ID_CONSULTANT_LIGNE_STAFFING",
-                caption: "Consultant",
+                caption: "",
+		groupIndex: 0,
                 lookup: {
                     dataSource: {
                         store: consultantStore, 
@@ -315,7 +235,31 @@ echo '      {
 	}
 ?>
 
-        ]
+        ],
+        summary: {
+            groupItems: [{
+                column: "ID_PROJECT_LIGNE_STAFFING",
+                summaryType: "count",
+                displayFormat: "{0} missions",
+            },
+<?php
+        $current_year = date('Y');
+        $current_month = date('m');
+        $nb_mois_futur = 6;
+        for ($i = 0; $i <= $nb_mois_futur; $i++){
+                $m = str_pad(($current_month + $i)%12, 2, '0', STR_PAD_LEFT);
+                $y = $current_year + intval(($current_month + $i)/12);
+                //$tmp[$y."-".$m] = 0;
+echo '     {
+                column: "'.$y.'-'.$m.'",
+		summaryType: "sum",
+                alignByColumn: true,
+		displayFormat: "{0} jh",
+            },';
+        }
+?>
+	    ]
+        }
     }).dxDataGrid("instance");
 
 
@@ -334,40 +278,6 @@ echo '      {
             $("#requests ul").empty();
         }
     });
-
-    function sendRequest(url, method, data) {
-        var d = $.Deferred();
-    
-        method = method || "GET";
-
-        logRequest(method, url, data);
-    
-        $.ajax(url, {
-            method: method || "GET",
-            data: data,
-            cache: false,
-            xhrFields: { withCredentials: true }
-        }).done(function(result) {
-           d.resolve(method === "GET" ? JSON.parse(result):result);
-	  //d.resolve(JSON.parse(result));
-        }).fail(function(xhr) {
-            d.reject(xhr.responseJSON ? xhr.responseJSON.Message : xhr.statusText);
-        });
-    
-        return d.promise();
-    }
-
-    function logRequest(method, url, data) {
-        var args = Object.keys(data || {}).map(function(key) {
-            return key + "=" + data[key];
-        }).join(" ");
-
-        var logList = $("#requests ul"),
-            time = DevExpress.localization.formatDate(new Date(), "HH:mm:ss"),
-            newItem = $("<li>").text([time, method, url.slice(URL.length), args].join(" "));
-        
-        logList.prepend(newItem);
-    }
 });
 </script>
 
