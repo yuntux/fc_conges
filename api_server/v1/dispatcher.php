@@ -9,6 +9,8 @@ include("helpers.php");
 include("projet.php");
 include("partenaire.php");
 include("ligne_staffing.php");
+include("type_projet.php");
+include("statut_projet.php");
 
 include_once('model_singleton.php');
 

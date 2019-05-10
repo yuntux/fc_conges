@@ -14,12 +14,16 @@ class Projet extends server_api_authentificated{
 
 	public function get_prochain_numero($is_accord_cadre){
 		// TODO : init le 1er projet de l'année après un numéro donné.
-		if ($is_accord_cadre == 1)
+		if ($is_accord_cadre == 1){
 			$type = "AC";
-		else
-			$type = "PR";
-		$current_year = date('y');
+			$current_year = "";
+		}else{
+			$type = "";
+			$current_year = date('y');
+		}
+
 		$projects = $this->get_list($fields ='*', $filter="NUM_PROJET LIKE '".$type.$current_year."%'", $order_by="NUM_PROJET");
+
 		if (count($projects) == 0){
 			$increment = 1;
 		}else{

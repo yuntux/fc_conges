@@ -37,6 +37,7 @@ class server_api_authentificated extends server_api{
 		} else {
 			$token = $_GET['auth_token'];
 		}
+		session_name( 'API_SESSION' );
 		session_id($token);
 		session_start();
 		if (count($_SESSION)>0){

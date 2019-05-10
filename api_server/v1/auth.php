@@ -73,6 +73,7 @@ class auth extends server_api {
 				$res['prenom'] = $prenom;
 				$res['trigramme'] = $trigramme;
 				$res['login'] = $login;
+				session_name( 'API_SESSION' );
 				session_start();
 				$res['token'] = session_id();
 

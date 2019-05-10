@@ -12,6 +12,12 @@ if (isset($_POST['bouton_login'])){
 			$message_erreur = 'Mauvais mot de passe !';
 			$view_to_display='login.php'; 
 		} else{
+  $token_client_php = $res['token'];
+  /*unset($_SESSION);
+  session_destroy();
+  session_id($token_client_php);
+  session_start();
+*/
 			$_SESSION['id'] = $res['id'];
 			$_SESSION['role'] = $res['role'];
 			$_SESSION['nom'] = $res['nom'];
@@ -19,7 +25,8 @@ if (isset($_POST['bouton_login'])){
 			$_SESSION['trigramme'] = $res['trigramme'];
 			$_SESSION['login'] = $res['login'];
 
-			$_SESSION['mon_token'] = $res['token'];
+			$_SESSION['mon_token'] = $token_client_php;
+				// TODO : Dans tout php_client remplacer $_SESSION['mon_token'] par session_id();
 
 			$CONSULTANT->trigger_login_solde_conges($res['id']);
 			header("Location: index.php?action=home");

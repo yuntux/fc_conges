@@ -17,6 +17,7 @@
 					if ($action=="editions")
 						echo ' style="background-color:#FFF;"';
 					echo '>Editions</a></li>';
+/*
 				echo '<li class="menu-1-7"><a href="?action=liste_projets" class="menu-1-7"';
 					if ($action=="liste_projets")
 						echo ' style="background-color:#FFF;"';
@@ -25,6 +26,7 @@
 					if ($action=="staffing")
 						echo ' style="background-color:#FFF;"';
 					echo '>Staffing</a></li>';
+*/
 			}
 		?>
 	</ul>

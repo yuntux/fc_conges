@@ -53,6 +53,10 @@ $(function(){
         },*/
         editing: {
             mode: "form",
+            form: {
+                labelLocation: "left",
+		colCount: 5,
+            },
 refreshMode: "full",
             allowAdding: true,
             allowUpdating: true,
@@ -74,27 +78,53 @@ refreshMode: "full",
         scrolling: {
             mode: "virtual"
         },
+	columnFixing: { 
+        	    enabled: true
+        },
+	rowAlternationEnabled: true,
+        allowColumnResizing: true,
+        showBorders: true,
+        columnResizingMode: "nextColumn",
+        columnMinWidth: 50,
+        columnAutoWidth: true,
         columns: [
 	    { 
                 dataField: "NUM_PROJET",
 		caption: "N° projet",
 		//readOnly:true,
            	// allowUpdating: false,
-		validationRules: [{ readOnly:true }],
+		//validationRules: [{ readOnly:true }],
+           	width: 75,
+            	fixed: true,
+		formItem: {
+			colSpan: 1,
+			/*label: {
+			    location: "top"
+			},*/
+			editorOptions: {
+                		disabled: true
+            		},
+		}
             },
 	    { 
 		dataField: "NOM_PROJET",
 		caption: "Nom projet",
 		validationRules: [{ type: "required" }],
+		formItem: {
+			colSpan: 3,
+		}
             },
             { 
                 dataField: "TYPE_PROJET",
                 caption: "Type",
                 lookup: {
-                    dataSource: VAL_TYPE_PROJET,
-                    displayExpr: "Name",
-                    valueExpr: "ID"
-                }
+                    dataSource: {
+                        store: typeProjetStore, 
+                    },
+                    valueExpr: "CODE_TYPE_PROJET",
+                    //diplayExpr: "CODE_TYPE_PROJET",
+                    displayExpr: "LIBELLE_TYPE_PROJET"
+                },
             },
             { 
                 dataField: "IS_ACCORD_CADRE_PROJET",
@@ -106,10 +136,15 @@ refreshMode: "full",
                 caption: "Statut",
 		validationRules: [{ type: "required" }],
                 lookup: {
-                    dataSource: VAL_STATUT_PROJET,
-                    displayExpr: "Name",
-                    valueExpr: "ID"
-                }
+                    dataSource: {
+                        store: typeProjetStore, 
+                    },
+                    valueExpr: "CODE_STATUT_PROJET",
+                    displayExpr: "LIBELLE_STATUT_PROJET"
+                },
+		formItem: {
+			colSpan: 2,
+		}
             },
 	    {
                 dataField: "ID_DM_PROJET",
@@ -122,7 +157,10 @@ refreshMode: "full",
                     },
                     valueExpr: "ID_CONSULTANT",
                     displayExpr: "NOM_CONSULTANT"
-                }
+                },
+		formItem: {
+			colSpan: 2,
+		}
             },
             {
                 dataField: "ID_CLIENT_PROJET",
@@ -147,13 +185,11 @@ refreshMode: "full",
             {
                 dataField: "CA_PROJET",
                 caption: "CA prévisionnel",
-		validationRules: [{ type: "required" }],
 		visible: false,
             },
             {
                 dataField: "PROBA_PROJET",
                 caption: "Proba clossing",
-		validationRules: [{ type: "required" }],
 		visible: false,
             },
             {
@@ -175,7 +211,19 @@ refreshMode: "full",
                 caption: "P.D.",
 		dataType: "boolean",
             },
-        ]
+        ],
+/*
+        selection: {
+            mode: "single"
+        },
+        masterDetail: {
+            enabled: true,
+            template: function(container, options) { 
+                var currentEmployeeData = options.data;
+                container.append($('<div class="employeeInfo"><img class="employeePhoto" src="' + currentEmployeeData.Picture + '" /><p class="employeeNotes">' + currentEmployeeData.Notes + '</p></div>'));
+            }
+        }
+*/
     }).dxDataGrid("instance");
 
 });

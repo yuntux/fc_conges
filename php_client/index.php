@@ -1,6 +1,9 @@
 <?php 
 include_once("../api_server/v1/lib_date.php");
+//session_id($token);
+session_name( 'CLIENT_PHP_SESSION' );
 session_start();
+//echo ">>".session_id()."<<";
 //echo "Session id local auprès du client php : ".session_id();
 include("model/rest_client.php");
 
@@ -28,7 +31,9 @@ include_once("controller/".$action.".php");
 
 header('Content-Type: text/html; charset=utf-8');
 include("view/head.php");
-include("view/".$view_to_display);
+	if (isset($view_to_display)){
+		include("view/".$view_to_display);
+	}
 include("view/foot.php");
 
 /*TODO 
