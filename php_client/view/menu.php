@@ -3,6 +3,7 @@
 		<li class="menu-1-1"><a href="?action=home" class="menu-1-1"<?php if ($action=="home") echo ' style="background-color:#FFF;"';?>>Dashboard</a></li>
 		<li class="menu-1-2"><a href="?action=DemandeConges" class="menu-1-2"<?php if ($action=="DemandeConges") echo ' style="background-color:#FFF;"';?>>Saisir une demande</a></li>
 		<li class="menu-1-3"><a href="?action=Historiques" class="menu-1-3"<?php if ($action=="Historiques") echo ' style="background-color:#FFF;"';?>>Historiques</a></li>
+		<li class="menu-1-4"><a href="?action=bilans_periodiques" class="menu-1-4"<?php if ($action=="bilans_periodiques") echo ' style="background-color:#FFF;"';?>>Bilans périodiques</a></li>
 		<?php 
 			if($_SESSION['role'] == "DIRECTEUR"  || $_SESSION['role'] == "DM" ){
 				echo '<li class="menu-1-4"><a href="?action=Validation" class="menu-1-4"';

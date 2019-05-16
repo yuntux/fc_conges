@@ -5,7 +5,7 @@ require_once("PHPMailer/PHPMailerAutoload.php");
 function mail_gateway($mail,$sujet,$message_html)
 {
 	//$mail="yuntux@gmail.com";//pour les tests uniquement
-	send_mail("adumaine@fontaine-consultants.fr",$sujet,$message_html);
+	send_mail("aurelien.dumaine@tasmane.com",$sujet,$message_html);
 	return send_mail($mail,$sujet,$message_html);
 }
 
@@ -20,7 +20,7 @@ function send_mail($to,$subject,$message){
         $mail->Port = $_SMTP_PORT;                                    // TCP port to connect to
         $mail->SMTPAuth = false;                               // Enable SMTP authentication
 	$mail->CharSet = 'UTF-8';
-        $mail->setFrom('no-reply@fontaine-consultants.fr', 'FC Congés');
+        $mail->setFrom('no-reply@tasmane.com', 'TAZ Congés');
         $mail->addAddress($to);     // Add a recipient
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->Subject = $subject;
@@ -54,6 +54,6 @@ Bonjour, <br>votre nouveau mot de passe : '.$PASSWORD.'<br>Cordialement.<br>Dest
 				</body>
 			</html>';
 error_log("=========>".$EMAIL_CONSULTANT."<", 3, "/tmp/er.log");
-	mail_gateway($EMAIL_CONSULTANT,"Réinitialisation password FC Congés",$message_html);
+	mail_gateway($EMAIL_CONSULTANT,"Réinitialisation password TAZ Congés",$message_html);
 }
 ?>

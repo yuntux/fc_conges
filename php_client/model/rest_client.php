@@ -38,7 +38,6 @@ class REST_client{
 		    )
 		);
 		$context  = stream_context_create($options);
-//if (isset($_SESSION['login']) && $_SESSION['login']=='adumaine@fontaine-consultants.fr'){
 if (isset($_SESSION['login']) && $_SESSION['login']=='admin.conges@tasmane.com'){
 	echo '<br>MODE DEBUG / URL appelée par le client PHP - endPoint de l\'API => '.$url;
 }

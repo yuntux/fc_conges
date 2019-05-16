@@ -11,9 +11,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script>window.jQuery || document.write(decodeURIComponent('%3Cscript src="js/jquery.min.js"%3E%3C/script%3E'))</script>
 <!--
-    <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/18.2.3/css/dx.common.css" />
-    <link rel="dx-theme" data-theme="generic.light" href="https://cdn3.devexpress.com/jslib/18.2.3/css/dx.light.css" />
-    <script src="https://cdn3.devexpress.com/jslib/18.2.3/js/dx.all.js"></script>
+    <link rel="stylesheet" type="text/css" href="view/lib_devexpress/dx.common.css" />
+    <link rel="dx-theme" data-theme="generic.light" type="text/css" href="view/lib_devexpress/dx.light.css" />
+    <script type="text/javascript" src="view/lib_devexpress/dx.all.js"></script>
 -->
     <link rel="stylesheet" type ="text/css" href ="view/datagrid.css" />
 
