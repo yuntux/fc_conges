@@ -29,6 +29,7 @@
                                 <?php
 					if(!empty($_SESSION['id']))
 					{
+					echo '<div class="links secondary-links">** '.$_SESSION['prenom'].' '.$_SESSION['nom'].' ** </div>';
 echo'						<div class="links secondary-links">
 							<a href="?action=MonCompte">Mon compte</a> | <a href="?action=deconnexion">Se déconnecter</a>
 						</div>

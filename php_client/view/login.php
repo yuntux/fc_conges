@@ -7,8 +7,8 @@
 				</thead>
 				<tbody style="position: fixed;border-radius : 5px ;">
 					<tr>
-						<td>E-mail : </td>
-						<td><input type="text" name="login" /></td>
+						<td>E-mail <b>au format TASMANE.COM</b>: </td>
+						<td><input type="text" name="login" placeholder="prenom.nom@tasmane.com"/></td>
 					</tr>
 					<tr>
 						<td>Password : </td>
