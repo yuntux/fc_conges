@@ -3,13 +3,14 @@
 
 if(isset($_POST['select_consultant']) && $_POST['select_consultant']!="-1")
 {
-	$donnee = $CONSULTANT->get_by_id($_POST['select_consultant']);
+	$donnee = $CONSULTANT->get_by_id($_POST['select_consultant'], True);
 
 	$CONom=$donnee['NOM_CONSULTANT'];
 	$COprenom= $donnee['PRENOM_CONSULTANT'];
 	$COmail= $donnee['EMAIL_CONSULTANT'];
 	$COTri= $donnee['TRIGRAMME_CONSULTANT'];
 	$COprofil=$donnee['PROFIL_CONSULTANT'];
+	$COstatut=$donnee['STATUT_CONSULTANT'];
 
 	$acquis = $CONSULTANT->get_acquis($_POST['select_consultant']);
 	$ACQUIS_RTTn1 = $acquis['RTTn1_ACQUIS'];
@@ -41,6 +42,7 @@ if(isset($_POST['update_consultant']))
 	$COTri=$_POST['COTri'];
 	$COprofil=$_POST['COprofil'];
 	$COid=$_POST['COid'];
+	$COstatut=$_POST['COstatut'];
 
 	$AcquisCPn1=$_POST['AcquisCPn1'];
         $AcquisCPn=$_POST['AcquisCPn'];
@@ -51,7 +53,7 @@ if(isset($_POST['update_consultant']))
         $SoldeRTTn=$_POST['SoldeRTTn'];
         $SoldeRTTn1=$_POST['SoldeRTTn1'];
 
-	$res = $CONSULTANT->update_consultant($COid, $CONom,$COprenom,$COmail,$COprofil,$COTri);
+	$res = $CONSULTANT->update_consultant($COid, $CONom,$COprenom,$COmail,$COprofil,$COTri,$COstatut);
 	if ($res==True){
 		$message_succes = "Mise à jour réalisée.";
 		$CONom="";
@@ -121,7 +123,7 @@ if(isset($_POST['reinitialiser']))
 	$CONSULTANT->init_password($_POST['COid']);
 }
 
-$liste_consultants = $CONSULTANT->get_list();
+$liste_consultants = $CONSULTANT->get_list($fields ='*', $filter=False, $order_by="NOM_CONSULTANT", $inactifs=True);
 $view_to_display="administration.php";
 
 ?>

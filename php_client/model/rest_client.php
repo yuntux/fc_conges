@@ -5,7 +5,7 @@ class REST_client{
 	public $object;
 
         public function __construct($object) {
-		$API_HOST = "https://conges.fontaine-consultants.fr/api_server";
+		$API_HOST = "https://conges.tasmane.com/api_server";
 		$API_VERSION = "v1";
 		$this->api_version = $API_VERSION;
 		$this->host = $API_HOST;

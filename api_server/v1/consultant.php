@@ -23,10 +23,18 @@ class Consultant extends server_api_authentificated{
 	public function update(){
 	}
 
-	public function get_list($fields ='*', $filter=False, $order_by="NOM_CONSULTANT"){
+	public function get_list($fields ='*', $filter=False, $order_by="NOM_CONSULTANT", $inactifs=False){
 		$q = 'SELECT '.$fields.' FROM consultant';
-		if ($filter)
+		if ($filter){
 			$q.= ' WHERE '.$filter;
+			if ($inactifs == False){
+				$q.= ' AND `STATUT_CONSULTANT` = 1';
+			}
+		} else {
+			if ($inactifs == False){
+				$q.= ' WHERE `STATUT_CONSULTANT` = 1';
+			}
+		}
 		if ($order_by)
 			$q.= ' ORDER BY '.$order_by;
 //echo $q;
@@ -143,7 +151,7 @@ class Consultant extends server_api_authentificated{
 	public function check_password($login,$password){
 		try
 		{
-			$reponse = $this->bdd->query('SELECT * FROM consultant where EMAIL_CONSULTANT = \''.$login.'\'')->fetch();
+			$reponse = $this->bdd->query('SELECT * FROM consultant where EMAIL_CONSULTANT = \''.$login.'\' AND `STATUT_CONSULTANT` = 1')->fetch();
 		}
 		catch(Exception $e)
 		{
@@ -190,13 +198,13 @@ class Consultant extends server_api_authentificated{
                 }
 		return $reponse['ID_CONSULTANT'];
 	}
-	public function get_by_login($login_consultant)
+	public function get_by_login($login_consultant, $inactifs=False)
 	{
-		return $this->get_list('*', '`EMAIL_CONSULTANT` = \''.$login_consultant.'\'')[0];
+		return $this->get_list('*', '`EMAIL_CONSULTANT` = \''.$login_consultant.'\'', "NOM_CONSULTANT", $inactifs)[0];
 	}
-	public function get_by_id($id_consultant)
+	public function get_by_id($id_consultant, $inactifs=False)
 	{
-		return $this->get_list('*', '`ID_CONSULTANT` = \''.$id_consultant.'\'')[0];
+		return $this->get_list('*', '`ID_CONSULTANT` = \''.$id_consultant.'\'', "NOM_CONSULTANT", $inactifs)[0];
 	}
 
 	public function delete_consultant($id_consultant)
@@ -276,7 +284,7 @@ echo $e;
 	}
 
 
-	public function update_consultant($id_consultant, $CONom,$COprenom,$COmail,$COprofil,$COTri)
+	public function update_consultant($id_consultant, $CONom,$COprenom,$COmail,$COprofil,$COTri,$COstatut)
 	{
                 try 
                 {
@@ -293,7 +301,7 @@ echo $e;
 
 		try
 		{
-			$record_maj = $this->bdd->exec('UPDATE `consultant` SET `NOM_CONSULTANT`= "'.$CONom.'", `PRENOM_CONSULTANT`= "'.$COprenom.'", `EMAIL_CONSULTANT`= "'.$COmail.'", `TRIGRAMME_CONSULTANT`= "'.$COTri.'", `PROFIL_CONSULTANT`= "'.$COprofil.'" WHERE `ID_CONSULTANT` = "'.$id_consultant.'"');
+			$record_maj = $this->bdd->exec('UPDATE `consultant` SET `NOM_CONSULTANT`= "'.$CONom.'", `PRENOM_CONSULTANT`= "'.$COprenom.'", `EMAIL_CONSULTANT`= "'.$COmail.'", `TRIGRAMME_CONSULTANT`= "'.$COTri.'", `PROFIL_CONSULTANT`= "'.$COprofil.'", `STATUT_CONSULTANT`= "'.$COstatut.'"  WHERE `ID_CONSULTANT` = "'.$id_consultant.'"');
 		}
 		catch(Exception $e)
 		{
