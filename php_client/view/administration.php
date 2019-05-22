@@ -41,8 +41,8 @@
 	?>
 	<form action="?action=administration" method="post">
 		<table>
-		<tr><td>Nom *</td><td> <input type="text" name="CONom" value="<?php if(isset($CONom)) echo $CONom;?>"  required/></td></tr>
-		<tr><td>Prenom *</td><td> <input type="text" name="COprenom" value="<?php if(isset($COprenom)) echo $COprenom;?>"  required/></td></tr>
+		<tr><td>Nom *</td><td> <input style="text-transform: uppercase;" type="text" name="CONom" value="<?php if(isset($CONom)) echo $CONom;?>"  required/></td></tr>
+		<tr><td>Prenom *</td><td> <input style="text-transform: capitalize;" type="text" name="COprenom" value="<?php if(isset($COprenom)) echo $COprenom;?>"  required/></td></tr>
 		<tr><td>Email * </td><td><input type="text" name="COmail" value="<?php if(isset($COmail)) echo $COmail;?>"  required/></td></tr>
 		<!--<tr><td>Trigramme * </td><td><input type="text" name="COTri" value="<?php if(isset($COTri)) echo $COTri;?>"  required/></td></tr>-->
 		<input type="hidden" name="COTri" value=""/>

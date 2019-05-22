@@ -20,14 +20,14 @@ if($_SESSION['role'] == "DIRECTEUR"){
 	echo "<table style='width:150%;'><tr><td>";
 	foreach ($consultants as $consultant){
 		$i++;
-		if ($i%10==0){
+		if ($i%30==0){
 			echo "</td><td>";	
 		}
 		$checked="";
 		if ($_SESSION['id']==$consultant["ID_CONSULTANT"]){
 			$checked=" checked";
 		}
-		echo '<input name="consultant_tab[]"  value="'.$consultant["ID_CONSULTANT"].'" type="checkbox" '.$checked.'>'.$consultant["PRENOM_CONSULTANT"].' '.$consultant["NOM_CONSULTANT"].'<br>';
+		echo '<input name="consultant_tab[]"  value="'.$consultant["ID_CONSULTANT"].'" type="checkbox" '.$checked.'>'.$consultant["NOM_CONSULTANT"].' '.$consultant["PRENOM_CONSULTANT"].'<br>';
 	}
 	echo "</td></tr></table>";
 }
