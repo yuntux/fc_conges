@@ -1,4 +1,11 @@
 <?php 
+
+$browser  = $_SERVER['HTTP_USER_AGENT'];
+if ((strpos($browser,'Firefox') == false) and (strpos($browser,'Chrome') == false)) {
+    echo 'Merci d\'utiliser un vrai navigateur web (Firefox ou Chrome).';
+    exit();
+} 
+
 include_once("../api_server/v1/lib_date.php");
 //session_id($token);
 session_name( 'CLIENT_PHP_SESSION' );
